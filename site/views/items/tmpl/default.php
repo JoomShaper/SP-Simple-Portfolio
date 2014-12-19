@@ -38,21 +38,21 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 $i = 0;
 //Sizes
 $sizes = array(
-	'600X400',
-	'600X800',
-	'600X600',
+	'600x400',
+	'600x800',
+	'600x600',
 
-	'600X800',
-	'600X400',
-	'600X600',
+	'600x800',
+	'600x400',
+	'600x600',
 
-	'600X600',
-	'600X400',
-	'600X800',
+	'600x600',
+	'600x400',
+	'600x800',
 
-	'600X600',
-	'600X800',
-	'600X400'
+	'600x600',
+	'600x800',
+	'600x400'
 	);
 
 ?>
@@ -135,11 +135,11 @@ $sizes = array(
 					<?php } ?>
 
 					<?php if($this->params->get('thumbnail_type', 'masonry') == 'masonry') { ?>
-						<img class="sp-simpleportfolio-img" src="<?php echo JURI::root(true) . '/images/spsimpleportfolio/' . $this->item->spsimpleportfolio_item_id . '/' . JFile::stripExt(JFile::getName($this->item->image)) . '_' . $sizes[$i] . '.' . JFile::getExt($this->item->image); ?>" alt="<?php echo $this->item->title; ?>">
+						<img class="sp-simpleportfolio-img" src="<?php echo JURI::base(true) . '/images/spsimpleportfolio/' . $this->item->spsimpleportfolio_item_id . '/' . JFile::stripExt(JFile::getName($this->item->image)) . '_' . $sizes[$i] . '.' . JFile::getExt($this->item->image); ?>" alt="<?php echo $this->item->title; ?>">
 					<?php } else if($this->params->get('thumbnail_type', 'masonry') == 'rectangular') { ?>
-						<img class="sp-simpleportfolio-img" src="<?php echo JURI::root(true) . '/images/spsimpleportfolio/' . $this->item->spsimpleportfolio_item_id . '/' . JFile::stripExt(JFile::getName($this->item->image)) . '_600X400.' . JFile::getExt($this->item->image); ?>" alt="<?php echo $this->item->title; ?>">
+						<img class="sp-simpleportfolio-img" src="<?php echo JURI::base(true) . '/images/spsimpleportfolio/' . $this->item->spsimpleportfolio_item_id . '/' . JFile::stripExt(JFile::getName($this->item->image)) . '_600x400.' . JFile::getExt($this->item->image); ?>" alt="<?php echo $this->item->title; ?>">
 					<?php } else { ?>
-						<img class="sp-simpleportfolio-img" src="<?php echo JURI::root(true) . '/images/spsimpleportfolio/' . $this->item->spsimpleportfolio_item_id . '/' . JFile::stripExt(JFile::getName($this->item->image)) . '_600X600.' . JFile::getExt($this->item->image); ?>" alt="<?php echo $this->item->title; ?>">
+						<img class="sp-simpleportfolio-img" src="<?php echo JURI::base(true) . '/images/spsimpleportfolio/' . $this->item->spsimpleportfolio_item_id . '/' . JFile::stripExt(JFile::getName($this->item->image)) . '_600x600.' . JFile::getExt($this->item->image); ?>" alt="<?php echo $this->item->title; ?>">
 					<?php } ?>
 
 					<div class="sp-simpleportfolio-overlay">
@@ -149,7 +149,7 @@ $sizes = array(
 									<?php if( $this->item->video ) { ?>
 										<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $this->item->spsimpleportfolio_item_id; ?>"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_WATCH'); ?></a>
 									<?php } else { ?>
-										<a class="btn-zoom" href="<?php echo JURI::root(true) . '/images/spsimpleportfolio/' . $this->item->spsimpleportfolio_item_id . '/' . JFile::stripExt(JFile::getName($this->item->image)) . '_600X400.' . JFile::getExt($this->item->image); ?>" data-featherlight="image"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
+										<a class="btn-zoom" href="<?php echo JURI::base(true) . '/images/spsimpleportfolio/' . $this->item->spsimpleportfolio_item_id . '/' . JFile::stripExt(JFile::getName($this->item->image)) . '_600x400.' . JFile::getExt($this->item->image); ?>" data-featherlight="image"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
 									<?php } ?>
 									<a class="btn-view" href="<?php echo $this->item->url; ?>"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_VIEW'); ?></a>
 								</div>
