@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form validate="true">
+	<fieldset name="basic" class="span8">
+		<field name="title" type="text" required="true" />
+		<field name="alias" type="text" />
+	</fieldset>
+</form>

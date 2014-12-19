@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form type="browse" show_header="1" show_filters="1" show_pagination="1" norows_placeholder="COM_SPSIMPLEPORTFOLIO_COMMON_NORECORDS">
+	<headerset>
+		<header name="spsimpleportfolio_tag_id" type="rowselect" tdwidth="1%" />
+		<header name="title" type="fieldsearchable" sortable="true" buttons="yes" buttonclass="btn" />
+	</headerset>
+
+	<fieldset name="items">
+		<field name="spsimpleportfolio_tag_id" type="selectrow"/>
+		<field name="title" type="text" show_link="true" url="index.php?option=com_spsimpleportfolio&amp;view=tag&amp;id=[ITEM:ID]" empty_replacement="(no title)" />
+	</fieldset>
+</form>

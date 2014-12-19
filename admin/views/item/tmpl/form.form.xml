@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form validate="true">
+	<fieldset name="basic" class="span8">
+		<field name="title" type="text" required="true" />
+		<field name="alias" type="text" />
+		<field name="image" type="media" description="COM_SPSIMPLEPORTFOLIO_ITEMS_IMAGE_DESC" required="true" />
+		<field name="video" type="url" description="COM_SPSIMPLEPORTFOLIO_ITEMS_VIDEO_DESC" />
+		<field name="description" type="editor" filter="JComponentHelper::filterText" required="true" />
+	</fieldset>
+
+	<fieldset name="published" class="span4">
+		<field name="spsimpleportfolio_tag_id" type="model" label="COM_SPSIMPLEPORTFOLIO_ITEMS_TAGS_LABEL" translate="false" model="SpsimpleportfolioModelTags" apply_access="false" key_field="spsimpleportfolio_tag_id" value_field="title" required="true" multiple="multiple" description="COM_SPSIMPLEPORTFOLIO_ITEMS_TAGS_DESC" />
+		<field name="url" type="text" description="COM_SPSIMPLEPORTFOLIO_ITEMS_URL_DESC" />
+		<field name="enabled" type="list" label="JSTATUS" filter="intval" default="1">
+			<option value="1">JPUBLISHED</option>
+			<option value="0">JUNPUBLISHED</option>
+		</field>
+		<field name="language" type="language" />
+		<field name="access" type="accesslevel" label="JFIELD_ACCESS_LABEL" />
+	</fieldset>
+</form>
