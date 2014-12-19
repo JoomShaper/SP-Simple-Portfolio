@@ -53,6 +53,27 @@ class SpsimpleportfolioTableItem extends FOFTable
 			$this->spsimpleportfolio_tag_id = '';
 		}
 
+		//Generate Thumbnails
+		if($result) {
+			if(!is_null($this->image)) {
+				jimport( 'joomla.filesystem.file' );
+				jimport( 'joomla.filesystem.folder' );
+				jimport( 'joomla.image.image' );
+
+				$image = JPATH_ROOT . '/' . $this->image;
+				$path  = JPATH_ROOT . '/images/spsimpleportfolio/' . $this->alias;
+
+				if(!file_exists($path)) {
+					JFolder::create( $path, 0755 );
+				}
+
+				$sizes = array('600x400', '600x600', '600x800');
+				$image = new JImage($image);
+				$image->createThumbs($sizes, 4, $path);
+			}
+
+		}
+
 		return $result;
 	}
 
@@ -66,24 +87,6 @@ class SpsimpleportfolioTableItem extends FOFTable
 
 		if(is_null($this->spsimpleportfolio_tag_id) || empty($this->spsimpleportfolio_tag_id)) {
 			$this->spsimpleportfolio_tag_id = array();
-		}
-
-		//Generate Thumbnails
-		if(!is_null($this->image)) {
-			jimport( 'joomla.filesystem.file' );
-			jimport( 'joomla.filesystem.folder' );
-			jimport( 'joomla.image.image' );
-
-			$image = JPATH_ROOT . '/' . $this->image;
-			$path  = JPATH_ROOT . '/images/spsimpleportfolio/' . $this->spsimpleportfolio_item_id;
-
-			if(!file_exists($path)) {
-				JFolder::create( $path, 0755 );
-			}
-
-			$sizes = array('600x400', '600x600', '600x800');
-			$image = new JImage($image);
-			$image->createThumbs($sizes, 4, $path);
 		}
 
 		return parent::onAfterLoad($result);
