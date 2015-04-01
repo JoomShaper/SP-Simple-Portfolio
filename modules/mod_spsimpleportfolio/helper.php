@@ -3,7 +3,7 @@
  * @package     SP Simple Portfolio
  * @subpackage  mod_spsimpleportfolio
  *
- * @copyright   Copyright (C) 2010 - 2014 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2015 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
@@ -30,4 +30,23 @@ class ModSpsimpleportfolioHelper {
 		return $items;
 
 	}
+
+	public static function getItemid() {
+		$db = JFactory::getDbo();
+ 
+		$query = $db->getQuery(true); 
+		$query->select($db->quoteName(array('id')));
+		$query->from($db->quoteName('#__menu'));
+		$query->where($db->quoteName('link') . ' LIKE '. $db->quote('%option=com_spsimpleportfolio&view=items%'));
+		$query->where($db->quoteName('published') . ' = '. $db->quote('1'));
+		$db->setQuery($query);
+		$result = $db->loadResult();
+
+		if(count($result)) {
+			return '&Itemid=' . $result;
+		}
+
+		return;
+	}
+
 }
