@@ -13,6 +13,5 @@ JHtml::_('jquery.framework');
 
 $doc = JFactory::getDocument();
 $doc->addStylesheet( JURI::base(true) . '/components/com_spsimpleportfolio/assets/css/spsimpleportfolio.css' );
-$doc->addScript( JURI::base(true) . '/components/com_spsimpleportfolio/assets/js/jquery.resizecrop-1.0.3.min.js' );
 
 echo $this->getRenderedForm();
