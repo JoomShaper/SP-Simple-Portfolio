@@ -19,6 +19,7 @@ class ModSpsimpleportfolioHelper {
 		$query->select('*')
 		->from($db->quoteName('#__spsimpleportfolio_items'))
 		->where($db->quoteName('enabled') . ' = 1')
+		->where('language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
 		->where($db->quoteName('access')." IN (" . implode( ',', JFactory::getUser()->getAuthorisedViewLevels() ) . ")")
 		->order($db->quoteName('ordering') . ' ASC')
 		->setLimit($params->get('limit', 6));

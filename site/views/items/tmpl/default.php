@@ -16,6 +16,12 @@ $layout_type = $this->params->get('layout_type', 'default');
 //Load the method jquery script.
 JHtml::_('jquery.framework');
 
+//Params
+$params 	= JComponentHelper::getParams('com_spsimpleportfolio');
+$square 	= strtolower( $params->get('square', '600x600') );
+$rectangle 	= strtolower( $params->get('rectangle', '600x400') );
+$tower 		= strtolower( $params->get('tower', '600x800') );
+
 //Add js and css files
 $doc = JFactory::getDocument();
 $doc->addStylesheet( JURI::root(true) . '/components/com_spsimpleportfolio/assets/css/featherlight.min.css' );
@@ -38,21 +44,21 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 $i = 0;
 //Sizes
 $sizes = array(
-	'600x400',
-	'600x800',
-	'600x600',
+	$rectangle,
+	$tower,
+	$square,
 
-	'600x800',
-	'600x400',
-	'600x600',
+	$tower,
+	$rectangle,
+	$square,
 
-	'600x600',
-	'600x400',
-	'600x800',
+	$square,
+	$rectangle,
+	$tower,
 
-	'600x600',
-	'600x800',
-	'600x400'
+	$square,
+	$tower,
+	$rectangle
 	);
 
 ?>

@@ -7,11 +7,10 @@
 	<authorUrl>http://www.joomshaper.com</authorUrl>
 	<copyright>Copyright (c) 2010- 2015 JoomShaper. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>1.0</version>
+	<version>1.1</version>
 	<description>Simple Portfolio Component for Joomla 3.3+</description>
 
 	<files folder="site">
-		<filename>index.html</filename>
 		<filename>spsimpleportfolio.php</filename>
 		<filename>dispatcher.php</filename>
 		<filename>router.php</filename>
@@ -47,6 +46,9 @@
 			<folder>sql</folder>
       		<folder>assets</folder>
       		<folder>tables</folder>
+      		<folder>fields</folder>
+      		<folder>models</folder>
+      		<folder>controllers</folder>
       		<folder>views</folder>
 		</files>
 

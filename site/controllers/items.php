@@ -22,11 +22,7 @@ class SpsimpleportfolioControllerItems extends FOFController
 		$params		= $app->getParams();
 
 		$this->getThisModel()->limit( $params->get('limit', 12) );
-		
-		if (!$this->input->getInt('limit', 0) && !$this->input->getInt('limitstart', 0))
-		{
-			$this->getThisModel()->limitstart(0);
-		}
+		$this->getThisModel()->limitstart($this->input->getInt('limitstart', 0));
 	
 		return true;
 	}

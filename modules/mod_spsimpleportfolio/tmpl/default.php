@@ -11,24 +11,30 @@ defined('_JEXEC') or die;
 jimport( 'joomla.filesystem.file' );
 $layout_type = $params->get('layout_type', 'default');
 
+//Params
+$cparams 	= JComponentHelper::getParams('com_spsimpleportfolio');
+$square 	= strtolower( $cparams->get('square', '600x600') );
+$rectangle 	= strtolower( $cparams->get('rectangle', '600x400') );
+$tower 		= strtolower( $cparams->get('tower', '600x800') );
+
 $i = 0;
 //Sizes
 $sizes = array(
-	'600x400',
-	'600x800',
-	'600x600',
+	$rectangle,
+	$tower,
+	$square,
 
-	'600x800',
-	'600x400',
-	'600x600',
+	$tower,
+	$rectangle,
+	$square,
 
-	'600x600',
-	'600x400',
-	'600x800',
+	$square,
+	$rectangle,
+	$tower,
 
-	'600x600',
-	'600x800',
-	'600x400'
+	$square,
+	$tower,
+	$rectangle
 	);
 
 ?>
