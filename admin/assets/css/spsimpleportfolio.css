@@ -9,3 +9,7 @@ td.order input[type="text"],
 .save-order.btn {
 	display: none
 }
+
+#itemsList img {
+	width: 100%;
+}

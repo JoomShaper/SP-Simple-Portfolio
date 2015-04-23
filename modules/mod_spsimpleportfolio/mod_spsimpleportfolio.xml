@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later</license>
 	<authorEmail>support@joomshaper.com</authorEmail>
 	<authorUrl>www.joomshaper.com</authorUrl>
-	<version>1.0</version>
+	<version>1.1</version>
 	<description>Module to display latest item from SP Simple Portfolio</description>
 	<files>
 		<filename module="mod_spsimpleportfolio">mod_spsimpleportfolio.php</filename>
