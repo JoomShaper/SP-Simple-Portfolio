@@ -10,6 +10,10 @@
 	<version>1.2</version>
 	<description>Simple Portfolio Component for Joomla 3.3+</description>
 
+	<updateservers> 
+        <server type="extension" priority="1" name="SP Simple Portfolio">http://www.joomshaper.com/updates/com-sp-simple-portfolio.xml</server>
+    </updateservers>
+
 	<files folder="site">
 		<filename>spsimpleportfolio.php</filename>
 		<filename>dispatcher.php</filename>
