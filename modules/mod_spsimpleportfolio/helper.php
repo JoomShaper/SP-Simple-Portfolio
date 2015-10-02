@@ -18,9 +18,12 @@ class ModSpsimpleportfolioHelper {
 
 		$query->select('*')
 		->from($db->quoteName('#__spsimpleportfolio_items'))
-		->where($db->quoteName('enabled') . ' = 1')
-		->where('language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')')
-		->where($db->quoteName('access')." IN (" . implode( ',', JFactory::getUser()->getAuthorisedViewLevels() ) . ")")
+		->where($db->quoteName('enabled') . ' = 1');
+		//has category
+		if ($params->get('category_id') != '') {
+			$query->where($db->qn('category_id')." = ".$db->quote( $params->get('category_id') ));
+		}
+		$query->where($db->quoteName('access')." IN (" . implode( ',', JFactory::getUser()->getAuthorisedViewLevels() ) . ")")
 		->order($db->quoteName('ordering') . ' ASC')
 		->setLimit($params->get('limit', 6));
 		

@@ -2,6 +2,7 @@ CREATE TABLE IF NOT EXISTS `#__spsimpleportfolio_items` (
   `spsimpleportfolio_item_id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `title` varchar(255) NOT NULL,
   `alias` varchar(55) NOT NULL,
+  `category_id` int(11) NOT NULL,
   `image` text NOT NULL,
   `video` text NOT NULL,
   `description` mediumtext,

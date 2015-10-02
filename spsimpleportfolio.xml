@@ -20,6 +20,7 @@
 		<folder>views</folder>
 		<folder>helpers</folder>
 		<folder>models</folder>
+		<folder>fields</folder>
 	</files>
 
 	<languages folder="language/site">
@@ -60,6 +61,7 @@
       		<folder>models</folder>
       		<folder>controllers</folder>
       		<folder>views</folder>
+      		<folder>helpers</folder>
 		</files>
 
 		<languages folder="language/admin">

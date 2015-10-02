@@ -10,9 +10,12 @@ defined('_JEXEC') or die();
 
 class SpsimpleportfolioToolbar extends FOFToolbar{
 
-	function onBrowse()
-	{
+	function onBrowse(){
 		JToolBarHelper::preferences('com_spsimpleportfolio');
+
+		$categories_view = 'index.php?option=com_categories&view=categories&extension=com_spsimpleportfolio';
+		JHtmlSidebar::addEntry(JText::_('COM_SPSIMPLEPORTFOLIO_CATEGORIES'), $categories_view, 'categories');
+
 		parent::onBrowse();
 	}
 }
