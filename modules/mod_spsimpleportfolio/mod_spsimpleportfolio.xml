@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="module" version="3.3" client="site" method="upgrade">
-	<name>SP Simple Portfolio</name>
+	<name>SP Simple Portfolio Module</name>
 	<author>JoomShaper</author>
 	<creationDate>December 2014</creationDate>
 	<copyright>Copyright (C) 2010 - 2015 JoomShaper. All rights reserved.</copyright>
@@ -9,6 +9,11 @@
 	<authorUrl>www.joomshaper.com</authorUrl>
 	<version>1.2</version>
 	<description>Module to display latest item from SP Simple Portfolio</description>
+
+	<updateservers> 
+        <server type="extension" priority="1" name="SP Simple Portfolio Module">http://www.joomshaper.com/updates/mod-sp-simple-portfolio.xml</server>
+    </updateservers>
+
 	<files>
 		<filename module="mod_spsimpleportfolio">mod_spsimpleportfolio.php</filename>
 		<filename>helper.php</filename>
