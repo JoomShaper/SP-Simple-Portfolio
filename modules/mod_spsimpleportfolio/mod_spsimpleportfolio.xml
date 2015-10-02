@@ -25,9 +25,11 @@
 					<option value="1">JYES</option>	
 					<option value="0">JNO</option>
 				</field>
-				<field name="category_id" type="categorylist" label="MOD_SPSIMPLEPORTFOLIO_CATEGORY" description="MOD_SPSIMPLEPORTFOLIO_CATEGORY" />
+				<field name="category_id" type="category" extension="com_spsimpleportfolio" default="" label="MOD_SPSIMPLEPORTFOLIO_CATEGORY" description="MOD_SPSIMPLEPORTFOLIO_CATEGORY">
+					<option value="">MOD_SPSIMPLEPORTFOLIO_CATEGORY_ALL</option>	
+				</field>
 				<field name="layout_type" type="list" default="default" label="MOD_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_TYPES" description="MOD_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_TYPES_DESC">
-					<option value="default">MOD_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_DEFAULT</option>	
+					<option value="default">MOD_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_DEFAULT</option>
 					<option value="gallery_space">MOD_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_GALLERY_SPACE</option>	
 					<option value="gallery_nospace">MOD_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_GALLERY_NOSPACE</option>	
 				</field>
