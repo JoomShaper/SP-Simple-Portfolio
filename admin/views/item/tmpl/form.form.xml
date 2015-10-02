@@ -3,15 +3,9 @@
 	<fieldset name="basic" class="span8">
 		<field name="title" type="text" required="true" />
 		<field name="alias" type="text" />
-		<field name="category_id"
-		 	label="COM_SPSIMPLEPORTFOLIO_CATEGORY_NAME" 
-		 	description="" 
-        	type="sql"
-        	translate="false" 
-        	query="SELECT id, title FROM #__categories WHERE extension = 'com_spsimpleportfolio' AND published = 1" 
-        	key_field="id" 
-        	value_field="title"
-        />
+		<field name="category_id" type="category" extension="com_spsimpleportfolio" default="" label="COM_SPSIMPLEPORTFOLIO_CATEGORY_NAME" description="COM_SPSIMPLEPORTFOLIO_CATEGORY_NAME_DESC">
+			<option value="">COM_SPSIMPLEPORTFOLIO_CATEGORY_ALL</option>
+		</field>
 		<field name="image" type="media" description="COM_SPSIMPLEPORTFOLIO_ITEMS_IMAGE_DESC" required="true" />
 		<field name="video" type="url" description="COM_SPSIMPLEPORTFOLIO_ITEMS_VIDEO_DESC" />
 		<field name="description" type="editor" filter="JComponentHelper::filterText" required="true" />
