@@ -6,6 +6,9 @@
 					<option value="1">JYES</option>	
 					<option value="0">JNO</option>
 			</field>
+			<field name="category_id" type="category" extension="com_spsimpleportfolio" default="" label="COM_SPSIMPLEPORTFOLIO_CATEGORY" description="COM_SPSIMPLEPORTFOLIO_CATEGORY_DESC" >
+				<option value="">COM_SPSIMPLEPORTFOLIO_CATEGORY_ALL</option>
+			</field>
 			<field name="layout_type" type="list" default="default" label="COM_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_TYPES" description="COM_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_TYPES_DESC">
 				<option value="default">COM_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_DEFAULT</option>	
 				<option value="gallery_space">COM_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_GALLERY_SPACE</option>	
