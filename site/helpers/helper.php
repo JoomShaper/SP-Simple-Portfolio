@@ -45,6 +45,8 @@ class SpsimpleportfolioHelper {
 		$query->where($db->quoteName('spsimpleportfolio_tag_id')." IN (" .$ids . ")");
 		$query->where('language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 
+		$query->order('spsimpleportfolio_tag_id ASC');
+
 		$db->setQuery($query);
 
 		return $db->loadObjectList();
