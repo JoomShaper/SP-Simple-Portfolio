@@ -9,6 +9,13 @@
 		<field name="image" type="media" description="COM_SPSIMPLEPORTFOLIO_ITEMS_IMAGE_DESC" required="true" />
 		<field name="video" type="url" description="COM_SPSIMPLEPORTFOLIO_ITEMS_VIDEO_DESC" />
 		<field name="description" type="editor" filter="JComponentHelper::filterText" required="true" />
+
+		<field name="created_on" 
+		 	type="calendar"
+			label="COM_SPSIMPLEPORTFOLIO_ITEMS_CREATED"
+			description="COM_SPSIMPLEPORTFOLIO_ITEMS_CREATED_DESC"
+		 />
+		 
 	</fieldset>
 
 	<fieldset name="published" class="span4">
