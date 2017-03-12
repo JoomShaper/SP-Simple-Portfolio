@@ -129,7 +129,7 @@ $sizes = array(
 							<div>
 								<div class="sp-simpleportfolio-btns">
 									<?php if( $item->video ) { ?>
-										<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $item->spsimpleportfolio_item_id; ?>"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_WATCH'); ?></a>
+										<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $item->spsimpleportfolio_item_id; ?>"><?php echo JText::_('WATCH'); ?></a>
 									<?php } else { ?>
 										<a class="btn-zoom" href="<?php echo JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image); ?>" data-featherlight="image"><?php echo JText::_('MOD_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
 									<?php } ?>
