@@ -2,7 +2,7 @@
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2015 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2017 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
@@ -10,9 +10,10 @@ defined('JPATH_PLATFORM') or die;
 
 jimport('joomla.form.formfield');
 
-class JFormFieldResetthumbs extends JFormField
-{
-	protected $type = 'Besetthumbs';	
+class JFormFieldResetthumbs extends JFormField {
+
+	protected $type = 'Resetthumbs';
+
 	protected function getInput() {
 
 		Jhtml::_('jquery.framework');
@@ -23,8 +24,8 @@ class JFormFieldResetthumbs extends JFormField
 			});
 		});');
 
-		$url = 'index.php?option=com_spsimpleportfolio&view=thumbs&task=resetThumbs';
-		
-		return '<a id="btn-reset-thumbs" class="btn btn-primary" data-generating="'. JText::_('COM_SPPORTFOLIO_RESET_THUMBNAIL_TEXT_LOADING') .'" href="'. $url .'">'. JText::_('COM_SPPORTFOLIO_RESET_THUMBNAIL_TEXT') .'</a>';	
-	}	
+		$url = 'index.php?option=com_spsimpleportfolio&task=resetThumbs';
+
+		return '<a id="btn-reset-thumbs" class="btn btn-primary" data-generating="'. JText::_('COM_SPPORTFOLIO_RESET_THUMBNAIL_TEXT_LOADING') .'" href="'. $url .'">'. JText::_('COM_SPPORTFOLIO_RESET_THUMBNAIL_TEXT') .'</a>';
+	}
 }

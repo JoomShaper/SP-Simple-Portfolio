@@ -1,14 +1,14 @@
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2015 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2017 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
 jQuery(function($) {
 
 	var $container 	= $('.sp-simpleportfolio-items');
-	
+
 	$(window).load(function() {
 		var $sizer = $container.find('.shuffle__sizer');
 
@@ -25,7 +25,7 @@ jQuery(function($) {
 		event.preventDefault();
 		var $self = $(this);
 		var $this = $(this).parent();
-		
+
 		if($this.hasClass('active')) {
 			return;
 		}
@@ -37,4 +37,3 @@ jQuery(function($) {
 	});
 
 });
-

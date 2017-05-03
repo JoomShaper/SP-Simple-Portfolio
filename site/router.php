@@ -1,16 +1,17 @@
 <?php
+
 /**
- * @package     SP Simple Portfolio
- *
- * @copyright   Copyright (C) 2010 - 2015 JoomShaper. All rights reserved.
- * @license     GNU General Public License version 2 or later.
- */
+* @package     SP Simple Portfolio
+*
+* @copyright   Copyright (C) 2010 - 2017 JoomShaper. All rights reserved.
+* @license     GNU General Public License version 2 or later.
+*/
 
 defined('_JEXEC') or die();
 
 function SpsimpleportfolioBuildRoute(&$query) {
 	$segments = array();
-	
+
 	if (isset($query['view'])) {
 		$segments[] = $query['view'];
 		unset($query['view']);
@@ -31,10 +32,10 @@ function SpsimpleportfolioParseRoute($segments) {
 	$app 	= JFactory::getApplication();
 	$menu 	= $app->getMenu();
 	$item 	= $menu->getActive();
-    $count 	= count($segments);
-    
-    $vars['view'] = 'item';
-    $id 	= explode(':', $segments[$count-1]);
+	$count 	= count($segments);
+
+	$vars['view'] = 'item';
+	$id 	= explode(':', $segments[$count-1]);
 	$vars['id'] = (int) $id[0];
 
 	return $vars;

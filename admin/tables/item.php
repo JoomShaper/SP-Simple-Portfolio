@@ -1,101 +1,58 @@
 <?php
+
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2015 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2017 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
 defined('_JEXEC') or die();
 
-class SpsimpleportfolioTableItem extends FOFTable
-{
+class SpsimpleportfolioTableItem extends JTable {
 
-	public function check() {
-
-		$result = true;
-
-		//Alias
-		if(empty($this->alias)) {
-			// Auto-fetch a alias
-			$this->alias = JFilterOutput::stringURLSafe($this->title);
-		} else {
-			// Make sure nobody adds crap characters to the alias
-			$this->alias =JFilterOutput::stringURLSafe($this->alias);
-		}
-
-		$existingAlias = FOFModel::getTmpInstance('Items','SpsimpleportfolioModel')
-			->alias($this->alias)
-			->getList(true);
-
-		if(!empty($existingAlias)) {
-			$count = 0;
-			$k = $this->getKeyName();
-			foreach($existingAlias as $item) {
-				if($item->$k != $this->$k) $count++;
-			}
-			if($count) {
-				$this->setError(JText::_('COM_SPSIMPLEPORTFOLIO_ALIAS_ERR_SLUGUNIQUE'));
-				$result = false;
-			}
-		}
-
-		//Tags
-		if (is_array($this->spsimpleportfolio_tag_id))
-		{
-			if (!empty($this->spsimpleportfolio_tag_id))
-			{
-				$this->spsimpleportfolio_tag_id = json_encode($this->spsimpleportfolio_tag_id);
-			}
-		}
-		if (is_null($this->spsimpleportfolio_tag_id) || empty($this->spsimpleportfolio_tag_id))
-		{
-			$this->spsimpleportfolio_tag_id = '';
-		}
-
-		//Generate Thumbnails
-		if($result) {
-
-			$params 	= JComponentHelper::getParams('com_spsimpleportfolio');
-			$square 	= strtolower( $params->get('square', '600x600') );
-			$rectangle 	= strtolower( $params->get('rectangle', '600x400') );
-			$tower 		= strtolower( $params->get('tower', '600x800') );
-			$cropratio 	= $params->get('cropratio', 4);
-
-			if(!is_null($this->image)) {
-				jimport( 'joomla.filesystem.file' );
-				jimport( 'joomla.filesystem.folder' );
-				jimport( 'joomla.image.image' );
-
-				$image = JPATH_ROOT . '/' . $this->image;
-				$path  = JPATH_ROOT . '/images/spsimpleportfolio/' . $this->alias;
-
-				if(!file_exists($path)) {
-					JFolder::create( $path, 0755 );
-				}
-
-				$sizes = array($square, $rectangle, $tower);
-				$image = new JImage($image);
-				$image->createThumbs($sizes, $cropratio, $path);
-			}
-
-		}
-
-		return $result;
+	public function __construct(&$db) {
+		parent::__construct('#__spsimpleportfolio_items', 'id', $db);
 	}
 
-	public function onAfterLoad(&$result) {
+	public function store($updateNulls = false) {
+		$date = JFactory::getDate();
+		$user = JFactory::getUser();
 
-		if(!is_array($this->spsimpleportfolio_tag_id)) {
-			if(!empty($this->spsimpleportfolio_tag_id)) {
-				$this->spsimpleportfolio_tag_id = json_decode($this->spsimpleportfolio_tag_id, true);
-			}
+		if (!(int) $this->created) {
+			$this->created = $date->toSql();
+		}
+		if (empty($this->created_by)) {
+			$this->created_by = $user->get('id');
 		}
 
-		if(is_null($this->spsimpleportfolio_tag_id) || empty($this->spsimpleportfolio_tag_id)) {
-			$this->spsimpleportfolio_tag_id = array();
+		// Verify that the alias is unique
+		$table = JTable::getInstance('Item', 'SpsimpleportfolioTable');
+		if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0)){
+			$this->setError(JText::_('COM_SPSIMPLEPORTFOLIO_ERROR_UNIQUE_ALIAS'));
+			return false;
 		}
 
-		return parent::onAfterLoad($result);
+		return parent::store($updateNulls);
+	}
+
+	public function check() {
+		// Check for valid name.
+		if (trim($this->title) == '') {
+			throw new UnexpectedValueException(sprintf('The title is empty'));
+		}
+
+		if (empty($this->alias)) {
+			$this->alias = $this->title;
+		}
+
+		$this->alias = JApplicationHelper::stringURLSafe($this->alias, $this->language);
+
+		if (trim(str_replace('-', '', $this->alias)) == '') {
+			$this->alias = JFactory::getDate()->format('Y-m-d-H-i-s');
+		}
+
+		return true;
+
 	}
 }

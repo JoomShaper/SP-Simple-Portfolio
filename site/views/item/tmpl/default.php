@@ -2,24 +2,14 @@
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2015 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2017 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
 defined('_JEXEC') or die();
 
-require_once JPATH_COMPONENT . '/helpers/helper.php';
-SpsimpleportfolioHelper::generateMeta($this->item);
-
-
 $doc = JFactory::getDocument();
 $doc->addStylesheet( JURI::root(true) . '/components/com_spsimpleportfolio/assets/css/spsimpleportfolio.css' );
-
-$tags = SpsimpleportfolioHelper::getTags( (array) $this->item->spsimpleportfolio_tag_id );
-$newtags = array();
-foreach ($tags as $tag) {
-	$newtags[] 	 = $tag->title;
-}
 
 //video
 if($this->item->video) {
@@ -43,9 +33,7 @@ if($this->item->video) {
 		$video_id 	= trim($video['path'],'/');
 		$video_src 	= "//player.vimeo.com/video/" . $video_id;
 	}
-
 }
-
 ?>
 
 <div id="sp-simpleportfolio" class="sp-simpleportfolio sp-simpleportfolio-view-item">
@@ -64,30 +52,24 @@ if($this->item->video) {
 	</div>
 
 	<div class="sp-simpleportfolio-details clearfix">
-
 		<div class="sp-simpleportfolio-description">
 			<h2><?php echo $this->item->title; ?></h2>
 			<?php echo $this->item->description; ?>
 		</div>
-
 		<div class="sp-simpleportfolio-meta">
-
 			<div class="sp-simpleportfolio-created">
 				<h4><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_PROJECT_DATE'); ?></h4>
 				<?php echo JHtml::_('date', $this->item->created_on, JText::_('DATE_FORMAT_LC3')); ?>
 			</div>
-
 			<div class="sp-simpleportfolio-tags">
-				<h4><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_PROJECT_CATEGORIES'); ?></h4>
-				<?php echo implode(', ', $newtags); ?>
+				<h4><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_PROJECT_TAGS'); ?></h4>
+				<?php echo implode(', ', $this->item->tags); ?>
 			</div>
-
 			<?php if ($this->item->url) { ?>
 			<div class="sp-simpleportfolio-link">
 				<a class="btn btn-primary" target="_blank" href="<?php echo $this->item->url; ?>"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_VIEW_PROJECT'); ?></a>
 			</div>
 			<?php } ?>
 		</div>
-		
 	</div>
 </div>
