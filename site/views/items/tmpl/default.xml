@@ -24,6 +24,12 @@
 				<option value="square">COM_SPSIMPLEPORTFOLIO_THUMBNAIL_SQUARE</option>
 				<option value="rectangular">COM_SPSIMPLEPORTFOLIO_THUMBNAIL_RECTANGULAR</option>
 			</field>
+			<field name="popup_image" type="list" default="default" label="COM_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE" description="COM_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_DESC">
+				<option value="default">COM_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_DEFAULT</option>
+				<option value="quare">COM_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_SQAURE</option>
+				<option value="rectangle">COM_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_RECTANGLE</option>
+				<option value="tower">COM_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_TOWER</option>
+			</field>
 			<field name="limit" type="number" default="12" label="COM_SPSIMPLEPORTFOLIO_FIELD_LIMIT" description="COM_SPSIMPLEPORTFOLIO_FIELD_LIMIT_DESC" />
 		</fieldset>
 	</fields>

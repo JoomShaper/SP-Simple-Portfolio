@@ -2,7 +2,7 @@
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2017 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2018 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
@@ -57,6 +57,12 @@ if($this->item->video) {
 			<?php echo $this->item->description; ?>
 		</div>
 		<div class="sp-simpleportfolio-meta">
+			<?php if(isset($this->item->client) && $this->item->client){ ?>
+				<div class="sp-simpleportfolio-client">
+					<h4><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_PROJECT_CLIENT'); ?></h4>
+					<?php echo $this->item->client; ?>
+				</div>
+			<?php } //has project client ?>
 			<div class="sp-simpleportfolio-created">
 				<h4><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_PROJECT_DATE'); ?></h4>
 				<?php echo JHtml::_('date', $this->item->created_on, JText::_('DATE_FORMAT_LC3')); ?>

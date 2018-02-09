@@ -3,11 +3,11 @@
 	<name>SP Simple Portfolio Module</name>
 	<author>JoomShaper</author>
 	<creationDate>December 2014</creationDate>
-	<copyright>Copyright (C) 2010 - 2017 JoomShaper. All rights reserved.</copyright>
+	<copyright>Copyright (C) 2010 - 2018 JoomShaper. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
 	<authorEmail>support@joomshaper.com</authorEmail>
 	<authorUrl>www.joomshaper.com</authorUrl>
-	<version>1.5</version>
+	<version>1.6</version>
 	<description>Module to display latest item from SP Simple Portfolio</description>
 
 	<updateservers>
@@ -47,6 +47,12 @@
 					<option value="masonry">MOD_SPSIMPLEPORTFOLIO_THUMBNAIL_MASONRY</option>
 					<option value="square">MOD_SPSIMPLEPORTFOLIO_THUMBNAIL_SQUARE</option>
 					<option value="rectangular">MOD_SPSIMPLEPORTFOLIO_THUMBNAIL_RECTANGULAR</option>
+				</field>
+				<field name="popup_image" type="list" default="default" label="MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE" description="MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_DESC">
+					<option value="default">MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_DEFAULT</option>
+					<option value="quare">MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_SQAURE</option>
+					<option value="rectangle">MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_RECTANGLE</option>
+					<option value="tower">MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_TOWER</option>
 				</field>
 				<field name="limit" type="number" default="12" label="MOD_SPSIMPLEPORTFOLIO_FIELD_LIMIT" description="MOD_SPSIMPLEPORTFOLIO_FIELD_LIMIT_DESC" />
 			</fieldset>

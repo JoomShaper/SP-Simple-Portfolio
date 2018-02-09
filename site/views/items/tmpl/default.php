@@ -2,7 +2,7 @@
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2017 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2018 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
@@ -82,7 +82,7 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 								<?php if( $this->item->video ) { ?>
 								<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $this->item->id; ?>"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_WATCH'); ?></a>
 								<?php } else { ?>
-								<a class="btn-zoom" href="<?php echo $this->item->image; ?>" data-featherlight="image"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
+								<a class="btn-zoom" href="<?php echo $this->item->popup_img_url; ?>" data-featherlight="image"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
 								<?php } ?>
 								<a class="btn-view" href="<?php echo $this->item->url; ?>"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_VIEW'); ?></a>
 							</div>
