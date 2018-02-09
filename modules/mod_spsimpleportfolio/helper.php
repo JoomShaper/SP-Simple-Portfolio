@@ -102,7 +102,7 @@ class ModSpsimpleportfolioHelper {
 		$db->setQuery($query);
 		$result = $db->loadResult();
 
-		if(count($result)) {
+		if($result) {
 			return '&Itemid=' . $result;
 		}
 
