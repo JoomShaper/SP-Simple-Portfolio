@@ -33,6 +33,7 @@ class ModSpsimpleportfolioHelper {
 
 		// Items Model
 		jimport('joomla.application.component.model');
+		$cParams = JComponentHelper::getParams('com_spsimpleportfolio');
 		JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models');
 		$itemsModel = JModelLegacy::getInstance('Items', 'SpsimpleportfolioModel');
 
@@ -53,9 +54,9 @@ class ModSpsimpleportfolioHelper {
 			$item->tags = $newtags;
 
 			// Sizes
-			$square = strtolower($params->get('square', '600x600'));
-			$rectangle = strtolower($params->get('rectangle', '600x400'));
-			$tower = strtolower($params->get('tower', '600x800'));
+			$square = strtolower($cParams->get('square', '600x600'));
+			$rectangle = strtolower($cParams->get('rectangle', '600x400'));
+			$tower = strtolower($cParams->get('tower', '600x800'));
 			$sizes = array(
 				$rectangle,
 				$tower,
