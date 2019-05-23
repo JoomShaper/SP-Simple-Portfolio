@@ -23,6 +23,12 @@ $doc->addScript( JURI::root(true) . '/components/com_spsimpleportfolio/assets/js
 $doc->addScript( JURI::root(true) . '/components/com_spsimpleportfolio/assets/js/featherlight.min.js' );
 $doc->addScript( JURI::root(true) . '/components/com_spsimpleportfolio/assets/js/spsimpleportfolio.js' );
 
+$cParams      = JComponentHelper::getParams('com_spsimpleportfolio');
+
+if($cParams) {
+    $params->merge($cParams);
+}
+
 $items = ModSpsimpleportfolioHelper::getItems($params);
 $model = JModelLegacy::getInstance('Items', 'SpsimpleportfolioModel');
 $tagList = $model->getTagList($items);
