@@ -33,7 +33,6 @@ class ModSpsimpleportfolioHelper {
 
 		// Items Model
 		jimport('joomla.application.component.model');
-		$cParams = JComponentHelper::getParams('com_spsimpleportfolio');
 		JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models');
 		$itemsModel = JModelLegacy::getInstance('Items', 'SpsimpleportfolioModel');
 
@@ -54,10 +53,11 @@ class ModSpsimpleportfolioHelper {
 			$item->tags = $newtags;
 
 			// Sizes
-			$square = strtolower($cParams->get('square', '600x600'));
-			$rectangle = strtolower($cParams->get('rectangle', '600x400'));
-			$tower = strtolower($cParams->get('tower', '600x800'));
-			$sizes = array(
+			$square 	= strtolower($params->get('square', '600x600'));
+			$tower 		= strtolower($params->get('tower', '600X800'));
+			$rectangle 	= strtolower($params->get('rectangle', '600x400'));
+			$tower 		= strtolower($params->get('tower', '600x800'));
+			$sizes 		= array(
 				$rectangle,
 				$tower,
 				$square,
@@ -72,14 +72,18 @@ class ModSpsimpleportfolioHelper {
 				$rectangle
 			);
 
-			$thumb_type = $params->get('thumbnail_type', 'masonry');
+			$thumb_type = $params->get('thumbnail_type', 'masonry');	
 			if($thumb_type == 'masonry') {
 				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_' . $sizes[$i] . '.' . JFile::getExt($item->image);
 			} else if($thumb_type == 'rectangular') {
 				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
+			} else if($thumb_type == 'tower') {
+				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
 			} else {
 				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
 			}
+
+			// tower
 
 			$popup_image = $params->get('popup_image', 'default');
 			

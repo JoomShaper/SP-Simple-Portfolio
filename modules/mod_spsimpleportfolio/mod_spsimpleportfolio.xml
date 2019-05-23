@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later</license>
 	<authorEmail>support@joomshaper.com</authorEmail>
 	<authorUrl>www.joomshaper.com</authorUrl>
-	<version>1.6</version>
+	<version>1.7</version>
 	<description>Module to display latest item from SP Simple Portfolio</description>
 
 	<updateservers>
@@ -47,6 +47,7 @@
 					<option value="masonry">MOD_SPSIMPLEPORTFOLIO_THUMBNAIL_MASONRY</option>
 					<option value="square">MOD_SPSIMPLEPORTFOLIO_THUMBNAIL_SQUARE</option>
 					<option value="rectangular">MOD_SPSIMPLEPORTFOLIO_THUMBNAIL_RECTANGULAR</option>
+					<option value="tower">MOD_SPSIMPLEPORTFOLIO_THUMBNAIL_TOWER</option>
 				</field>
 				<field name="popup_image" type="list" default="default" label="MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE" description="MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_DESC">
 					<option value="default">MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_DEFAULT</option>
