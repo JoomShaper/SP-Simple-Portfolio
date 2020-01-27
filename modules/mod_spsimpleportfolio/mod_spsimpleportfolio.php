@@ -30,6 +30,10 @@ if($cParams) {
 }
 
 $items = ModSpsimpleportfolioHelper::getItems($params);
+foreach ($items as $item) {
+    // if thumb uploaded for listing
+    $item->thumb = ( isset($item->thumbnail) && $item->thumbnail ) ? $item->thumbnail : $item->thumb;
+}
 $model = JModelLegacy::getInstance('Items', 'SpsimpleportfolioModel');
 $tagList = $model->getTagList($items);
 
