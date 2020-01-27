@@ -17,6 +17,10 @@ class SpsimpleportfolioModelItems extends JModelList {
 	protected function getListQuery() {
 		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
+		// Get Params
+		$params   	= $app->getMenu()->getActive()->params;
+		// params item
+		$ordering 	= explode(':', $params->get('ordering', 'ordering:ASC'));
 
 		// Create a new query object.
 		$db = $this->getDbo();
@@ -42,7 +46,11 @@ class SpsimpleportfolioModelItems extends JModelList {
 		// Filter by language
 		$query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		$query->where('a.published = 1');
-		$query->order('a.ordering ASC');
+		if(is_array($ordering)) {
+			$query->order('a.'. $ordering[0] . ' ' .$ordering[1]);
+		} else {
+			$query->order('a.ordering ASC');
+		}
 
 		return $query;
 	}
