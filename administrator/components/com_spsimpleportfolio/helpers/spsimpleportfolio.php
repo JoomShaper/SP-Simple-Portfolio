@@ -135,25 +135,13 @@ class SpsimpleportfolioHelper {
   public static function isPageBuilderIntegrated($item) {
 
     $output = new stdClass();
-    $integration = false;
     $output->url = '';
 
     if(JPluginHelper::isEnabled('spsimpleportfolio', 'sppagebuilder')) {
-      $db = JFactory::getDbo();
-      $query = $db->getQuery(true);
-      $user = JFactory::getUser();
-      $query->select('a.id');
-      $query->from('#__sppagebuilder_integrations as a');
-      $query->where($db->quoteName('component') . ' = ' . $db->quote('com_spsimpleportfolio'));
-      $query->where($db->quoteName('state') . ' = 1');
-      $db->setQuery($query);
-      $integration = $db->loadResult();
-
       $hasPage = self::hasPBPage($item->id);
       $output->hasPage = $hasPage;
-      
 
-      if($integration && $hasPage) {
+      if ($hasPage) {
 
         $app = JApplication::getInstance('site');
         $router = $app->getRouter();
@@ -173,8 +161,6 @@ class SpsimpleportfolioHelper {
         $output->url = $sefURI;
       }
     }
-
-    $output->integration = $integration;
 
     return $output;
   }

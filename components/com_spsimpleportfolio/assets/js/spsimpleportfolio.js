@@ -19,7 +19,6 @@ jQuery(function($) {
 		});
 	});
 
-
 	// Filters
 	$('.sp-simpleportfolio-filter li a').on('click', function(event){
 		event.preventDefault();

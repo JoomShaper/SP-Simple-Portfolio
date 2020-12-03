@@ -28,7 +28,7 @@ web.config.txt
 
 !/modules
 /modules/*
-!/modules/mod_sppagebuilder
+!/modules/mod_spsimpleportfolio
 
 !/media
 /media/*
@@ -43,7 +43,6 @@ web.config.txt
 !/components
 /components/*
 !/components/com_spsimpleportfolio
-/components/com_spsimpleportfolio/assets/reactjs/node_modules
 
 !/administrator
 /administrator/*

@@ -199,7 +199,7 @@ Joomla.orderTable = function() {
 												<?php else : ?>
 													<a class="btn btn-small btn-success action-edit-width-sppb" target="_blank" href="#" data-id="<?php echo $item->id; ?>" data-title="<?php echo $this->escape($item->title); ?>">
 												<?php endif; ?>
-													<?php echo JText::_('COM_SPSIMPLEPORTFOLIO_TITLE_EDIT_WITH_SPPB'); ?>
+													<?php echo JText::_('COM_SPSIMPLEPORTFOLIO_TITLE_EDIT_WITH_SPPAGEBUILDER'); ?>
 												</a>
 											<?php endif; ?>
 										<?php endif; ?>
