@@ -1,5 +1,5 @@
 const { src, dest, series } = require('gulp');
-const minifyCSS = require('gulp-minify-css');
+const minifyCSS = require('gulp-clean-css');
 const zip = require('gulp-zip');
 const clean = require('gulp-clean');
 var uglify = require('gulp-uglify-es').default;
