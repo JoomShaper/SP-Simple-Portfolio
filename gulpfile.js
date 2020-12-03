@@ -1,6 +1,4 @@
 const { src, dest, series } = require('gulp');
-var babel = require('gulp-babel');
-const concat = require('gulp-concat');
 const minifyCSS = require('gulp-minify-css');
 const zip = require('gulp-zip');
 const clean = require('gulp-clean');
@@ -84,4 +82,4 @@ function makeZip() {
 
 exports.copy = series(cleanBuild, cleanZip, copySite, copyAdmin, copy_lang_site, copy_lang_admin, copy_modules, copy_modules_lang, copy_installer);
 exports.minify = series(minify_admin_css, minify_site_css, minify_site_js, minify_admin_js);
-exports.default = series(exports.copy, exports.minify, makeZip);
+exports.default = series(exports.copy, exports.minify, makeZip, cleanBuild);
