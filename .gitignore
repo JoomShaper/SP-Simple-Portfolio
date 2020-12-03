@@ -15,6 +15,7 @@ robots.txt.dist
 /node_modules
 /build
 /logs
+/media
 
 LICENSE.txt
 README.txt
@@ -30,15 +31,13 @@ web.config.txt
 /modules/*
 !/modules/mod_spsimpleportfolio
 
-!/media
-/media/*
-
 !/language
 /language/*
 
 !/language/en-GB
 /language/en-GB/*
 !/language/en-GB/en-GB.com_spsimpleportfolio.ini
+!/language/en-GB/en-GB.mod_spsimpleportfolio.ini
 
 !/components
 /components/*

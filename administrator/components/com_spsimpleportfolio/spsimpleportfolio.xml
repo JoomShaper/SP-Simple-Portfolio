@@ -7,7 +7,7 @@
 	<authorUrl>http://www.joomshaper.com</authorUrl>
 	<copyright>Copyright (c) 2010- 2020 JoomShaper. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>1.9</version>
+	<version>2.0</version>
 	<description>Simple Portfolio Component for Joomla 3.3+</description>
 	<scriptfile>installer.script.php</scriptfile>
 
@@ -45,6 +45,10 @@
 			<schemapath type="mysqli">sql/updates/mysql</schemapath>
 		</schemas>
 	</update>
+
+	<modules>
+		<module module="mod_spsimpleportfolio" client="site" />
+	</modules>
 
 	<administration>
 		<menu>COM_SPSIMPLEPORTFOLIO</menu>
