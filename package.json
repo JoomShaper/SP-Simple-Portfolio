@@ -1,27 +1,26 @@
 {
   "name": "portfolio",
-  "version": "3.0.0",
-  "description": "1- What is this? \t* This is a Joomla! installation/upgrade package to version 3.x \t* Joomla! Official site: https://www.joomla.org \t* Joomla! 3.8 version history - https://docs.joomla.org/Special:MyLanguage/Joomla_3.8_version_history \t* Detailed changes in the Changelog: https://github.com/joomla/joomla-cms/commits/staging",
-  "main": "index.js",
+  "version": "1.0.0",
+  "description": "1- What is this? \t* This is a Joomla! installation/upgrade package to version 3.x \t* Joomla! Official site: https://www.joomla.org \t* Joomla! 3.9 version history - https://docs.joomla.org/Special:MyLanguage/Joomla_3.9_version_history \t* Detailed changes in the Changelog: https://github.com/joomla/joomla-cms/commits/staging",
+  "main": "gulpfile.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoomShaper/SP-Simple-Portfolio.git"
+  },
   "author": "",
   "license": "ISC",
-  "devDependencies": {
-    "gulp": "^4.0.2",
-    "gulp-babel": "^7.0.1",
-    "gulp-clean": "^0.4.0",
-    "gulp-clean-css": "^3.9.0",
-    "gulp-zip": "^4.0.0",
-    "pump": "^1.0.2"
+  "bugs": {
+    "url": "https://github.com/JoomShaper/SP-Simple-Portfolio/issues"
   },
+  "homepage": "https://github.com/JoomShaper/SP-Simple-Portfolio#readme",
   "dependencies": {
-    "gulp-autoprefixer": "^7.0.1",
-    "gulp-minify": "^3.1.0",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
     "gulp-minify-css": "^1.2.4",
-    "gulp-replace": "^1.0.0",
-    "gulp-uglify": "^3.0.2",
-    "gulp-uglify-es": "^2.0.0"
+    "gulp-uglify-es": "^2.0.0",
+    "gulp-zip": "^5.0.2"
   }
 }
