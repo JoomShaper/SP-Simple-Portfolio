@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.3" type="component" method="upgrade">
+<extension version="3.9" type="component" method="upgrade">
 	<name>SP Simple Portfolio</name>
 	<creationDate>December 2015</creationDate>
 	<author>JoomShaper</author>
@@ -7,7 +7,7 @@
 	<authorUrl>http://www.joomshaper.com</authorUrl>
 	<copyright>Copyright (c) 2010- 2020 JoomShaper. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>1.8</version>
+	<version>1.9</version>
 	<description>Simple Portfolio Component for Joomla 3.3+</description>
 	<scriptfile>installer.script.php</scriptfile>
 
