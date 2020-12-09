@@ -1,0 +1,1 @@
+ALTER TABLE `#__spsimpleportfolio_items` ADD `client` varchar(100) NOT NULL AFTER `description`;

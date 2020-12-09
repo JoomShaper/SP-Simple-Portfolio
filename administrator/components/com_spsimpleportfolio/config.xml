@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<fieldset name="media" label="COM_SPPORTFOLIO_THUMBNAIL_LABEL" addfieldpath="/administrator/components/com_spsimpleportfolio/models/fields/">
+		<field name="crop_position" type="list" default="center" label="COM_SPSIMPLEPORTFOLIO_FIELD_IMAGE_CROP_POSITION" description="COM_SPSIMPLEPORTFOLIO_FIELD_IMAGE_CROP_POSITION_DESC">
+			<option value="center">COM_SPSIMPLEPORTFOLIO_FIELD_IMAGE_CROP_POSITION_CENTER</option>
+			<option value="topleft">COM_SPSIMPLEPORTFOLIO_FIELD_IMAGE_CROP_POSITION_TOP_LEFT</option>
+			<option value="topright">COM_SPSIMPLEPORTFOLIO_FIELD_IMAGE_CROP_POSITION_TOP_RIGHT</option>
+		</field>
+		<field name="square" type="text" label="COM_SPPORTFOLIO_THUMBNAIL_SQAURE" description="COM_SPPORTFOLIO_THUMBNAIL_SQAURE_DESC" default="600x600" />
+		<field name="rectangle" type="text" label="COM_SPPORTFOLIO_THUMBNAIL_RECTANGLE" description="COM_SPPORTFOLIO_THUMBNAIL_RECTANGLE_DESC" default="600x400" />
+		<field name="tower" type="text" label="COM_SPPORTFOLIO_THUMBNAIL_TOWER" description="COM_SPPORTFOLIO_THUMBNAIL_TOWER_DESC" default="600X800" />
+		<field type="resetthumbs" label="COM_SPPORTFOLIO_RESET_THUMBNAIL" description="COM_SPPORTFOLIO_RESET_THUMBNAIL_DESC" />
+	</fieldset>
+	<fieldset name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules" type="rules" label="JCONFIG_PERMISSIONS_LABEL" filter="rules" component="com_spsimpleportfolio" section="component" />
+	</fieldset>
+</config>
