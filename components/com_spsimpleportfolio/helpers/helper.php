@@ -50,4 +50,36 @@ class SpsimpleportfolioHelper {
 
 		return $result;
 	}
+
+	public static function getItemId($catid = 0)
+	{
+		$db = JFactory::getDbo();
+		$query = $db->getQuery(true);
+		$query->select($db->quoteName(array('id', 'params')));
+		$query->from($db->quoteName('#__menu'));
+		$query->where($db->quoteName('link') . ' LIKE '. $db->quote('%option=com_spsimpleportfolio&view=items%'));
+		$query->where($db->quoteName('published') . ' = '. $db->quote('1'));
+		$db->setQuery($query);
+		$items = $db->loadObjectList();
+
+		$itemId = 0;
+		if(!empty($items))
+		{
+			foreach($items as $item)
+			{
+				$params = json_decode($item->params);
+				$itemId = $item->id;
+				if($catid)
+				{
+					if( (isset($params->catid) && $params->catid) && $params->catid == $catid)
+					{
+						$itemId = $item->id;
+						return '&Itemid=' . $itemId;
+					}
+				}
+			}
+		}
+
+		return '&Itemid=' . $itemId;
+	}
 }

@@ -10,6 +10,9 @@
 defined('_JEXEC') or die();
 
 $controller = JControllerLegacy::getInstance('Spsimpleportfolio');
+
+JLoader::register('SpsimpleportfolioHelper', __DIR__ . '/helpers/helper.php');
+
 $input = JFactory::getApplication()->input;
 $controller->execute($input->getCmd('task'));
 $controller->redirect();

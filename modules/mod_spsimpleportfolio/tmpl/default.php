@@ -68,7 +68,7 @@ $layout_type = $params->get('layout_type', 'default');
 							<div>
 								<div class="sp-simpleportfolio-btns">
 									<?php if( $item->video ) : ?>
-										<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $item->id; ?>"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_WATCH'); ?></a>
+										<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $item->id; ?>"><?php echo JText::_('MOD_SPSIMPLEPORTFOLIO_WATCH'); ?></a>
 									<?php else: ?>
 										<a class="btn-zoom" href="<?php echo $item->popup_img_url; ?>" data-featherlight="image"><?php echo JText::_('MOD_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
 									<?php endif; ?>

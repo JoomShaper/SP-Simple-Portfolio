@@ -7,7 +7,7 @@
 	<license>GNU General Public License version 2 or later</license>
 	<authorEmail>support@joomshaper.com</authorEmail>
 	<authorUrl>www.joomshaper.com</authorUrl>
-	<version>1.9</version>
+	<version>2.0</version>
 	<description>Module to display latest item from SP Simple Portfolio</description>
 
 	<updateservers>
@@ -54,6 +54,12 @@
 					<option value="quare">MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_SQAURE</option>
 					<option value="rectangle">MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_RECTANGLE</option>
 					<option value="tower">MOD_SPSIMPLEPORTFOLIO_FIELD_POPUP_IMAGE_TOWER</option>
+				</field>
+				<field name="ordering" type="list" default="ordering:ASC" label="MOD_SPSIMPLEPORTFOLIO_FIELD_ORDERING" description="MOD_SPSIMPLEPORTFOLIO_FIELD_ORDERING_DESC">
+					<option value="ordering:ASC">MOD_SPSIMPLEPORTFOLIO_FIELD_ORDERING_ORDER_ASCENDING</option>
+					<option value="ordering:DESC">MOD_SPSIMPLEPORTFOLIO_FIELD_ORDERING_ORDER_DESCENDING</option>
+					<option value="title:ASC">MOD_SPSIMPLEPORTFOLIO_FIELD_ORDERING_TITLE_ASCENDING</option>
+					<option value="title:DESC">MOD_SPSIMPLEPORTFOLIO_FIELD_ORDERING_TITLE_DESCENDING</option>
 				</field>
 				<field name="limit" type="number" default="12" label="MOD_SPSIMPLEPORTFOLIO_FIELD_LIMIT" description="MOD_SPSIMPLEPORTFOLIO_FIELD_LIMIT_DESC" />
 			</fieldset>

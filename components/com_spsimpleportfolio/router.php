@@ -18,8 +18,8 @@ class SpsimpleportfolioRouter extends JComponentRouterView {
 		$params = JComponentHelper::getParams('com_spsimpleportfolio');
 		$this->noIDs = (bool) $params->get('sef_ids', 1);
 
-		// Portfolio Items
 		$items = new JComponentRouterViewconfiguration('items');
+		$items->setKey('catid');
 		$this->registerView($items);
 		$item = new JComponentRouterViewconfiguration('item');
 		$item->setKey('id')->setParent($items);
@@ -36,6 +36,62 @@ class SpsimpleportfolioRouter extends JComponentRouterView {
 			$this->attachRule(new SpsimpleportfolioRouterRulesLegacy($this));
 		}
 
+	}
+
+	// Items
+	public function getItemsSegment($id, $query)
+	{
+		$category = JCategories::getInstance($this->getName())->get($id);
+
+		if ($category)
+		{
+			$path = array_reverse($category->getPath(), true);
+			$path[0] = '1:root';
+
+			if ($this->noIDs)
+			{
+				foreach ($path as &$segment)
+				{
+					list($id, $segment) = explode(':', $segment, 2);
+				}
+			}
+
+			return $path;
+		}
+
+		return array();
+	}
+
+	// Items id
+	public function getItemsId($segment, $query)
+	{
+		if (isset($query['id']))
+		{
+			$category = JCategories::getInstance($this->getName(), array('access' => false))->get($query['id']);
+
+			if ($category)
+			{
+				foreach ($category->getChildren() as $child)
+				{
+					if ($this->noIDs)
+					{
+						if ($child->alias == $segment)
+						{
+							return $child->id;
+						}
+					}
+					else
+					{
+						if ($child->id == (int) $segment)
+						{
+							return $child->id;
+						}
+					}
+				}
+			}
+		}
+
+		return false;
 	}
 
 	// Item
@@ -57,6 +113,7 @@ class SpsimpleportfolioRouter extends JComponentRouterView {
 		}
 		return array((int) $id => $id);
 	}
+
 	public function getItemId($segment, $query) {
 
 		if ($this->noIDs) {
@@ -84,9 +141,9 @@ class SpsimpleportfolioRouter extends JComponentRouterView {
  *
  * @deprecated  4.0  Use Class based routers instead
  */
-function spmedicalBuildRoute(&$query){
+function spsimpleportfolioBuildRoute(&$query) {
 	$app = JFactory::getApplication();
-	$router = new SpmedicalRouter($app, $app->getMenu());
+	$router = new SpsimpleportfolioRouter($app, $app->getMenu());
 
 	return $router->build($query);
 }
@@ -100,9 +157,9 @@ function spmedicalBuildRoute(&$query){
  *
  * @deprecated  4.0  Use Class based routers instead
  */
-function spmedicalParseRoute($segments){
+function spsimpleportfolioParseRoute($segments){
 	$app = JFactory::getApplication();
-	$router = new SpmedicalRouter($app, $app->getMenu());
+	$router = new SpsimpleportfolioRouter($app, $app->getMenu());
 
 	return $router->parse($segments);
 }

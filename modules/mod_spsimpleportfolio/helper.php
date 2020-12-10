@@ -9,9 +9,15 @@
 
 defined('_JEXEC') or die;
 
+JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models', 'SpsimpleportfolioModel');
+
+JLoader::register('SpsimpleportfolioHelper', JPATH_SITE . '/components/com_spsimpleportfolio/helpers/helper.php');
+
 class ModSpsimpleportfolioHelper {
 
 	public static function getItems($params) {
+
+		$model = JModelLegacy::getInstance('Items', 'SpsimpleportfolioModel', array('ignore_request' => true));
 
 		$db = JFactory::getDbo();
 		$query = $db->getQuery(true);
@@ -19,26 +25,52 @@ class ModSpsimpleportfolioHelper {
 		$query->select('a.*, a.id AS spsimpleportfolio_item_id , a.tagids AS spsimpleportfolio_tag_id, a.created AS created_on')
 		->from($db->quoteName('#__spsimpleportfolio_items', 'a'))
 		->where($db->quoteName('a.published') . ' = 1');
-		//has category
+		
+		// Filter by a single or group of categories
 		if ($params->get('category_id') != '') {
-			$query->where($db->qn('a.catid')." = ".$db->quote( $params->get('category_id') ));
+			$categoryId = $params->get('category_id');
+			if (is_numeric($categoryId) && $categoryId > 0)
+			{
+				// Add subcategory check
+				$categoryEquals       = 'a.catid =' . (int) $categoryId;
+
+				// Create a subquery for the subcategory list
+				$subQuery = $db->getQuery(true)
+					->select('sub.id')
+					->from('#__categories as sub')
+					->join('INNER', '#__categories as this ON sub.lft > this.lft AND sub.rgt < this.rgt')
+					->where('this.id = ' . (int) $categoryId);
+
+				// Add the subquery to the main query
+				$query->where('(' . $categoryEquals . ' OR a.catid IN (' . (string) $subQuery . '))');
+			}
+			elseif (is_array($categoryId) && (count($categoryId) > 0))
+			{
+				$categoryId = ArrayHelper::toInteger($categoryId);
+				$categoryId = implode(',', $categoryId);
+
+				if (!empty($categoryId))
+				{
+					$query->where('a.catid IN (' . $categoryId . ')');
+				}
+			}
 		}
+
+		// ordering
+		$ordering = $params->get('ordering', 'ordering:ASC');
+		list($order, $direction) = explode(':', $ordering);
+		
 		$query->where($db->quoteName('a.access')." IN (" . implode( ',', JFactory::getUser()->getAuthorisedViewLevels() ) . ")")
-		->order($db->quoteName('a.ordering') . ' ASC')
-		->setLimit($params->get('limit', 6));
+			->order($db->quoteName('a.' . $order) . ' ' . $direction)
+			->setLimit($params->get('limit', 6));
 
 		$db->setQuery($query);
 
 		$items = $db->loadObjectList();
 
-		// Items Model
-		jimport('joomla.application.component.model');
-		JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models');
-		$itemsModel = JModelLegacy::getInstance('Items', 'SpsimpleportfolioModel');
-
 		$i = 0;
 		foreach ($items as $key => & $item) {
-			$tags = $itemsModel->getItemTags($item->tagids);
+			$tags = $model->getItemTags($item->tagids);
 			$newtags = array();
 			$filter = '';
 			$groups = array();
@@ -97,7 +129,7 @@ class ModSpsimpleportfolioHelper {
 				$item->popup_img_url = JURI::base() . $item->image;
 			}
 
-			$item->url = JRoute::_('index.php?option=com_spsimpleportfolio&view=item&id='. $item->id . ':' . $item->alias . self::getItemid());
+			$item->url = JRoute::_('index.php?option=com_spsimpleportfolio&view=item&id='. $item->id . ':' . $item->alias . SpsimpleportfolioHelper::getItemid($item->catid));
 
 			$i++;
 			if($i==11) {
@@ -107,23 +139,4 @@ class ModSpsimpleportfolioHelper {
 
 		return $items;
 	}
-
-	public static function getItemid() {
-		$db = JFactory::getDbo();
-
-		$query = $db->getQuery(true);
-		$query->select($db->quoteName(array('id')));
-		$query->from($db->quoteName('#__menu'));
-		$query->where($db->quoteName('link') . ' LIKE '. $db->quote('%option=com_spsimpleportfolio&view=items%'));
-		$query->where($db->quoteName('published') . ' = '. $db->quote('1'));
-		$db->setQuery($query);
-		$result = $db->loadResult();
-
-		if($result) {
-			return '&Itemid=' . $result;
-		}
-
-		return;
-	}
-
 }
