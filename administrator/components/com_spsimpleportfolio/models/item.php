@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die();
 
+use Joomla\String\StringHelper;
+
 class SpsimpleportfolioModelItem extends JModelAdmin {
 
 	public function getTable($type = 'Item', $prefix = 'SpsimpleportfolioTable', $config = array()) {

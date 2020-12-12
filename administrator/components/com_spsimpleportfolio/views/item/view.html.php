@@ -8,6 +8,8 @@
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Helper\ContentHelper;
+
 class SpsimpleportfolioViewItem extends JViewLegacy {
 
 	protected $form;
@@ -21,7 +23,7 @@ class SpsimpleportfolioViewItem extends JViewLegacy {
 		$this->item = $this->get('Item');
 		$this->id = $this->item->id;
 
-		$this->canDo = SpsimpleportfolioHelper::getActions($this->item->id);
+		$this->canDo = ContentHelper::getActions('com_spsimpleportfolio', 'item', $this->item->id);
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
@@ -34,12 +36,13 @@ class SpsimpleportfolioViewItem extends JViewLegacy {
 	}
 
 	protected function addToolBar() {
+		$user = JFactory::getUser();
 		$input = JFactory::getApplication()->input;
 		$input->set('hidemainmenu', true);
 		$isNew = ($this->item->id == 0);
 		JToolBarHelper::title(JText::_('COM_SPSIMPLEPORTFOLIO_MANAGER') .  ($isNew ? JText::_('COM_SPSIMPLEPORTFOLIO_ITEM_NEW') : JText::_('COM_SPSIMPLEPORTFOLIO_ITEM_EDIT')), 'pictures');
 
-		if ($this->canDo->get('core.edit')) {
+		if ($this->canDo->get('core.edit') || ($this->canDo->get('core.edit.own') && $this->item->created_by == $user->id)) {
 			JToolBarHelper::apply('item.apply', 'JTOOLBAR_APPLY');
 			JToolBarHelper::save('item.save', 'JTOOLBAR_SAVE');
 		}

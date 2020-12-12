@@ -58,6 +58,7 @@ class SpsimpleportfolioHelper {
 		$query->select($db->quoteName(array('id', 'params')));
 		$query->from($db->quoteName('#__menu'));
 		$query->where($db->quoteName('link') . ' LIKE '. $db->quote('%option=com_spsimpleportfolio&view=items%'));
+		$query->where($db->quoteName('client_id') . ' = '. $db->quote('0'));
 		$query->where($db->quoteName('published') . ' = '. $db->quote('1'));
 		$db->setQuery($query);
 		$items = $db->loadObjectList();

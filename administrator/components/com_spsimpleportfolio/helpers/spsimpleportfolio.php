@@ -17,7 +17,7 @@ class SpsimpleportfolioHelper {
 
     JHtmlSidebar::addEntry(
       JText::_('COM_SPSIMPLEPORTFOLIO_TITLE_ITEMS'),
-      'index.php?option=com_spsimpleportfolio',
+      'index.php?option=com_spsimpleportfolio&view=items',
       $submenu == 'items'
     );
 
@@ -32,20 +32,6 @@ class SpsimpleportfolioHelper {
       'index.php?option=com_spsimpleportfolio&view=tags',
       $submenu == 'tags'
     );
-  }
-
-  public static function getActions($messageId = 0) {
-    $result	= new JObject;
-    if (empty($messageId)) {
-      $assetName = 'com_spsimpleportfolio';
-    } else {
-      $assetName = 'com_spsimpleportfolio.item.'.(int) $messageId;
-    }
-    $actions = JAccess::getActions('com_spsimpleportfolio', 'component');
-    foreach ($actions as $action) {
-      $result->set($action->name, JFactory::getUser()->authorise($action->name, $assetName));
-    }
-    return $result;
   }
 
   // Create thumbs

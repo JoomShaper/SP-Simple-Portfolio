@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die();
 
-JHtml::_('formbehavior.chosen', 'select');
-
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 
@@ -19,7 +17,7 @@ $listDirn = $this->escape($this->filter_order_Dir);
 ?>
 
 <form action="<?php echo JRoute::_('index.php?option=com_spsimpleportfolio&view=tags'); ?>" method="post" id="adminForm" name="adminForm">
-		<?php if (!empty( $this->sidebar)) : ?>
+		<?php if ( JVERSION < 4 && !empty( $this->sidebar)) : ?>
 		<div id="j-sidebar-container" class="span2">
 			<?php echo $this->sidebar; ?>
 		</div>

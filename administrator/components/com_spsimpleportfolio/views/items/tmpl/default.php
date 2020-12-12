@@ -9,9 +9,12 @@
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Session\Session;
+
+HTMLHelper::_('jquery.token');
+
 $doc = JFactory::getDocument();
-JHtml::_('jquery.token');
-JHtml::_('formbehavior.chosen', 'select');
 $doc->addScript(JURI::root(true) . '/administrator/components/com_spsimpleportfolio/assets/js/script.js');
 jimport('joomla.filesystem.file');
 jimport( 'joomla.application.component.helper' );
@@ -24,36 +27,30 @@ $listOrder = $this->escape($this->filter_order);
 $listDirn = $this->escape($this->filter_order_Dir);
 $saveOrder = $listOrder == 'a.ordering';
 
-if ($saveOrder) {
-	$saveOrderingUrl = 'index.php?option=com_spsimpleportfolio&task=items.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'itemList', 'adminForm', strtolower($listDirn), $saveOrderingUrl, false, true);
+if ($saveOrder && !empty($this->items))
+{
+	if(JVERSION < 4)
+	{
+		$saveOrderingUrl = 'index.php?option=com_spsimpleportfolio&task=items.saveOrderAjax&tmpl=component';
+		HTMLHelper::_('sortablelist.sortable', 'itemList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	}
+	else
+	{
+		$saveOrderingUrl = 'index.php?option=com_spsimpleportfolio&task=items.saveOrderAjax&tmpl=component&' . Session::getFormToken() . '=1';
+		HTMLHelper::_('draggablelist.draggable');
+	}
 }
 ?>
 
-<script type="text/javascript">
-Joomla.orderTable = function() {
-	table = document.getElementById("sortTable");
-	direction = document.getElementById("directionTable");
-	order = table.options[table.selectedIndex].value;
-	if (order != '<?php echo $listOrder; ?>')
-	{
-		dirn = 'asc';
-	} else {
-		dirn = direction.options[direction.selectedIndex].value;
-	}
-	Joomla.tableOrdering(order, dirn, '');
-}
-</script>
-
 <form action="<?php echo JRoute::_('index.php?option=com_spsimpleportfolio&view=items'); ?>" method="post" id="adminForm" name="adminForm">
-		<?php if (!empty( $this->sidebar)) : ?>
+	<?php if (JVERSION < 4 && !empty($this->sidebar)) : ?>
 		<div id="j-sidebar-container" class="span2">
 			<?php echo $this->sidebar; ?>
 		</div>
-			<div id="j-main-container" class="span10">
-		<?php else : ?>
-			<div id="j-main-container">
-		<?php endif; ?>
+		<div id="j-main-container" class="span10">
+	<?php else : ?>
+		<div id="j-main-container">
+	<?php endif; ?>
 
 		<?php echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this)); ?>
 
@@ -106,7 +103,11 @@ Joomla.orderTable = function() {
 					</tr>
 				</tfoot>
 
+				<?php if(JVERSION < 4) :?>
 				<tbody>
+				<?php else: ?>
+				<tbody <?php if ($saveOrder) :?> class="js-draggable" data-url="<?php echo $saveOrderingUrl; ?>" data-direction="<?php echo strtolower($listDirn); ?>" data-nested="false"<?php endif; ?>>
+				<?php endif; ?>
 					<?php if (!empty($this->items)) : ?>
 						<?php foreach ($this->items as $i => $item) :
 							$item->max_ordering = 0;
@@ -116,7 +117,11 @@ Joomla.orderTable = function() {
 							$canChange  = $user->authorise('core.edit.state', 'com_spsimpleportfolio.item.' . $item->id) && $canCheckin;
 							$link = JRoute::_('index.php?option=com_spsimpleportfolio&task=item.edit&id=' . $item->id);
 						?>
+							<?php if(JVERSION < 4) :?>
+							<tr>
+							<?php else: ?>
 							<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
+							<?php endif; ?>
 								<td class="order nowrap center hidden-phone">
 									<?php
 									$iconClass = '';

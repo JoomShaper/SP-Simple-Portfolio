@@ -9,157 +9,162 @@
 // No Direct Access
 defined ('_JEXEC') or die('Restricted Access');
 
-class SpsimpleportfolioRouter extends JComponentRouterView {
+class SpsimpleportfolioRouterBase {
 	
-	protected $noIDs = false;
-
-	public function __construct($app = null, $menu = null){
-
-		$params = JComponentHelper::getParams('com_spsimpleportfolio');
-		$this->noIDs = (bool) $params->get('sef_ids', 1);
-
-		$items = new JComponentRouterViewconfiguration('items');
-		$items->setKey('catid');
-		$this->registerView($items);
-		$item = new JComponentRouterViewconfiguration('item');
-		$item->setKey('id')->setParent($items);
-		$this->registerView($item);
-
-		// generate rules
-		parent::__construct($app, $menu);	
-		$this->attachRule(new JComponentRouterRulesNomenu($this));
-		if ($params->get('sef_advanced', 0)) {
-			$this->attachRule(new JComponentRouterRulesMenu($this));
-			$this->attachRule(new JComponentRouterRulesStandard($this));
+	public static function buildRoute(&$query) {
+		$params 	= JComponentHelper::getParams('com_spsimpleportfolio');
+		$app		= JFactory::getApplication();
+		$menu		= $app->getMenu();
+		$noIDs 		= (bool) $params->get('sef_ids', 0);
+		
+		$segments 	= array();
+		// We need a menu item.  Either the one specified in the query, or the current active one if none specified
+		if (empty($query['Itemid'])) {
+			$menuItem = $menu->getActive();
+			$menuItemGiven = false;
 		} else {
-			JLoader::register('SpsimpleportfolioRouterRulesLegacy', __DIR__ . '/helpers/legacyrouter.php');
-			$this->attachRule(new SpsimpleportfolioRouterRulesLegacy($this));
+			$menuItem = $menu->getItem($query['Itemid']);
+			$menuItemGiven = true;
 		}
 
+		// Check again
+		if ($menuItemGiven && isset($menuItem) && $menuItem->component != 'com_spsimpleportfolio') {
+			$menuItemGiven = false;
+			unset($query['Itemid']);
+			unset($query['view']);
+		}
+
+		if (isset($query['view'])) {
+			$view = $query['view'];
+		} else {
+			// We need to have a view in the query or it is an invalid URL
+			return $segments;
+		}
+
+		// Are we dealing with an article or category that is attached to a menu item?
+		if (($menuItem instanceof stdClass)
+			&& $menuItem->query['view'] == $query['view']
+			&& isset($query['id'])
+			&& $menuItem->query['id'] == (int) $query['id']) {
+			unset($query['view']);
+			unset($query['id']);
+			return $segments;
+		}
+
+		//Replace with menu
+		$mview = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
+
+		//List view
+		if ( $view == 'items' ) {
+			if($mview != $view) {
+				$segments[] = $view;
+			}
+			unset($query['view']);
+		}
+
+		// Single view
+		if ( $noIDs && $view == 'item' ) {
+			$segments[] = $view;
+			//Remove ID
+			$id_slug = explode(':', $query['id']);
+			if(count($id_slug)>1) {
+				$segments[] = $id_slug[1];
+			} else {
+				$segments[] = $query['id'];
+			}
+			unset($query['view']);
+			unset($query['id']);
+		} else {
+			if (isset($query['view'])) {
+				$segments[] = $query['view'];
+				unset($query['view']);
+			}
+			if (isset($query['id'])) {
+				$segments[] = $query['id'];
+				unset($query['id']);
+			}
+		}
+
+		$total = count($segments);
+		for ($i = 0; $i < $total; $i++) {
+			$segments[$i] = str_replace(':', '-', $segments[$i]);
+		}
+
+		return $segments;
 	}
 
-	// Items
-	public function getItemsSegment($id, $query)
-	{
-		$category = JCategories::getInstance($this->getName())->get($id);
+	public static function parseRoute(&$segments) {
+		$app = JFactory::getApplication();
+		$params = JComponentHelper::getParams('com_spsimpleportfolio');
+		$noIDs = (bool) $params->get('sef_ids', 0);
+		$total = count((array) $segments);
+		$vars = array();
 
-		if ($category)
+		for ($i = 0; $i < $total; $i++)
 		{
-			$path = array_reverse($category->getPath(), true);
-			$path[0] = '1:root';
+			$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
+		}
 
-			if ($this->noIDs)
-			{
-				foreach ($path as &$segment)
-				{
-					list($id, $segment) = explode(':', $segment, 2);
-				}
+		if($total == 2)
+		{
+			if($noIDs) {
+				$slug = preg_replace('/:/', '-', $segments[1]);
+				$id = self::getItemId($slug);
+			} else {
+				list($id, $tmp) = explode(':', $segments[1], 2);
 			}
 
-			return $path;
+			$vars['view'] 	= 'item';
+			$vars['id']	= (int) $id;
 		}
 
-		return array();
+		return $vars;
 	}
 
-	// Items id
-	public function getItemsId($segment, $query)
-	{
-		if (isset($query['id']))
-		{
-			$category = JCategories::getInstance($this->getName(), array('access' => false))->get($query['id']);
-
-			if ($category)
-			{
-				foreach ($category->getChildren() as $child)
-				{
-					if ($this->noIDs)
-					{
-						if ($child->alias == $segment)
-						{
-							return $child->id;
-						}
-					}
-					else
-					{
-						if ($child->id == (int) $segment)
-						{
-							return $child->id;
-						}
-					}
-				}
-			}
-		}
-
-		return false;
-	}
-
-	// Item
-	public function getItemSegment($id, $query) {
-		if (!strpos($id, ':')) {
-			$db = JFactory::getDbo();
-			$dbquery = $db->getQuery(true);
-			$dbquery->select($dbquery->qn('alias'))
-			->from($dbquery->qn('#__spsimpleportfolio_items'))
-			->where('id = ' . $dbquery->q($id));
-			$db->setQuery($dbquery);
-
-			$id .= ':' . $db->loadResult();
-		}
-
-		if ($this->noIDs) {
-			list($void, $segment) = explode(':', $id, 2);
-			return array($void => $segment);
-		}
-		return array((int) $id => $id);
-	}
-
-	public function getItemId($segment, $query) {
-
-		if ($this->noIDs) {
-			$db = JFactory::getDbo();
-			$dbquery = $db->getQuery(true);
-			$dbquery->select($dbquery->qn('id'))
-				->from($dbquery->qn('#__spsimpleportfolio_items'))
-				->where('alias = ' . $dbquery->q($segment));
-			$db->setQuery($dbquery);
-			return (int) $db->loadResult();
-		}
-		return (int) $segment;
+	public static function getItemId($slug) {
+		$db = JFactory::getDbo();
+		$dbQuery = $db->getQuery(true)
+			->select( $db->quotename( 'id' ) )
+			->from('#__spsimpleportfolio_items')
+			->where( $db->quotename('alias') . '=' . $db->quote($slug));
+		$db->setQuery($dbQuery);
+		return $db->loadResult();
 	}
 }
 
-/**
- * Users router functions
- *
- * These functions are proxys for the new router interface
- * for old SEF extensions.
- *
- * @param   array  &$query  REQUEST query
- *
- * @return  array  Segments of the SEF url
- *
- * @deprecated  4.0  Use Class based routers instead
- */
-function spsimpleportfolioBuildRoute(&$query) {
-	$app = JFactory::getApplication();
-	$router = new SpsimpleportfolioRouter($app, $app->getMenu());
 
-	return $router->build($query);
+if(JVERSION >= 4 ) {
+	/**
+	 * Routing class to support Joomla 4.0
+	 *
+	 */
+	class SpsimpleportfolioRouter extends Joomla\CMS\Component\Router\RouterBase
+	{
+		public function build(&$query)
+		{
+			$segments = SpsimpleportfolioRouterBase::buildRoute($query);
+			return $segments;
+		}
+
+		public function parse(&$segments)
+		{
+			$vars = SpsimpleportfolioRouterBase::parseRoute($segments);
+
+			$segments = array();
+
+			return $vars;
+		}
+	}
 }
 
-/**
- * Convert SEF URL segments into query variables
- *
- * @param   array  $segments  Segments in the current URL
- *
- * @return  array  Query variables
- *
- * @deprecated  4.0  Use Class based routers instead
- */
-function spsimpleportfolioParseRoute($segments){
-	$app = JFactory::getApplication();
-	$router = new SpsimpleportfolioRouter($app, $app->getMenu());
+function SpsimpleportfolioBuildRoute(&$query)
+{
+	$segments = SpsimpleportfolioRouterBase::buildRoute($query);
+	return $segments;
+}
 
-	return $router->parse($segments);
+function SpsimpleportfolioParseRoute(&$segments)
+{
+	$vars = SpsimpleportfolioRouterBase::parseRoute($segments);
+	return $vars;
 }

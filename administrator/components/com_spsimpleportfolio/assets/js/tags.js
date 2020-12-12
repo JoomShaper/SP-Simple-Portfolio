@@ -7,11 +7,19 @@
 
 jQuery(function($) {
 	$(document).ready(function () {
-		var customTagPrefix = '#new#';
-		$('#jform_tagids_chzn input').keyup(function(event) {
+        var customTagPrefix = '#new#';
+        var $chosenTagId = '';
+        
+        if($('#jform_tagids_chosen').length) {
+            $chosenTagId = $('#jform_tagids_chosen');
+        } else {
+            $chosenTagId = $('#jform_tagids_chzn');
+        }
+
+		$chosenTagId.find('input').keyup(function(event) {
 
 			if (this.value && this.value.length >= 3 && (event.which === 13 || event.which === 188)) {
-				var highlighted = $('#jform_tagids_chzn').find('li.active-result.highlighted').first();
+                var highlighted = $chosenTagId.find('li.active-result.highlighted').first();
 				if (event.which === 13 && highlighted.text() !== '') {
 					var customOptionValue = customTagPrefix + highlighted.text();
 					$('#jform_tagids option').filter(function () { return $(this).val() == customOptionValue; }).remove();

@@ -28,7 +28,7 @@ class SpsimpleportfolioViewItems extends JViewLegacy {
 		$menu = $menus->getActive();
 
 		if($menu) {
-			$this->params->merge($menu->params);
+			$this->params->merge($menu->getParams());
 		}
 
 		foreach ($this->items as $this->item) {

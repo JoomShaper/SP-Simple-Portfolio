@@ -7,9 +7,8 @@
 
 jQuery(function($) {
 
-	var $container 	= $('.sp-simpleportfolio-items');
-
-	$(window).load(function() {
+	$(window).on('load', function() {
+		var $container 	= $('.sp-simpleportfolio-items');
 		var $sizer = $container.find('.shuffle__sizer');
 
 		$container.shuffle({
@@ -17,24 +16,24 @@ jQuery(function($) {
 			sequentialFadeDelay: 150,
 			sizer: $sizer
 		});
-	});
 
-	// Filters
-	$('.sp-simpleportfolio-filter li a').on('click', function(event){
-		event.preventDefault();
-		var $self = $(this);
-		var $this = $(this).parent();
+		// Filters
+		$('.sp-simpleportfolio-filter li a').on('click', function(event){
+			event.preventDefault();
+			var $self = $(this);
+			var $this = $(this).parent();
 
-		if($this.hasClass('active')) {
-			return;
-		}
+			if($this.hasClass('active')) {
+				return;
+			}
 
-		$self.closest('ul').children().removeClass('active');
-		$self.parent().addClass('active');
+			$self.closest('ul').children().removeClass('active');
+			$self.parent().addClass('active');
 
-		var $local = $self.closest('.sp-simpleportfolio').children('.sp-simpleportfolio-items');
-		
-		$local.shuffle( 'shuffle', $this.data('group') );
+			var $local = $self.closest('.sp-simpleportfolio').children('.sp-simpleportfolio-items');
+			
+			$local.shuffle( 'shuffle', $this.data('group') );
+		});
 	});
 
 });

@@ -14,7 +14,6 @@ class com_spsimpleportfolioInstallerScript
     
     public function uninstall($parent)
     {
-        $db = JFactory::getDBO();
         $status = new stdClass;
         $status->modules = array();
         $manifest = $parent->getParent()->manifest;
@@ -25,23 +24,32 @@ class com_spsimpleportfolioInstallerScript
         {
             $name = (string)$module->attributes()->module;
             $client = (string)$module->attributes()->client;
+            
             $db = JFactory::getDBO();
-            $query = "SELECT `extension_id` FROM `#__extensions` WHERE `type`='module' AND element = ".$db->Quote($name)."";
+            $query = $db->getQuery(true);
+            $query->select($db->quoteName('extension_id'));
+            $query->from($db->quoteName('#__extensions'));
+            $query->where($db->quoteName('type') . ' = ' . $db->quote('module'));
+            $query->where($db->quoteName('element') . ' = ' . $db->quote($name));
             $db->setQuery($query);
-            $extensions = $db->loadColumn();
-            if (count((array) $extensions))
+            $extension_id = $db->loadResult();
+
+            if (!empty($extension_id))
             {
-                foreach ($extensions as $id)
-                {
-                    $installer = new JInstaller;
-                    $result = $installer->uninstall('module', $id);
-                }
+                $installer = new JInstaller;
+                $result = $installer->uninstall('module', $extension_id);
                 $status->modules[] = array('name' => $name, 'client' => $client, 'result' => $result);
             }
         }
     }
     
     public function postflight($type, $parent) {
+
+        if ($type == 'uninstall')
+        {
+            return true;
+        }
+
         $db = JFactory::getDbo();
         $src = $parent->getParent()->getPath('source');
         $manifest = $parent->getParent()->manifest;
@@ -77,11 +85,6 @@ class com_spsimpleportfolioInstallerScript
             
             $installer = new JInstaller;
             $result = $installer->install($path);
-        }
-        
-        if ($type == 'uninstall')
-        {
-            return true;
         }
     }
 }

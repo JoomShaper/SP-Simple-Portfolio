@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Helper\ContentHelper;
+
 class SpsimpleportfolioViewTags extends JViewLegacy {
 
 	protected $items;
@@ -33,7 +35,7 @@ class SpsimpleportfolioViewTags extends JViewLegacy {
 		$this->filterForm = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
 
-		$this->canDo = SpsimpleportfolioHelper::getActions();
+		$this->canDo = ContentHelper::getActions('com_spsimpleportfolio');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {

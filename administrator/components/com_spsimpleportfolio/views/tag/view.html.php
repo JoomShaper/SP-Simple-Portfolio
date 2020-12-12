@@ -9,6 +9,8 @@
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Helper\ContentHelper;
+
 class SpsimpleportfolioViewTag extends JViewLegacy {
 
 	protected $form;
@@ -22,7 +24,7 @@ class SpsimpleportfolioViewTag extends JViewLegacy {
 		$this->item = $this->get('Item');
 		$this->id = $this->item->id;
 
-		$this->canDo = SpsimpleportfolioHelper::getActions($this->item->id);
+		$this->canDo = ContentHelper::getActions('com_spsimpleportfolio', 'tag', $this->item->id);
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
@@ -40,7 +42,7 @@ class SpsimpleportfolioViewTag extends JViewLegacy {
 		$isNew = ($this->item->id == 0);
 		JToolBarHelper::title(JText::_('COM_SPSIMPLEPORTFOLIO_MANAGER') .  ($isNew ? JText::_('COM_SPSIMPLEPORTFOLIO_TAG_NEW') : JText::_('COM_SPSIMPLEPORTFOLIO_TAG_EDIT')), 'pictures');
 
-		if ($this->canDo->get('core.edit')) {
+		if ($this->canDo->get('core.edit') || ($this->canDo->get('core.edit.own') && $this->item->created_by == $user->id)) {
 			JToolBarHelper::apply('tag.apply', 'JTOOLBAR_APPLY');
 			JToolBarHelper::save('tag.save', 'JTOOLBAR_SAVE');
 		}

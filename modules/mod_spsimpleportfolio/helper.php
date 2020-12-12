@@ -3,11 +3,14 @@
  * @package     SP Simple Portfolio
  * @subpackage  mod_spsimpleportfolio
  *
- * @copyright   Copyright (C) 2010 - 2018 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
 defined('_JEXEC') or die;
+
+jimport( 'joomla.filesystem.file' );
+jimport('joomla.filesystem.folder');
 
 JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models', 'SpsimpleportfolioModel');
 
@@ -106,13 +109,13 @@ class ModSpsimpleportfolioHelper {
 
 			$thumb_type = $params->get('thumbnail_type', 'masonry');	
 			if($thumb_type == 'masonry') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_' . $sizes[$i] . '.' . JFile::getExt($item->image);
+				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_' . $sizes[$i] . '.' . JFile::getExt($item->image);
 			} else if($thumb_type == 'rectangular') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
+				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
 			} else if($thumb_type == 'tower') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
+				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
 			} else {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
+				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
 			}
 
 			// tower
@@ -120,11 +123,11 @@ class ModSpsimpleportfolioHelper {
 			$popup_image = $params->get('popup_image', 'default');
 			
 			if($popup_image == 'quare') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
 			} else if($popup_image == 'rectangle') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
 			} else if($popup_image == 'tower') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
 			} else {
 				$item->popup_img_url = JURI::base() . $item->image;
 			}

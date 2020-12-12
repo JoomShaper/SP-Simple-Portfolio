@@ -118,7 +118,7 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 		<?php endforeach; ?>
 	</div>
 
-	<?php if ($this->pagination->get('pages.total') >1) : ?>
+	<?php if ($this->pagination->pagesTotal > 1) : ?>
 		<div class="pagination">
 			<?php echo $this->pagination->getPagesLinks(); ?>
 		</div>

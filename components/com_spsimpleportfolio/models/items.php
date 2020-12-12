@@ -10,6 +10,8 @@
 defined('_JEXEC') or die();
 
 jimport( 'joomla.filesystem.file' );
+jimport('joomla.filesystem.folder');
+
 use Joomla\Registry\Registry;
 
 class SpsimpleportfolioModelItems extends JModelList {
@@ -45,7 +47,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 		$params = new Registry;
 
 		if ($menu = $app->getMenu()->getActive()) {
-			$params->loadString($menu->params);
+			$params->loadString($menu->getParams());
 
 			$limit = $params->get('limit', 12);
 			$this->setState('list.limit', $limit);
@@ -62,7 +64,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
 		// Get Params
-		$params  = $app->getMenu()->getActive()->params;
+		$params  = $app->getMenu()->getActive()->getParams();
 		// params item
 		list($order, $direction) = explode(':', $params->get('ordering', 'ordering:ASC'));
 
@@ -126,7 +128,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 		$app = JFactory::getApplication();
 		$params = $app->getParams();
 		if($menu) {
-			$params->merge($menu->params);
+			$params->merge($menu->getParams());
 		}
 
 		$i = 0;
@@ -166,22 +168,22 @@ class SpsimpleportfolioModelItems extends JModelList {
 
 			$thumb_type = $params->get('thumbnail_type', 'masonry');
 			if($thumb_type == 'masonry') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_' . $sizes[$i] . '.' . JFile::getExt($item->image);
+				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_' . $sizes[$i] . '.' . JFile::getExt($item->image);
 			} else if($thumb_type == 'rectangular') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
+				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
 			} else if($thumb_type == 'tower') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
+				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
 			} else {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
+				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
 			}
 
 			$popup_image = $params->get('popup_image', 'default');
 			if($popup_image == 'quare') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
 			} else if($popup_image == 'rectangle') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
 			} else if($popup_image == 'tower') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(JFile::getName($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
 			} else {
 				$item->popup_img_url = JURI::base() . $item->image;
 			}

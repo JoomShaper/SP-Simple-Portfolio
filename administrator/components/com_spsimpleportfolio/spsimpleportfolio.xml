@@ -8,7 +8,7 @@
 	<copyright>Copyright (c) 2010- 2020 JoomShaper. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
 	<version>2.0</version>
-	<description>Simple Portfolio Component for Joomla 3.3+</description>
+	<description>Simple Portfolio Component for Joomla</description>
 	<scriptfile>installer.script.php</scriptfile>
 
 	<updateservers>
@@ -52,6 +52,27 @@
 
 	<administration>
 		<menu>COM_SPSIMPLEPORTFOLIO</menu>
+		<submenu>
+			<menu
+				link="option=com_spsimpleportfolio&amp;view=items"
+				view="items"
+				>
+				COM_SPSIMPLEPORTFOLIO_ITEMS
+			</menu>
+			<menu
+				link="option=com_categories&amp;view=categories&amp;extension=com_spsimpleportfolio"
+				view="categories"
+				>
+				COM_SPSIMPLEPORTFOLIO_CATEGORIES
+			</menu>
+			<menu
+				link="option=com_spsimpleportfolio&amp;view=tags"
+				view="clients"
+				>
+				COM_SPSIMPLEPORTFOLIO_TAGS
+			</menu>
+		</submenu>
+		
 
 		<files folder="admin">
 			<filename>access.xml</filename>
