@@ -3,7 +3,7 @@
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
@@ -33,6 +33,13 @@ class SpsimpleportfolioControllerItem extends JControllerForm {
 	protected function postSaveHook(JModelLegacy $model, $validData = array()) {
 
 		$item = $model->getItem();
+
+		/**
+		 * remove extra value form image name.
+		 */
+		$filteredImage = explode('?', $item->image);
+		$item->image = $filteredImage[0];
+
 		$image = JPATH_ROOT . '/' . $item->image;
 		$alias = $item->alias;
 		$folder = JPATH_ROOT . '/images/spsimpleportfolio/' . $alias;

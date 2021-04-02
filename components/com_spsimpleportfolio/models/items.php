@@ -63,11 +63,19 @@ class SpsimpleportfolioModelItems extends JModelList {
 	protected function getListQuery() {
 		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
-		// Get Params
-		$params  = $app->getMenu()->getActive()->getParams();
-		// params item
-		list($order, $direction) = explode(':', $params->get('ordering', 'ordering:ASC'));
+		if($app->getMenu()->getActive())
+		{
+			// Get Params
+			$params  = $app->getMenu()->getActive()->getParams();
+			// params item
+			list($order, $direction) = explode(':', $params->get('ordering', 'ordering:ASC'));
 
+		}
+		else
+		{
+			$order = 'ordering';
+			$direction = 'ASC';
+		}
 		// Create a new query object.
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);

@@ -1,170 +1,246 @@
 <?php
+
 /**
-* @package com_spsimpleportfolio
-* @author JoomShaper http://www.joomshaper.com
-* @copyright Copyright (c) 2010 - 2020 JoomShaper
-* @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
-*/
+ * @package com_spsimpleportfolio
+ * @author JoomShaper http://www.joomshaper.com
+ * @copyright Copyright (c) 2010 - 2021 JoomShaper
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
+ */
 
 // No Direct Access
 defined ('_JEXEC') or die('Restricted Access');
 
-class SpsimpleportfolioRouterBase {
-	
-	public static function buildRoute(&$query) {
-		$params 	= JComponentHelper::getParams('com_spsimpleportfolio');
-		$app		= JFactory::getApplication();
-		$menu		= $app->getMenu();
-		$noIDs 		= (bool) $params->get('sef_ids', 0);
-		
-		$segments 	= array();
-		// We need a menu item.  Either the one specified in the query, or the current active one if none specified
-		if (empty($query['Itemid'])) {
-			$menuItem = $menu->getActive();
-			$menuItemGiven = false;
-		} else {
-			$menuItem = $menu->getItem($query['Itemid']);
-			$menuItemGiven = true;
-		}
+use Joomla\CMS\Factory;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Component\Router\RouterView;
+use Joomla\CMS\Component\Router\Rules\MenuRules;
+use Joomla\CMS\Component\Router\Rules\NomenuRules;
+use Joomla\CMS\Component\Router\Rules\StandardRules;
+use Joomla\CMS\Component\Router\RouterViewConfiguration;
 
-		// Check again
-		if ($menuItemGiven && isset($menuItem) && $menuItem->component != 'com_spsimpleportfolio') {
-			$menuItemGiven = false;
-			unset($query['Itemid']);
-			unset($query['view']);
-		}
+/**
+ * Router class for com_spsimpleportfolio
+ *
+ * @since	1.0.0
+ */
+class SpsimpleportfolioRouter extends RouterView {
 
-		if (isset($query['view'])) {
-			$view = $query['view'];
-		} else {
-			// We need to have a view in the query or it is an invalid URL
-			return $segments;
-		}
+	protected $noIDs = false;
 
-		// Are we dealing with an article or category that is attached to a menu item?
-		if (($menuItem instanceof stdClass)
-			&& $menuItem->query['view'] == $query['view']
-			&& isset($query['id'])
-			&& $menuItem->query['id'] == (int) $query['id']) {
-			unset($query['view']);
-			unset($query['id']);
-			return $segments;
-		}
-
-		//Replace with menu
-		$mview = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
-
-		//List view
-		if ( $view == 'items' ) {
-			if($mview != $view) {
-				$segments[] = $view;
-			}
-			unset($query['view']);
-		}
-
-		// Single view
-		if ( $noIDs && $view == 'item' ) {
-			$segments[] = $view;
-			//Remove ID
-			$id_slug = explode(':', $query['id']);
-			if(count($id_slug)>1) {
-				$segments[] = $id_slug[1];
-			} else {
-				$segments[] = $query['id'];
-			}
-			unset($query['view']);
-			unset($query['id']);
-		} else {
-			if (isset($query['view'])) {
-				$segments[] = $query['view'];
-				unset($query['view']);
-			}
-			if (isset($query['id'])) {
-				$segments[] = $query['id'];
-				unset($query['id']);
-			}
-		}
-
-		$total = count($segments);
-		for ($i = 0; $i < $total; $i++) {
-			$segments[$i] = str_replace(':', '-', $segments[$i]);
-		}
-
-		return $segments;
-	}
-
-	public static function parseRoute(&$segments) {
-		$app = JFactory::getApplication();
-		$params = JComponentHelper::getParams('com_spsimpleportfolio');
-		$noIDs = (bool) $params->get('sef_ids', 0);
-		$total = count((array) $segments);
-		$vars = array();
-
-		for ($i = 0; $i < $total; $i++)
-		{
-			$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
-		}
-
-		if($total == 2)
-		{
-			if($noIDs) {
-				$slug = preg_replace('/:/', '-', $segments[1]);
-				$id = self::getItemId($slug);
-			} else {
-				list($id, $tmp) = explode(':', $segments[1], 2);
-			}
-
-			$vars['view'] 	= 'item';
-			$vars['id']	= (int) $id;
-		}
-
-		return $vars;
-	}
-
-	public static function getItemId($slug) {
-		$db = JFactory::getDbo();
-		$dbQuery = $db->getQuery(true)
-			->select( $db->quotename( 'id' ) )
-			->from('#__spsimpleportfolio_items')
-			->where( $db->quotename('alias') . '=' . $db->quote($slug));
-		$db->setQuery($dbQuery);
-		return $db->loadResult();
-	}
-}
-
-
-if(JVERSION >= 4 ) {
 	/**
-	 * Routing class to support Joomla 4.0
+	 * The DB Object
 	 *
+	 * @var		DatabaseDriver
+	 * @sine	4.0.0
 	 */
-	class SpsimpleportfolioRouter extends Joomla\CMS\Component\Router\RouterBase
+	private $db = null;
+
+	/**
+	 * The query string generator.
+	 *
+	 * @var		object
+	 * @since	4.0.0
+	 */
+	private $queryBuilder = null;
+
+	/**
+	 * SP Simple Portfolio Component router constructor
+	 *
+	 * @param   JApplicationCms  $app   The application object
+	 * @param   JMenu            $menu  The menu object to work with
+	 */
+
+	public function __construct($app = null, $menu = null)
 	{
-		public function build(&$query)
+		$params = ComponentHelper::getParams('com_spsimpleportfolio', true);
+		$this->noIDs = (bool) $params->get('sef_ids');
+
+		$this->db = Factory::getDbo();
+		$this->queryBuilder = $this->db->getQuery(true);
+
+		/**
+		 * Registering the item(s) views (single, and list)
+		 */
+		$items = new RouterViewConfiguration('items');
+		$this->registerView($items);
+		$item = new RouterViewConfiguration('item');
+		$item->setKey('id')->setParent($items);
+		$this->registerView($item);
+
+		parent::__construct($app, $menu);
+
+		$this->attachRule(new MenuRules($this));
+
+		$this->attachRule(new StandardRules($this));
+		$this->attachRule(new NomenuRules($this));
+		
+	}
+
+	/**
+	 * Get missing alias from the provided ID.
+	 *
+	 * @param	string		$id		The ID with or without the alias.
+	 * @param	string		$table	The table name.
+	 *
+	 * @return	string		The alias string.
+	 * @since	4.0.0
+	 */
+	private function getAlias(string $id, string $table) : string
+	{
+		try
 		{
-			$segments = SpsimpleportfolioRouterBase::buildRoute($query);
-			return $segments;
+			$this->queryBuilder->clear();
+			$this->queryBuilder->select('alias')
+				->from($this->db->quoteName($table))
+				->where($this->db->quoteName('id') . ' = ' . (int) $id);
+			$this->db->setQuery($this->queryBuilder);
+
+			return (string) $this->db->loadResult();
 		}
-
-		public function parse(&$segments)
+		catch (Exception $e)
 		{
-			$vars = SpsimpleportfolioRouterBase::parseRoute($segments);
+			echo $e->getMessage();
 
-			$segments = array();
-
-			return $vars;
+			return '';
 		}
 	}
+
+	/**
+	 * Get id from the alias.
+	 *
+	 * @param	string		$alias		The alias string.
+	 * @param	string		$table		The table name.
+	 *
+	 * @return	int			The id.
+	 * @since	4.0.0
+	 */
+	private function getId(string $alias, string $table) : int
+	{
+		try
+		{
+			$this->queryBuilder->clear();
+			$this->queryBuilder->select('id')
+				->from($this->db->quoteName($table))
+				->where($this->db->quoteName('alias') . ' = ' . $this->db->quote($alias));
+			$this->db->setQuery($this->queryBuilder);
+
+			return (int) $this->db->loadResult();
+		}
+		catch (Exception $e)
+		{
+			echo $e->getMessage();
+
+			return 0;
+		}
+	}
+
+	/**
+	 * Get the view segment for the common views.
+	 *
+	 * @param	string	$id		The ID with or without alias.
+	 * @param	string	$table	The table name.
+	 *
+	 * @return	array	The segment array.
+	 * @since	4.0.0
+	 */
+	private function getViewSegment(string $id, string $table) : array
+	{
+		if (strpos($id, ':') === false)
+		{
+			$id .= ':' . $this->getAlias($id, $table);
+		}
+
+		if ($this->noIDs)
+		{
+			list ($key, $alias) = explode(':', $id, 2);
+
+			return [$key => $alias];
+		}
+
+		return [(int) $id => $id];
+	}
+
+	/**
+	 * get the view ID for the common pattern view.
+	 *
+	 * @param	string	$segment	The segment string.
+	 * @param	string	$table		The table name.
+	 *
+	 * @return	int		The id.
+	 * @since	4.0.0
+	 */
+	private function getViewId(string $segment, string $table) : int
+	{
+		return $this->noIDs
+			? $this->getId($segment, $table)
+			: (int) $segment;
+	}
+
+	/**
+	 * Method to get the segment(s) for a item
+	 *
+	 * @param   string  $id     ID of the article to retrieve the segments for
+	 * @param   array   $query  The request that is built right now
+	 *
+	 * @return  array|string  The segments of this item
+	 */
+	public function getItemSegment($id, $query)
+	{
+		return $this->getViewSegment($id, '#__spsimpleportfolio_items');
+	}
+
+	/**
+	 * Method to get the id for a item
+	 *
+	 * @param   string  $segment  Segment of the article to retrieve the ID for
+	 * @param   array   $query    The request that is parsed right now
+	 *
+	 * @return  mixed   The id of this item or false
+	 */
+	public function getItemId($segment, $query)
+	{
+		return $this->getViewId($segment, '#__spsimpleportfolio_items');
+	}
+	
 }
 
-function SpsimpleportfolioBuildRoute(&$query)
+/**
+ * Item router functions
+ *
+ * These functions are proxys for the new router interface
+ * for old SEF extensions.
+ *
+ * @param   array  &$query  An array of URL arguments
+ *
+ * @return  array  The URL arguments to use to assemble the subsequent URL.
+ *
+ * @deprecated  4.0  Use Class based routers instead
+ */
+function spsimpleportfolioBuildRoute(&$query)
 {
-	$segments = SpsimpleportfolioRouterBase::buildRoute($query);
-	return $segments;
+	$app = Factory::getApplication();
+	$router = new SpsimpleportfolioRouter($app, $app->getMenu());
+
+	return $router->build($query);
 }
 
-function SpsimpleportfolioParseRoute(&$segments)
+/**
+ * Parse the segments of a URL.
+ *
+ * This function is a proxy for the new router interface
+ * for old SEF extensions.
+ *
+ * @param   array  $segments  The segments of the URL to parse.
+ *
+ * @return  array  The URL attributes to be used by the application.
+ *
+ * @since   3.3
+ * @deprecated  4.0  Use Class based routers instead
+ */
+function spsimpleportfolioParseRoute($segments)
 {
-	$vars = SpsimpleportfolioRouterBase::parseRoute($segments);
-	return $vars;
+	$app = Factory::getApplication();
+	$router = new SpsimpleportfolioRouter($app, $app->getMenu());
+
+	return $router->parse($segments);
 }
