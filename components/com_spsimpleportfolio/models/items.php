@@ -73,7 +73,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 		}
 		else
 		{
-			$order = 'ordering';
+			$order = 'a.ordering';
 			$direction = 'ASC';
 		}
 		// Create a new query object.
