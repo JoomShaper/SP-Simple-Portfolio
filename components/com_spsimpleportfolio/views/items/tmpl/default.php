@@ -1,21 +1,26 @@
 <?php
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
 defined('_JEXEC') or die();
 
 //Load the method jquery script.
-JHtml::_('jquery.framework');
-$doc = JFactory::getDocument();
-$doc->addStylesheet( JURI::root(true) . '/components/com_spsimpleportfolio/assets/css/featherlight.min.css' );
-$doc->addStylesheet( JURI::root(true) . '/components/com_spsimpleportfolio/assets/css/spsimpleportfolio.css' );
-$doc->addScript( JURI::root(true) . '/components/com_spsimpleportfolio/assets/js/jquery.shuffle.modernizr.min.js' );
-$doc->addScript( JURI::root(true) . '/components/com_spsimpleportfolio/assets/js/featherlight.min.js' );
-$doc->addScript( JURI::root(true) . '/components/com_spsimpleportfolio/assets/js/spsimpleportfolio.js' );
+HTMLHelper::_('jquery.framework');
+$doc = Factory::getDocument();
+$doc->addStylesheet( Uri::root(true) . '/components/com_spsimpleportfolio/assets/css/featherlight.min.css' );
+$doc->addStylesheet( Uri::root(true) . '/components/com_spsimpleportfolio/assets/css/spsimpleportfolio.css' );
+$doc->addScript( Uri::root(true) . '/components/com_spsimpleportfolio/assets/js/jquery.shuffle.modernizr.min.js' );
+$doc->addScript( Uri::root(true) . '/components/com_spsimpleportfolio/assets/js/featherlight.min.js' );
+$doc->addScript( Uri::root(true) . '/components/com_spsimpleportfolio/assets/js/spsimpleportfolio.js' );
 
 if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading' ) ) {
 	echo "<h1 class='page-header'>" . $this->params->get( 'page_heading' ) . "</h1>";
@@ -26,7 +31,7 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 	<?php if($this->params->get('show_filter', 1)) : ?>
 		<div class="sp-simpleportfolio-filter">
 			<ul>
-				<li class="active" data-group="all"><a href="#"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_SHOW_ALL'); ?></a></li>
+				<li class="active" data-group="all"><a href="#"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_SHOW_ALL'); ?></a></li>
 				<?php foreach ($this->tagList as $filter) : ?>
 				<li data-group="<?php echo $filter->alias; ?>"><a href="#"><?php echo $filter->title; ?></a></li>
 				<?php endforeach; ?>
@@ -80,11 +85,11 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 							<div>
 								<div class="sp-simpleportfolio-btns">
 									<?php if( $this->item->video ) : ?>
-										<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $this->item->id; ?>"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_WATCH'); ?></a>
+										<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $this->item->id; ?>"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_WATCH'); ?></a>
 									<?php else: ?>
-										<a class="btn-zoom" href="<?php echo $this->item->popup_img_url; ?>" data-featherlight="image"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
+										<a class="btn-zoom" href="<?php echo $this->item->popup_img_url; ?>" data-featherlight="image"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
 									<?php endif; ?>
-									<a class="btn-view" href="<?php echo $this->item->url; ?>"><?php echo JText::_('COM_SPSIMPLEPORTFOLIO_VIEW'); ?></a>
+									<a class="btn-view" href="<?php echo $this->item->url; ?>"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_VIEW'); ?></a>
 								</div>
 								
 								<?php if($this->layout_type != 'default') : ?>

@@ -1,4 +1,8 @@
 <?php
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
 /**
  * @package     SP Simple Portfolio
  *
@@ -8,12 +12,12 @@
 
 defined('_JEXEC') or die();
 
-if (!JFactory::getUser()->authorise('core.manage', 'com_spsimpleportfolio')) {
-	throw new Exception(JText::_('JERROR_ALERTNOAUTHOR'));
+if (!Factory::getUser()->authorise('core.manage', 'com_spsimpleportfolio')) {
+	throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));
 }
 
 // Require helper file
 JLoader::register('SpsimpleportfolioHelper', JPATH_COMPONENT . '/helpers/spsimpleportfolio.php');
-$controller = JControllerLegacy::getInstance('Spsimpleportfolio');
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller = BaseController::getInstance('Spsimpleportfolio');
+$controller->execute(Factory::getApplication()->input->get('task'));
 $controller->redirect();

@@ -1,9 +1,16 @@
 <?php
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Filesystem\File;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 /**
  * @package     SP Simple Portfolio
  * @subpackage  mod_spsimpleportfolio
  *
- * @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
@@ -12,7 +19,7 @@ defined('_JEXEC') or die;
 jimport( 'joomla.filesystem.file' );
 jimport('joomla.filesystem.folder');
 
-JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models', 'SpsimpleportfolioModel');
+BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models', 'SpsimpleportfolioModel');
 
 JLoader::register('SpsimpleportfolioHelper', JPATH_SITE . '/components/com_spsimpleportfolio/helpers/helper.php');
 
@@ -20,9 +27,9 @@ class ModSpsimpleportfolioHelper {
 
 	public static function getItems($params) {
 
-		$model = JModelLegacy::getInstance('Items', 'SpsimpleportfolioModel', array('ignore_request' => true));
+		$model = BaseDatabaseModel::getInstance('Items', 'SpsimpleportfolioModel', array('ignore_request' => true));
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select('a.*, a.id AS spsimpleportfolio_item_id , a.tagids AS spsimpleportfolio_tag_id, a.created AS created_on')
@@ -63,7 +70,7 @@ class ModSpsimpleportfolioHelper {
 		$ordering = $params->get('ordering', 'ordering:ASC');
 		list($order, $direction) = explode(':', $ordering);
 		
-		$query->where($db->quoteName('a.access')." IN (" . implode( ',', JFactory::getUser()->getAuthorisedViewLevels() ) . ")")
+		$query->where($db->quoteName('a.access')." IN (" . implode( ',', Factory::getUser()->getAuthorisedViewLevels() ) . ")")
 			->order($db->quoteName('a.' . $order) . ' ' . $direction)
 			->setLimit($params->get('limit', 6));
 
@@ -109,13 +116,13 @@ class ModSpsimpleportfolioHelper {
 
 			$thumb_type = $params->get('thumbnail_type', 'masonry');	
 			if($thumb_type == 'masonry') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_' . $sizes[$i] . '.' . JFile::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_' . $sizes[$i] . '.' . File::getExt($item->image);
 			} else if($thumb_type == 'rectangular') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $rectangle .'.' . File::getExt($item->image);
 			} else if($thumb_type == 'tower') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $tower .'.' . File::getExt($item->image);
 			} else {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $square .'.' . File::getExt($item->image);
 			}
 
 			// tower
@@ -123,16 +130,16 @@ class ModSpsimpleportfolioHelper {
 			$popup_image = $params->get('popup_image', 'default');
 			
 			if($popup_image == 'quare') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $square .'.' . File::getExt($item->image);
 			} else if($popup_image == 'rectangle') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $rectangle .'.' . File::getExt($item->image);
 			} else if($popup_image == 'tower') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $tower .'.' . File::getExt($item->image);
 			} else {
-				$item->popup_img_url = JURI::base() . $item->image;
+				$item->popup_img_url = Uri::base() . $item->image;
 			}
 
-			$item->url = JRoute::_('index.php?option=com_spsimpleportfolio&view=item&id='. $item->id . ':' . $item->alias . SpsimpleportfolioHelper::getItemid($item->catid));
+			$item->url = Route::_('index.php?option=com_spsimpleportfolio&view=item&id='. $item->id . ':' . $item->alias . SpsimpleportfolioHelper::getItemid($item->catid));
 
 			$i++;
 			if($i==11) {

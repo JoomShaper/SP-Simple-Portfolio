@@ -1,18 +1,22 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\MVC\Model\AdminModel;
+
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
 defined('_JEXEC') or die();
 
-class SpsimpleportfolioModelTag extends JModelAdmin {
+class SpsimpleportfolioModelTag extends AdminModel {
 
 	public function getTable($type = 'Tag', $prefix = 'SpsimpleportfolioTable', $config = array()) {
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true) {
@@ -26,7 +30,7 @@ class SpsimpleportfolioModelTag extends JModelAdmin {
 	}
 
 	protected function loadFormData() {
-		$data = JFactory::getApplication()->getUserState( 'com_spsimpleportfolio.edit.tag.data', array() );
+		$data = Factory::getApplication()->getUserState( 'com_spsimpleportfolio.edit.tag.data', array() );
 
 		if (empty($data)) {
 			$data = $this->getItem();

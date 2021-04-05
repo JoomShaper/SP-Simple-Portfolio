@@ -3,15 +3,19 @@
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
-class SpsimpleportfolioViewItems extends JViewLegacy {
+class SpsimpleportfolioViewItems extends HtmlView {
 
 	protected $items;
 	protected $pagination;
@@ -23,7 +27,7 @@ class SpsimpleportfolioViewItems extends JViewLegacy {
 	function display($tpl = null) {
 
 		// Get application
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$context = "com_spsimpleportfolio.items";
 
 		// Get data from the model
@@ -39,7 +43,7 @@ class SpsimpleportfolioViewItems extends JViewLegacy {
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode('<br />', $errors));
+			throw new Exception(implode('<br />', $errors), 500);
 			return false;
 		}
 
@@ -53,23 +57,23 @@ class SpsimpleportfolioViewItems extends JViewLegacy {
 	}
 
 	protected function addToolBar() {
-		JToolBarHelper::title(JText::_('COM_SPSIMPLEPORTFOLIO_MANAGER') .  JText::_('COM_SPSIMPLEPORTFOLIO_ITEMS'), 'pictures');
+		ToolbarHelper::title(Text::_('COM_SPSIMPLEPORTFOLIO_MANAGER') .  Text::_('COM_SPSIMPLEPORTFOLIO_ITEMS'), 'pictures');
 
 		if ($this->canDo->get('core.create')) {
-			JToolBarHelper::addNew('item.add', 'JTOOLBAR_NEW');
+			ToolbarHelper::addNew('item.add', 'JTOOLBAR_NEW');
 		} if ($this->canDo->get('core.edit')) {
-			JToolBarHelper::editList('item.edit', 'JTOOLBAR_EDIT');
+			ToolbarHelper::editList('item.edit', 'JTOOLBAR_EDIT');
 		}
 
 		if ($this->state->get('filter.published') == -2 && $this->canDo->get('core.delete')) {
-			JToolbarHelper::deleteList('', 'items.delete', 'JTOOLBAR_EMPTY_TRASH');
+			ToolbarHelper::deleteList('', 'items.delete', 'JTOOLBAR_EMPTY_TRASH');
 		} elseif ($this->canDo->get('core.edit.state')) {
-			JToolbarHelper::trash('items.trash');
+			ToolbarHelper::trash('items.trash');
 		}
 
 		if ($this->canDo->get('core.admin')) {
-			JToolBarHelper::divider();
-			JToolBarHelper::preferences('com_spsimpleportfolio');
+			ToolbarHelper::divider();
+			ToolbarHelper::preferences('com_spsimpleportfolio');
 		}
 	}
 }

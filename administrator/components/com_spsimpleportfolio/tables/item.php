@@ -1,5 +1,9 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Application\ApplicationHelper;
+
 /**
  * @package     SP Simple Portfolio
  *
@@ -9,15 +13,15 @@
 
 defined('_JEXEC') or die();
 
-class SpsimpleportfolioTableItem extends JTable {
+class SpsimpleportfolioTableItem extends Table {
 
 	public function __construct(&$db) {
 		parent::__construct('#__spsimpleportfolio_items', 'id', $db);
 	}
 
 	public function store($updateNulls = false) {
-		$date = JFactory::getDate();
-		$user = JFactory::getUser();
+		$date = Factory::getDate();
+		$user = Factory::getUser();
 
 		if (!(int) $this->created) {
 			$this->created = $date->toSql();
@@ -27,7 +31,7 @@ class SpsimpleportfolioTableItem extends JTable {
 		}
 
 		// Verify that the alias is unique
-		$table = JTable::getInstance('Item', 'SpsimpleportfolioTable');
+		$table = Table::getInstance('Item', 'SpsimpleportfolioTable');
 		if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0)){
 			$this->setError(JText::_('COM_SPSIMPLEPORTFOLIO_ERROR_UNIQUE_ALIAS'));
 			return false;
@@ -46,10 +50,10 @@ class SpsimpleportfolioTableItem extends JTable {
 			$this->alias = $this->title;
 		}
 
-		$this->alias = JApplicationHelper::stringURLSafe($this->alias, $this->language);
+		$this->alias = ApplicationHelper::stringURLSafe($this->alias, $this->language);
 
 		if (trim(str_replace('-', '', $this->alias)) == '') {
-			$this->alias = JFactory::getDate()->format('Y-m-d-H-i-s');
+			$this->alias = Factory::getDate()->format('Y-m-d-H-i-s');
 		}
 
 		return true;

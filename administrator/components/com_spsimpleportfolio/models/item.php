@@ -3,18 +3,23 @@
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
 use Joomla\String\StringHelper;
+use Joomla\CMS\Filter\InputFilter;
+use Joomla\CMS\Filter\OutputFilter;
+use Joomla\CMS\MVC\Model\AdminModel;
 
-class SpsimpleportfolioModelItem extends JModelAdmin {
+class SpsimpleportfolioModelItem extends AdminModel {
 
 	public function getTable($type = 'Item', $prefix = 'SpsimpleportfolioTable', $config = array()) {
-		return JTable::getInstance($type, $prefix, $config);
+		return Table::getInstance($type, $prefix, $config);
 	}
 
 	public function getForm($data = array(), $loadData = true) {
@@ -28,7 +33,7 @@ class SpsimpleportfolioModelItem extends JModelAdmin {
 	}
 
 	protected function loadFormData() {
-		$data = JFactory::getApplication()->getUserState( 'com_spsimpleportfolio.edit.item.data', array() );
+		$data = Factory::getApplication()->getUserState( 'com_spsimpleportfolio.edit.item.data', array() );
 
 		if (empty($data)) {
 			$data = $this->getItem();
@@ -48,7 +53,7 @@ class SpsimpleportfolioModelItem extends JModelAdmin {
 	// Get Tags
 	public function getTags($ids = '[]') {
 
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$ids = json_decode($ids);
 
@@ -74,19 +79,19 @@ class SpsimpleportfolioModelItem extends JModelAdmin {
 	}
 
 	public function save($data) {
-		$input  = JFactory::getApplication()->input;
-		$filter = JFilterInput::getInstance();
+		$input  = Factory::getApplication()->input;
+		$filter = InputFilter::getInstance();
 
 		// Automatic handling of alias for empty fields
 		if (in_array($input->get('task'), array('apply', 'save')) && (!isset($data['id']) || (int) $data['id'] == 0)) {
 			if ($data['alias'] == null) {
-				if (JFactory::getConfig()->get('unicodeslugs') == 1) {
-					$data['alias'] = JFilterOutput::stringURLUnicodeSlug($data['title']);
+				if (Factory::getConfig()->get('unicodeslugs') == 1) {
+					$data['alias'] = OutputFilter::stringURLUnicodeSlug($data['title']);
 				} else {
-					$data['alias'] = JFilterOutput::stringURLSafe($data['title']);
+					$data['alias'] = OutputFilter::stringURLSafe($data['title']);
 				}
 
-				$table = JTable::getInstance('Item', 'SpsimpleportfolioTable');
+				$table = Table::getInstance('Item', 'SpsimpleportfolioTable');
 
 				while ($table->load(array('alias' => $data['alias'], 'catid' => $data['catid']))) {
 					$data['alias'] = StringHelper::increment($data['alias'], 'dash');
@@ -110,14 +115,14 @@ class SpsimpleportfolioModelItem extends JModelAdmin {
 		foreach ($tags as $tag) {
 			if(strpos($tag, '#new#') !== false) {
 				$title = str_replace('#new#', '', $tag);
-				$alias = JFilterOutput::stringURLSafe($title);
+				$alias = OutputFilter::stringURLSafe($title);
 
 				// Insert New
 				if(!$this->checkTag($alias)) {
 					$object = new stdClass();
 					$object->title = $title;
 					$object->alias = $alias;
-					$db = JFactory::getDbo();
+					$db = Factory::getDbo();
 					$db->insertObject('#__spsimpleportfolio_tags', $object);
 					$itemTags[] = $db->insertid();
 				}
@@ -134,7 +139,7 @@ class SpsimpleportfolioModelItem extends JModelAdmin {
 	}
 
 	private function checkTag($alias) {
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select('COUNT(alias)');
 		$query->from($db->quoteName('#__spsimpleportfolio_tags'));

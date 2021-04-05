@@ -1,5 +1,12 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\FormController;
+
 /**
  * @package     SP Simple Portfolio
  *
@@ -13,7 +20,7 @@ jimport('joomla.filesystem.file');
 jimport('joomla.filesystem.folder');
 jimport('joomla.application.component.helper');
 
-class SpsimpleportfolioControllerItem extends JControllerForm {
+class SpsimpleportfolioControllerItem extends FormController {
 
 	public function __construct($config = array()) {
 		parent::__construct($config);
@@ -26,11 +33,11 @@ class SpsimpleportfolioControllerItem extends JControllerForm {
 	protected function allowEdit($data = array(), $key = 'id') {
 		$id = isset( $data[ $key ] ) ? $data[ $key ] : 0;
 		if( !empty( $id ) ) {
-			return JFactory::getUser()->authorise( "core.edit", "com_spsimpleportfolio.item." . $id );
+			return Factory::getUser()->authorise( "core.edit", "com_spsimpleportfolio.item." . $id );
 		}
 	}
 
-	protected function postSaveHook(JModelLegacy $model, $validData = array()) {
+	protected function postSaveHook(BaseDatabaseModel $model, $validData = array()) {
 
 		$item = $model->getItem();
 
@@ -43,10 +50,10 @@ class SpsimpleportfolioControllerItem extends JControllerForm {
 		$image = JPATH_ROOT . '/' . $item->image;
 		$alias = $item->alias;
 		$folder = JPATH_ROOT . '/images/spsimpleportfolio/' . $alias;
-		$base_name = JFile::stripExt(basename($item->image));
-		$ext = JFile::getExt($image);
+		$base_name = File::stripExt(basename($item->image));
+		$ext = File::getExt($image);
 
-		$params = JComponentHelper::getParams('com_spsimpleportfolio');
+		$params = ComponentHelper::getParams('com_spsimpleportfolio');
 		$sizes = array();
 
 		// Square
@@ -64,9 +71,9 @@ class SpsimpleportfolioControllerItem extends JControllerForm {
 		$towerArray = explode('x', $tower);
 		$sizes[$base_name . '_' .$tower] = array($towerArray[0], $towerArray[1]);
 
-		if(JFile::exists($image)) {
-			if(!JFolder::exists($folder)) {
-				JFolder::create($folder, 0755);
+		if(File::exists($image)) {
+			if(!Folder::exists($folder)) {
+				Folder::create($folder, 0755);
 			}
 			SpsimpleportfolioHelper::createThumbs($image, $sizes, $folder, '', $ext);
 		}

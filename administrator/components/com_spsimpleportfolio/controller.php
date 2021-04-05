@@ -1,5 +1,11 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Controller\BaseController;
+
 /**
  * @package     SP Simple Portfolio
  *
@@ -9,11 +15,11 @@
 
 defined('_JEXEC') or die();
 
-class SpsimpleportfolioController extends JControllerLegacy {
+class SpsimpleportfolioController extends BaseController {
 	protected $default_view = 'items';
 
 	private function getPortfolioItems() {
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('id', 'alias', 'image')));
 		$query->from($db->quoteName('#__spsimpleportfolio_items'));
@@ -33,10 +39,10 @@ class SpsimpleportfolioController extends JControllerLegacy {
 			$image = JPATH_ROOT . '/' . $item->image;
 			$alias = $item->alias;
 			$folder = JPATH_ROOT . '/images/spsimpleportfolio/' . $alias;
-			$base_name = JFile::stripExt(basename($item->image));
-			$ext = JFile::getExt($image);
+			$base_name = File::stripExt(basename($item->image));
+			$ext = File::getExt($image);
 
-			$params = JComponentHelper::getParams('com_spsimpleportfolio');
+			$params = ComponentHelper::getParams('com_spsimpleportfolio');
 			$sizes = array();
 
 			// Square
@@ -54,9 +60,9 @@ class SpsimpleportfolioController extends JControllerLegacy {
 			$towerArray = explode('x', $tower);
 			$sizes[$base_name . '_' .$tower] = array($towerArray[0], $towerArray[1]);
 
-			if(JFile::exists($image)) {
-				if(!JFolder::exists($folder)) {
-					JFolder::create($folder, 0755);
+			if(File::exists($image)) {
+				if(!Folder::exists($folder)) {
+					Folder::create($folder, 0755);
 				}
 				SpsimpleportfolioHelper::createThumbs($image, $sizes, $folder, '', $ext);
 			}

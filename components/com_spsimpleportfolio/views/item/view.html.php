@@ -1,9 +1,15 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\View\HtmlView;
+
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
@@ -11,7 +17,7 @@ defined('_JEXEC') or die();
 
 JLoader::register('JHtmlString', JPATH_LIBRARIES.'/joomla/html/html/string.php');
 
-class SpsimpleportfolioViewItem extends JViewLegacy {
+class SpsimpleportfolioViewItem extends HtmlView {
 
 	protected $item;
 	protected $params;
@@ -20,9 +26,9 @@ class SpsimpleportfolioViewItem extends JViewLegacy {
 		// Assign data to the view
 		$this->item = $this->get('Item');
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$this->params = $app->getParams();
-		$menus = JFactory::getApplication()->getMenu();
+		$menus = Factory::getApplication()->getMenu();
 		$menu = $menus->getActive();
 
 		if($menu) {
@@ -31,7 +37,7 @@ class SpsimpleportfolioViewItem extends JViewLegacy {
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseWarning(500, implode("\n", $errors));
+			throw new Exception(implode("\n", $errors), 500);
 			return false;
 		}
 
@@ -40,7 +46,7 @@ class SpsimpleportfolioViewItem extends JViewLegacy {
 	}
 
 	protected function _prepareDocument($item) {
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$title = null;
 
 		// Because the application sets a default page title,
@@ -50,19 +56,19 @@ class SpsimpleportfolioViewItem extends JViewLegacy {
 		if (empty($title)) {
 			$title = $app->get('sitename');
 		} elseif ($app->get('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $title);
 		} elseif ($app->get('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
 
 		$this->document->setTitle($title);
 		$this->document->addCustomTag('<meta content="'. $title .'" property="og:title" />');
 		$this->document->addCustomTag('<meta content="website" property="og:type"/>');
-		$this->document->addCustomTag('<meta content="'.JURI::current().'" property="og:url" />');
-		$this->document->addCustomTag('<meta content="'. JURI::root().$item->image.'" property="og:image" />');
+		$this->document->addCustomTag('<meta content="'.Uri::current().'" property="og:url" />');
+		$this->document->addCustomTag('<meta content="'. Uri::root().$item->image.'" property="og:image" />');
 
 		if (isset($item->description) && $item->description) {
-			$meta_desc = JHtml::_('string.truncate', $item->description, 155, false, false);
+			$meta_desc = HTMLHelper::_('string.truncate', $item->description, 155, false, false);
 			$this->document->setDescription($meta_desc);
 			$this->document->addCustomTag('<meta content="'. $meta_desc .'" property="og:description" />');
 		}

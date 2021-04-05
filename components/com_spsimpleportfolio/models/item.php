@@ -1,37 +1,43 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-class SpsimpleportfolioModelItem extends JModelItem {
+class SpsimpleportfolioModelItem extends ItemModel {
 
 	protected $_context = 'com_spsimpleportfolio.item';
 
 	protected function populateState() {
-		$app = JFactory::getApplication('site');
+		$app = Factory::getApplication('site');
 		$itemId = $app->input->getInt('id');
 		$this->setState('item.id', $itemId);
-		$this->setState('filter.language', JLanguageMultilang::isEnabled());
+		$this->setState('filter.language', Multilanguage::isEnabled());
 	}
 
 	public function getItem( $itemId = null ) {
-		JPluginHelper::importPlugin('spsimpleportfolio');
+		PluginHelper::importPlugin('spsimpleportfolio');
 		if (JVERSION < 4) {
 			$dispatcher = JDispatcher::getInstance();
 		} else {
 			$dispatcher = new Joomla\Event\Dispatcher();
 		}
 
-		$params = JFactory::getApplication('com_spsimpleportfolio')->getParams();
+		$params = Factory::getApplication('com_spsimpleportfolio')->getParams();
 		$limitstart = 0;
-		$user = JFactory::getUser();
+		$user = Factory::getUser();
 
 		$itemId = (!empty($itemId))? $itemId : (int)$this->getState('item.id');
 
@@ -57,7 +63,7 @@ class SpsimpleportfolioModelItem extends JModelItem {
 				$query->where('a.published = 1');
 
 				if ($this->getState('filter.language')) {
-					$query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+					$query->where('a.language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 				}
 
 				$db->setQuery($query);
@@ -65,8 +71,8 @@ class SpsimpleportfolioModelItem extends JModelItem {
 
 				// Items Model
 				jimport('joomla.application.component.model');
-				JModelLegacy::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models');
-				$itemsModel = JModelLegacy::getInstance('Items', 'SpsimpleportfolioModel');
+				BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models');
+				$itemsModel = BaseDatabaseModel::getInstance('Items', 'SpsimpleportfolioModel');
 
 				if(isset($data->tagids) && $data->tagids) {
 					$data->spsimpleportfolio_tag_id = json_decode($data->tagids, true);
@@ -74,13 +80,13 @@ class SpsimpleportfolioModelItem extends JModelItem {
 				}
 
 				if (empty($data)) {
-					return JError::raiseError(404, JText::_('COM_SPSIMPLEPORTFOLIO_ERROR_ITEM_NOT_FOUND'));
+					throw new Exception(Text::_('COM_SPSIMPLEPORTFOLIO_ERROR_ITEM_NOT_FOUND'), 404);
 				}
 
-				$user = JFactory::getUser();
+				$user = Factory::getUser();
 				$groups = $user->getAuthorisedViewLevels();
 				if(!in_array($data->access, $groups)) {
-					return JError::raiseError(404, JText::_('COM_SPSIMPLEPORTFOLIO_ERROR_NOT_AUTHORISED'));
+					throw new Exception(Text::_('COM_SPSIMPLEPORTFOLIO_ERROR_NOT_AUTHORISED'), 404);
 				}
 
 				// Event trigger
@@ -94,7 +100,7 @@ class SpsimpleportfolioModelItem extends JModelItem {
 			}
 			catch (Exception $e) {
 				if ($e->getCode() == 404 ) {
-					JError::raiseError(404, $e->getMessage());
+					throw new Exception($e->getMessage(), 404);
 				} else {
 					$this->setError($e);
 					$this->_item[$itemId] = false;

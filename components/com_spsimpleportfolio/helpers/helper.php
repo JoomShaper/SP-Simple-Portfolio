@@ -1,9 +1,11 @@
 <?php
 
+use Joomla\CMS\Factory;
+
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
@@ -17,7 +19,7 @@ class SpsimpleportfolioHelper {
 
 	public static function getTags($ids) {
 		
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		if(!is_array($ids)) {
 			$ids = (array) json_decode($ids, true);
@@ -34,7 +36,7 @@ class SpsimpleportfolioHelper {
 
 
 	public static function getTagList($items) {
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		
 		$tags = array();
@@ -53,7 +55,7 @@ class SpsimpleportfolioHelper {
 
 	public static function getItemId($catid = 0)
 	{
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('id', 'params')));
 		$query->from($db->quoteName('#__menu'));

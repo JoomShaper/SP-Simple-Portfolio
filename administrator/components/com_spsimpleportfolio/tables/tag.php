@@ -1,15 +1,20 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Application\ApplicationHelper;
+
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
 defined('_JEXEC') or die();
 
-class SpsimpleportfolioTableTag extends JTable {
+class SpsimpleportfolioTableTag extends Table {
 
 	public function __construct(&$db) {
 		parent::__construct('#__spsimpleportfolio_tags', 'id', $db);
@@ -18,9 +23,9 @@ class SpsimpleportfolioTableTag extends JTable {
 	public function store($updateNulls = false) {
 
 		// Verify that the alias is unique
-		$table = JTable::getInstance('Tag', 'SpsimpleportfolioTable');
+		$table = Table::getInstance('Tag', 'SpsimpleportfolioTable');
 		if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0)){
-			$this->setError(JText::_('COM_SPSIMPLEPORTFOLIO_ERROR_UNIQUE_ALIAS'));
+			$this->setError(Text::_('COM_SPSIMPLEPORTFOLIO_ERROR_UNIQUE_ALIAS'));
 			return false;
 		}
 
@@ -37,10 +42,10 @@ class SpsimpleportfolioTableTag extends JTable {
 			$this->alias = $this->title;
 		}
 
-		$this->alias = JApplicationHelper::stringURLSafe($this->alias, $this->language);
+		$this->alias = ApplicationHelper::stringURLSafe($this->alias, $this->language);
 
 		if (trim(str_replace('-', '', $this->alias)) == '') {
-			$this->alias = JFactory::getDate()->format('Y-m-d-H-i-s');
+			$this->alias = Factory::getDate()->format('Y-m-d-H-i-s');
 		}
 
 		return true;

@@ -1,9 +1,12 @@
 <?php
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Installer\Installer;
 /**
 * @package     SP Simple Portfolio
 * @subpackage  mod_spsimpleportfolio
 *
-* @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
@@ -25,7 +28,7 @@ class com_spsimpleportfolioInstallerScript
             $name = (string)$module->attributes()->module;
             $client = (string)$module->attributes()->client;
             
-            $db = JFactory::getDBO();
+            $db = Factory::getDBO();
             $query = $db->getQuery(true);
             $query->select($db->quoteName('extension_id'));
             $query->from($db->quoteName('#__extensions'));
@@ -36,7 +39,7 @@ class com_spsimpleportfolioInstallerScript
 
             if (!empty($extension_id))
             {
-                $installer = new JInstaller;
+                $installer = new Installer;
                 $result = $installer->uninstall('module', $extension_id);
                 $status->modules[] = array('name' => $name, 'client' => $client, 'result' => $result);
             }
@@ -50,7 +53,7 @@ class com_spsimpleportfolioInstallerScript
             return true;
         }
 
-        $db = JFactory::getDbo();
+        $db = Factory::getDbo();
         $src = $parent->getParent()->getPath('source');
         $manifest = $parent->getParent()->manifest;
 
@@ -61,7 +64,7 @@ class com_spsimpleportfolioInstallerScript
         {
             try
             {
-                $db = JFactory::getDbo();
+                $db = Factory::getDbo();
                 $queryStr = "ALTER TABLE `#__spsimpleportfolio_items` ADD `client` varchar(100) NOT NULL AFTER `description`";
                 $db->setQuery($queryStr);
                 $db->execute();
@@ -83,7 +86,7 @@ class com_spsimpleportfolioInstallerScript
             $position = (isset($module->attributes()->position) && $module->attributes()->position) ? (string)$module->attributes()->position : '';
             $ordering = (isset($module->attributes()->ordering) && $module->attributes()->ordering) ? (string)$module->attributes()->ordering : 0;
             
-            $installer = new JInstaller;
+            $installer = new Installer;
             $result = $installer->install($path);
         }
     }

@@ -1,15 +1,20 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\MVC\Model\ListModel;
+
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
 defined('_JEXEC') or die();
 
-class SpsimpleportfolioModelItems extends JModelList {
+class SpsimpleportfolioModelItems extends ListModel {
 
 	public function __construct($config = array()) {
 
@@ -35,7 +40,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 	}
 
 	protected function populateState($ordering = 'a.id', $direction = 'desc') {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$context = $this->context;
 
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
@@ -75,8 +80,8 @@ class SpsimpleportfolioModelItems extends JModelList {
 	*/
 	protected function getListQuery() {
 		// Initialize variables.
-		$app = JFactory::getApplication();
-		$db    = JFactory::getDbo();
+		$app = Factory::getApplication();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		// Create the base select statement.
@@ -121,7 +126,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 			$categoryId = $this->getState('filter.category_id');
 
 			if (is_numeric($categoryId)) {
-				$cat_tbl = JTable::getInstance('Category', 'JTable');
+				$cat_tbl = Table::getInstance('Category', 'JTable');
 				$cat_tbl->load($categoryId);
 				$rgt = $cat_tbl->rgt;
 				$lft = $cat_tbl->lft;
@@ -129,7 +134,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 				$query->where('c.lft >= ' . (int) $lft)
 				->where('c.rgt <= ' . (int) $rgt);
 			} elseif (is_array($categoryId)) {
-				JArrayHelper::toInteger($categoryId);
+				ArrayHelper::toInteger($categoryId);
 				$categoryId = implode(',', $categoryId);
 				$query->where('a.catid IN (' . $categoryId . ')');
 			}
@@ -170,7 +175,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 		}
 
 		public function getItemTags($ids, $array = false) {
-			$db = JFactory::getDbo();
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			if(!is_array($ids)) {

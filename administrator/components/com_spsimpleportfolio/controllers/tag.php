@@ -1,15 +1,18 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Controller\FormController;
+
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
 defined('_JEXEC') or die();
 
-class SpsimpleportfolioControllerTag extends JControllerForm {
+class SpsimpleportfolioControllerTag extends FormController {
 
 	public function __construct($config = array()) {
 		parent::__construct($config);
@@ -22,7 +25,7 @@ class SpsimpleportfolioControllerTag extends JControllerForm {
 	protected function allowEdit($data = array(), $key = 'id') {
 		$id = isset( $data[ $key ] ) ? $data[ $key ] : 0;
 		if( !empty( $id ) ) {
-			return JFactory::getUser()->authorise( "core.edit", "com_spsimpleportfolio.tag." . $id );
+			return Factory::getUser()->authorise( "core.edit", "com_spsimpleportfolio.tag." . $id );
 		}
 	}
 }

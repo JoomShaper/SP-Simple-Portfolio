@@ -1,9 +1,11 @@
 <?php
+
+use Joomla\CMS\Language\Text;
 /**
  * @package     SP Simple Portfolio
  * @subpackage  mod_spsimpleportfolio
  *
- * @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
@@ -16,7 +18,7 @@ $layout_type = $params->get('layout_type', 'default');
 	<?php if($params->get('show_filter', 1)) : ?>
 		<div class="sp-simpleportfolio-filter">
 			<ul>
-				<li class="active" data-group="all"><a href="#"><?php echo JText::_('MOD_SPSIMPLEPORTFOLIO_SHOW_ALL'); ?></a></li>
+				<li class="active" data-group="all"><a href="#"><?php echo Text::_('MOD_SPSIMPLEPORTFOLIO_SHOW_ALL'); ?></a></li>
 				<?php foreach ($tagList as $filter) : ?>
 				<li data-group="<?php echo $filter->alias; ?>"><a href="#"><?php echo $filter->title; ?></a></li>
 				<?php endforeach; ?>
@@ -68,11 +70,11 @@ $layout_type = $params->get('layout_type', 'default');
 							<div>
 								<div class="sp-simpleportfolio-btns">
 									<?php if( $item->video ) : ?>
-										<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $item->id; ?>"><?php echo JText::_('MOD_SPSIMPLEPORTFOLIO_WATCH'); ?></a>
+										<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $item->id; ?>"><?php echo Text::_('MOD_SPSIMPLEPORTFOLIO_WATCH'); ?></a>
 									<?php else: ?>
-										<a class="btn-zoom" href="<?php echo $item->popup_img_url; ?>" data-featherlight="image"><?php echo JText::_('MOD_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
+										<a class="btn-zoom" href="<?php echo $item->popup_img_url; ?>" data-featherlight="image"><?php echo Text::_('MOD_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
 									<?php endif; ?>
-									<a class="btn-view" href="<?php echo $item->url; ?>"><?php echo JText::_('MOD_SPSIMPLEPORTFOLIO_VIEW'); ?></a>
+									<a class="btn-view" href="<?php echo $item->url; ?>"><?php echo Text::_('MOD_SPSIMPLEPORTFOLIO_VIEW'); ?></a>
 								</div>
 
 								<?php if($layout_type!='default') : ?>

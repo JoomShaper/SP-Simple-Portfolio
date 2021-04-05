@@ -1,9 +1,14 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Component\ComponentHelper;
+
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
@@ -16,19 +21,19 @@ class SpsimpleportfolioHelper {
   public static function addSubmenu($submenu) {
 
     JHtmlSidebar::addEntry(
-      JText::_('COM_SPSIMPLEPORTFOLIO_TITLE_ITEMS'),
+      Text::_('COM_SPSIMPLEPORTFOLIO_TITLE_ITEMS'),
       'index.php?option=com_spsimpleportfolio&view=items',
       $submenu == 'items'
     );
 
     JHtmlSidebar::addEntry(
-      JText::_('COM_SPSIMPLEPORTFOLIO_CATEGORIES'),
+      Text::_('COM_SPSIMPLEPORTFOLIO_CATEGORIES'),
       'index.php?option=com_categories&view=categories&extension=com_spsimpleportfolio',
       $submenu == 'categories'
     );
 
     JHtmlSidebar::addEntry(
-      JText::_('COM_SPSIMPLEPORTFOLIO_TITLE_TAGS'),
+      Text::_('COM_SPSIMPLEPORTFOLIO_TITLE_TAGS'),
       'index.php?option=com_spsimpleportfolio&view=tags',
       $submenu == 'tags'
     );
@@ -38,7 +43,7 @@ class SpsimpleportfolioHelper {
   public static function createThumbs($src, $sizes = array(), $folder, $base_name, $ext) {
     
     // Get params
-    $params = JComponentHelper::getParams('com_spsimpleportfolio');
+    $params = ComponentHelper::getParams('com_spsimpleportfolio');
     $img_crop_position = $params->get('crop_position', 'center');
 
     list($originalWidth, $originalHeight) = getimagesize($src);
@@ -123,7 +128,7 @@ class SpsimpleportfolioHelper {
     $output = new stdClass();
     $output->url = '';
 
-    if(JPluginHelper::isEnabled('spsimpleportfolio', 'sppagebuilder')) {
+    if(PluginHelper::isEnabled('spsimpleportfolio', 'sppagebuilder')) {
       $hasPage = self::hasPBPage($item->id);
       $output->hasPage = $hasPage;
 
@@ -133,8 +138,8 @@ class SpsimpleportfolioHelper {
         $router = $app->getRouter();
 
         $lang_code = (isset($item->language) && $item->language && explode('-',$item->language)[0])? explode('-',$item->language)[0] : '';
-        $enable_lang_filter = JPluginHelper::getPlugin('system', 'languagefilter');
-        $conf = JFactory::getConfig();
+        $enable_lang_filter = PluginHelper::getPlugin('system', 'languagefilter');
+        $conf = Factory::getConfig();
 
         $front_link = 'index.php?option=com_sppagebuilder&view=form&tmpl=componenet&layout=edit&extension=com_spsimpleportfolio&extension_view=item&id=' . $hasPage;
         $sefURI = str_replace('/administrator', '', $router->build($front_link));
@@ -152,7 +157,7 @@ class SpsimpleportfolioHelper {
   }
 
   public static function hasPBPage($view_id = 0) {
-    $db = JFactory::getDbo();
+    $db = Factory::getDbo();
     $query = $db->getQuery(true);
     $query->select($db->quoteName(array('id')));
     $query->from($db->quoteName('#__sppagebuilder'));

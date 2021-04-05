@@ -1,15 +1,20 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView;
+
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
 defined('_JEXEC') or die();
 
-class SpsimpleportfolioViewItems extends JViewLegacy {
+class SpsimpleportfolioViewItems extends HtmlView {
 
 	protected $items;
 	protected $params;
@@ -22,9 +27,9 @@ class SpsimpleportfolioViewItems extends JViewLegacy {
 		$this->pagination	= $this->get('Pagination');
 		$this->tagList = $model->getTagList($this->items);
 
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$this->params = $app->getParams();
-		$menus = JFactory::getApplication()->getMenu();
+		$menus = Factory::getApplication()->getMenu();
 		$menu = $menus->getActive();
 
 		if($menu) {
@@ -39,7 +44,7 @@ class SpsimpleportfolioViewItems extends JViewLegacy {
 		$this->layout_type = str_replace('_', '-', $this->params->get('layout_type', 'default'));
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JLog::add(implode('<br />', $errors), JLog::WARNING, 'jerror');
+			Log::add(implode('<br />', $errors), Log::WARNING, 'jerror');
 			return false;
 		}
 
@@ -48,7 +53,7 @@ class SpsimpleportfolioViewItems extends JViewLegacy {
 	}
 
 	protected function _prepareDocument() {
-		$app   = JFactory::getApplication();
+		$app   = Factory::getApplication();
 		$menus = $app->getMenu();
 		$title = null;
 
@@ -56,7 +61,7 @@ class SpsimpleportfolioViewItems extends JViewLegacy {
 		if ($menu) {
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
 		} else {
-			$this->params->def('page_heading', JText::_('COM_SPSIMPLEPORTFOLIO_DEFAULT_PAGE_TITLE'));
+			$this->params->def('page_heading', Text::_('COM_SPSIMPLEPORTFOLIO_DEFAULT_PAGE_TITLE'));
 		}
 
 		$title = $this->params->get('page_title', '');
@@ -64,9 +69,9 @@ class SpsimpleportfolioViewItems extends JViewLegacy {
 		if (empty($title)) {
 			$title = $app->get('sitename');
 		} elseif ($app->get('sitename_pagetitles', 0) == 1) {
-			$title = JText::sprintf('JPAGETITLE', $app->get('sitename'), $title);
+			$title = Text::sprintf('JPAGETITLE', $app->get('sitename'), $title);
 		} elseif ($app->get('sitename_pagetitles', 0) == 2) {
-			$title = JText::sprintf('JPAGETITLE', $title, $app->get('sitename'));
+			$title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
 		}
 
 		$this->document->setTitle($title);

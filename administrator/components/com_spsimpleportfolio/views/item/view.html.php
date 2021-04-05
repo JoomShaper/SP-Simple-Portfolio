@@ -2,15 +2,19 @@
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView;
 use Joomla\CMS\Helper\ContentHelper;
+use Joomla\CMS\Toolbar\ToolbarHelper;
 
-class SpsimpleportfolioViewItem extends JViewLegacy {
+class SpsimpleportfolioViewItem extends HtmlView {
 
 	protected $form;
 	protected $item;
@@ -27,7 +31,7 @@ class SpsimpleportfolioViewItem extends JViewLegacy {
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
-			JError::raiseError(500, implode('<br />', $errors));
+			throw new Exception(implode('<br />', $errors), 500);
 			return false;
 		}
 
@@ -36,17 +40,17 @@ class SpsimpleportfolioViewItem extends JViewLegacy {
 	}
 
 	protected function addToolBar() {
-		$user = JFactory::getUser();
-		$input = JFactory::getApplication()->input;
+		$user = Factory::getUser();
+		$input = Factory::getApplication()->input;
 		$input->set('hidemainmenu', true);
 		$isNew = ($this->item->id == 0);
-		JToolBarHelper::title(JText::_('COM_SPSIMPLEPORTFOLIO_MANAGER') .  ($isNew ? JText::_('COM_SPSIMPLEPORTFOLIO_ITEM_NEW') : JText::_('COM_SPSIMPLEPORTFOLIO_ITEM_EDIT')), 'pictures');
+		ToolbarHelper::title(Text::_('COM_SPSIMPLEPORTFOLIO_MANAGER') .  ($isNew ? Text::_('COM_SPSIMPLEPORTFOLIO_ITEM_NEW') : Text::_('COM_SPSIMPLEPORTFOLIO_ITEM_EDIT')), 'pictures');
 
 		if ($this->canDo->get('core.edit') || ($this->canDo->get('core.edit.own') && $this->item->created_by == $user->id)) {
-			JToolBarHelper::apply('item.apply', 'JTOOLBAR_APPLY');
-			JToolBarHelper::save('item.save', 'JTOOLBAR_SAVE');
+			ToolbarHelper::apply('item.apply', 'JTOOLBAR_APPLY');
+			ToolbarHelper::save('item.save', 'JTOOLBAR_SAVE');
 		}
 
-		JToolBarHelper::cancel('item.cancel', 'JTOOLBAR_CLOSE');
+		ToolbarHelper::cancel('item.cancel', 'JTOOLBAR_CLOSE');
 	}
 }

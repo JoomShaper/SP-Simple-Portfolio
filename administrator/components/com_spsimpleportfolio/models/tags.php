@@ -1,15 +1,18 @@
 <?php
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ListModel;
+
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
 defined('_JEXEC') or die();
 
-class SpsimpleportfolioModelTags extends JModelList {
+class SpsimpleportfolioModelTags extends ListModel {
 
 	public function __construct($config = array()) {
 
@@ -24,7 +27,7 @@ class SpsimpleportfolioModelTags extends JModelList {
 	}
 
 	protected function populateState($ordering = 'a.id', $direction = 'desc') {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$context = $this->context;
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -38,8 +41,8 @@ class SpsimpleportfolioModelTags extends JModelList {
 
 	protected function getListQuery() {
 
-		$app = JFactory::getApplication();
-		$db    = JFactory::getDbo();
+		$app = Factory::getApplication();
+		$db    = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$query->select(

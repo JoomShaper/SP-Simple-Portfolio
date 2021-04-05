@@ -3,7 +3,7 @@
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2020 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
@@ -12,9 +12,15 @@ defined('_JEXEC') or die();
 jimport( 'joomla.filesystem.file' );
 jimport('joomla.filesystem.folder');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
+use Joomla\CMS\Filesystem\File;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\MVC\Model\ListModel;
 
-class SpsimpleportfolioModelItems extends JModelList {
+class SpsimpleportfolioModelItems extends ListModel {
 
 	public function __construct($config = array())
 	{
@@ -43,7 +49,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 	}
 
 	protected function populateState($ordering = null, $direction = null) {
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$params = new Registry;
 
 		if ($menu = $app->getMenu()->getActive()) {
@@ -61,8 +67,8 @@ class SpsimpleportfolioModelItems extends JModelList {
 	}
 
 	protected function getListQuery() {
-		$app = JFactory::getApplication();
-		$user = JFactory::getUser();
+		$app = Factory::getApplication();
+		$user = Factory::getUser();
 		if($app->getMenu()->getActive())
 		{
 			// Get Params
@@ -121,7 +127,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 		}
 
 		// Filter by language
-		$query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+		$query->where('a.language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		$query->where('a.published = 1');
 		$query->order($db->quoteName('a.' . $order) . ' ' . $direction);
 
@@ -131,9 +137,9 @@ class SpsimpleportfolioModelItems extends JModelList {
 	public function getItems() {
 		$items = parent::getItems();
 
-		$menus = JFactory::getApplication()->getMenu();
+		$menus = Factory::getApplication()->getMenu();
 		$menu = $menus->getActive();
-		$app = JFactory::getApplication();
+		$app = Factory::getApplication();
 		$params = $app->getParams();
 		if($menu) {
 			$params->merge($menu->getParams());
@@ -176,27 +182,27 @@ class SpsimpleportfolioModelItems extends JModelList {
 
 			$thumb_type = $params->get('thumbnail_type', 'masonry');
 			if($thumb_type == 'masonry') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_' . $sizes[$i] . '.' . JFile::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_' . $sizes[$i] . '.' . File::getExt($item->image);
 			} else if($thumb_type == 'rectangular') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $rectangle .'.' . File::getExt($item->image);
 			} else if($thumb_type == 'tower') {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $tower .'.' . File::getExt($item->image);
 			} else {
-				$item->thumb = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $square .'.' . File::getExt($item->image);
 			}
 
 			$popup_image = $params->get('popup_image', 'default');
 			if($popup_image == 'quare') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $square .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $square .'.' . File::getExt($item->image);
 			} else if($popup_image == 'rectangle') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $rectangle .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $rectangle .'.' . File::getExt($item->image);
 			} else if($popup_image == 'tower') {
-				$item->popup_img_url = JURI::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . JFile::stripExt(basename($item->image)) . '_'. $tower .'.' . JFile::getExt($item->image);
+				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $tower .'.' . File::getExt($item->image);
 			} else {
-				$item->popup_img_url = JURI::base() . $item->image;
+				$item->popup_img_url = Uri::base() . $item->image;
 			}
 
-			$item->url = JRoute::_('index.php?option=com_spsimpleportfolio&view=item&id='. $item->id . ':' . $item->alias . SpsimpleportfolioHelper::getItemid($item->catid));
+			$item->url = Route::_('index.php?option=com_spsimpleportfolio&view=item&id='. $item->id . ':' . $item->alias . SpsimpleportfolioHelper::getItemid($item->catid));
 
 			$i++;
 			if($i==11) {
@@ -208,7 +214,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 	}
 
 	public function getTagList($items) {
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		$tags = array();
@@ -227,7 +233,7 @@ class SpsimpleportfolioModelItems extends JModelList {
 	}
 
 	public function getItemTags($ids, $array = false) {
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		if(!is_array($ids)) {
