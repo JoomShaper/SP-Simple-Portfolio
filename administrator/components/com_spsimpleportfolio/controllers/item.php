@@ -16,10 +16,6 @@ use Joomla\CMS\MVC\Controller\FormController;
 
 defined('_JEXEC') or die();
 
-jimport('joomla.filesystem.file');
-jimport('joomla.filesystem.folder');
-jimport('joomla.application.component.helper');
-
 class SpsimpleportfolioControllerItem extends FormController {
 
 	public function __construct($config = array()) {

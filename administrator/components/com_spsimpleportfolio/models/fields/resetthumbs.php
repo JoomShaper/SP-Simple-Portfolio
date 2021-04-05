@@ -13,8 +13,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 defined('JPATH_PLATFORM') or die;
 
-jimport('joomla.form.formfield');
-
 class JFormFieldResetthumbs extends FormField {
 
 	protected $type = 'Resetthumbs';

@@ -40,7 +40,7 @@ class SpsimpleportfolioHelper {
   }
 
   // Create thumbs
-  public static function createThumbs($src, $sizes = array(), $folder, $base_name, $ext) {
+  public static function createThumbs($src, $sizes = array(), $folder = '', $base_name = '', $ext = '') {
     
     // Get params
     $params = ComponentHelper::getParams('com_spsimpleportfolio');
