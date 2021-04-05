@@ -79,7 +79,7 @@ class SpsimpleportfolioModelItems extends ListModel {
 		}
 		else
 		{
-			$order = 'a.ordering';
+			$order = 'ordering';
 			$direction = 'ASC';
 		}
 		// Create a new query object.
@@ -214,50 +214,61 @@ class SpsimpleportfolioModelItems extends ListModel {
 	}
 
 	public function getTagList($items) {
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
+		try {
+			$db = Factory::getDbo();
+			$query = $db->getQuery(true);
 
-		$tags = array();
+			$tags = array();
 
-		foreach ($items as $item) {
-			$itemtags = json_decode( $item->tagids );
-			foreach ($itemtags as $itemtag) {
-				$tags[] = $itemtag;
+			foreach ($items as $item) {
+				$itemtags = json_decode( $item->tagids );
+				foreach ($itemtags as $itemtag) {
+					$tags[] = $itemtag;
+				}
 			}
-		}
 
-		$json = json_encode(array_unique($tags));
-		$result = $this->getItemTags($json);
+			$json = json_encode(array_unique($tags));
+			$result = $this->getItemTags($json);
+		} catch (\Exception $e) {
+			echo $e->getMessage();
+		}
+		
 
 		return $result;
 	}
 
 	public function getItemTags($ids, $array = false) {
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
 
-		if(!is_array($ids)) {
-			$ids = (array) json_decode($ids, true);
-		}
+		try {
+			$db = Factory::getDbo();
+			$query = $db->getQuery(true);
 
-		$ids = implode(',', $ids);
-		$query->select($db->quoteName(array('id', 'title', 'alias')));
-		$query->from($db->quoteName('#__spsimpleportfolio_tags'));
-		$query->where($db->quoteName('id')." IN (" . $ids . ")");
-		$query->order('id ASC');
-		$db->setQuery($query);
-
-		$items = $db->loadObjectList();
-
-		if($array == true) {
-			$tags = array();
-			foreach ($items as $item) {
-				$tags[] = $item->title;
+			if(!is_array($ids)) {
+				$ids = (array) json_decode($ids, true);
 			}
-			return $tags;
-		} else {
-			return $items;
+
+			$ids = implode(',', $ids);
+			$query->select($db->quoteName(array('id', 'title', 'alias')));
+			$query->from($db->quoteName('#__spsimpleportfolio_tags'));
+			$query->where($db->quoteName('id')." IN (" . $ids . ")");
+			$query->order('id ASC');
+			$db->setQuery($query);
+
+			$items = $db->loadObjectList();
+
+			if($array == true) {
+				$tags = array();
+				foreach ($items as $item) {
+					$tags[] = $item->title;
+				}
+				return $tags;
+			} else {
+				return $items;
+			}
+		} catch (\Exception $e) {
+			echo $e->getMessage();
 		}
+		
 
 		return array();
 	}
