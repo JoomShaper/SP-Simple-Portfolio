@@ -19,7 +19,6 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 require_once __DIR__ . '/helper.php';
 
 HTMLHelper::_('jquery.framework');
-jimport('joomla.application.component.model');
 BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models');
 require_once JPATH_BASE . '/components/com_spsimpleportfolio/helpers/helper.php';
 

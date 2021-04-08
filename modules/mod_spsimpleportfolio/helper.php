@@ -16,8 +16,6 @@ use Joomla\CMS\Filesystem\File;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
-jimport( 'joomla.filesystem.file' );
-jimport('joomla.filesystem.folder');
 
 BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models', 'SpsimpleportfolioModel');
 
