@@ -1,7 +1,4 @@
 <?php
-
-use Joomla\CMS\Factory;
-
 /**
 * @package     SP Simple Portfolio
 *
@@ -11,6 +8,7 @@ use Joomla\CMS\Factory;
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
 class SpsimpleportfolioHelper {
 
 	public static function generateMeta($item = '') {

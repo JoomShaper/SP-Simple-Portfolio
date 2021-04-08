@@ -1,18 +1,18 @@
 <?php
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\MVC\Model\AdminModel;
 
 /**
-* @package     SP Simple Portfolio
-*
-* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
-* @license     GNU General Public License version 2 or later.
-*/
+ * @package     SP Simple Portfolio
+ *
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
+ * @license     GNU General Public License version 2 or later.
+ */
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\MVC\Model\AdminModel;
 class SpsimpleportfolioModelTag extends AdminModel {
 
 	public function getTable($type = 'Tag', $prefix = 'SpsimpleportfolioTable', $config = array()) {

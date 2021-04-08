@@ -1,11 +1,4 @@
 <?php
-
-use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\Helper\ModuleHelper;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 /**
  * @package     SP Simple Portfolio
  * @subpackage  mod_spsimpleportfolio
@@ -15,6 +8,13 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Helper\ModuleHelper;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 require_once __DIR__ . '/helper.php';
 

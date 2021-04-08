@@ -1,11 +1,5 @@
 <?php
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-use Joomla\CMS\MVC\Controller\FormController;
 
 /**
  * @package     SP Simple Portfolio
@@ -16,6 +10,12 @@ use Joomla\CMS\MVC\Controller\FormController;
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\MVC\Controller\FormController;
 class SpsimpleportfolioControllerItem extends FormController {
 
 	public function __construct($config = array()) {

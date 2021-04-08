@@ -1,11 +1,4 @@
 <?php
-
-use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\ItemModel;
-use Joomla\CMS\Plugin\PluginHelper;
-use Joomla\CMS\Language\Multilanguage;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
-
 /**
 * @package     SP Simple Portfolio
 *
@@ -16,6 +9,11 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\ItemModel;
+use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class SpsimpleportfolioModelItem extends ItemModel {
 
 	protected $_context = 'com_spsimpleportfolio.item';

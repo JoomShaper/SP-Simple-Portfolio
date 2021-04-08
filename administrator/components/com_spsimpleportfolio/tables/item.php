@@ -1,8 +1,5 @@
 <?php
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Application\ApplicationHelper;
 
 /**
  * @package     SP Simple Portfolio
@@ -13,6 +10,9 @@ use Joomla\CMS\Application\ApplicationHelper;
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Application\ApplicationHelper;
 class SpsimpleportfolioTableItem extends Table {
 
 	public function __construct(&$db) {

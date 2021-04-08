@@ -1,16 +1,17 @@
 <?php
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Installer\Installer;
 /**
-* @package     SP Simple Portfolio
-* @subpackage  mod_spsimpleportfolio
-*
-* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
-* @license     GNU General Public License version 2 or later.
-*/
+ * @package     SP Simple Portfolio
+ * @subpackage  mod_spsimpleportfolio
+ *
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
+ * @license     GNU General Public License version 2 or later.
+ */
 
 defined('_JEXEC') or die('Restricted Access!');
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Installer\Installer;
 
 class com_spsimpleportfolioInstallerScript
 {

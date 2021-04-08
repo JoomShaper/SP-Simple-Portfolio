@@ -1,9 +1,5 @@
 <?php
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Form\FormField;
-use Joomla\CMS\HTML\HTMLHelper;
 /**
  * @package     SP Simple Portfolio
  *
@@ -13,6 +9,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 
 defined('JPATH_PLATFORM') or die;
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Form\FormField;
+use Joomla\CMS\HTML\HTMLHelper;
 class JFormFieldResetthumbs extends FormField {
 
 	protected $type = 'Resetthumbs';

@@ -1,11 +1,4 @@
 <?php
-
-use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
-use Joomla\CMS\MVC\View\HtmlView;
-
 /**
  * @package     SP Simple Portfolio
  *
@@ -14,6 +7,12 @@ use Joomla\CMS\MVC\View\HtmlView;
  */
 
 defined('_JEXEC') or die();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\MVC\View\HtmlView;
 
 JLoader::register('JHtmlString', JPATH_LIBRARIES.'/joomla/html/html/string.php');
 

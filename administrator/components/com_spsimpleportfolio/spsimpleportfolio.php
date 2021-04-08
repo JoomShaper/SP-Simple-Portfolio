@@ -1,8 +1,5 @@
 <?php
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\Controller\BaseController;
 /**
  * @package     SP Simple Portfolio
  *
@@ -11,6 +8,10 @@ use Joomla\CMS\MVC\Controller\BaseController;
  */
 
 defined('_JEXEC') or die();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 if (!Factory::getUser()->authorise('core.manage', 'com_spsimpleportfolio')) {
 	throw new Exception(Text::_('JERROR_ALERTNOAUTHOR'));

@@ -1,11 +1,4 @@
 <?php
-
-use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\Filesystem\File;
-use Joomla\Utilities\ArrayHelper;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 /**
  * @package     SP Simple Portfolio
  * @subpackage  mod_spsimpleportfolio
@@ -15,6 +8,13 @@ use Joomla\CMS\MVC\Model\BaseDatabaseModel;
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Filesystem\File;
+use Joomla\Utilities\ArrayHelper;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 
 jimport( 'joomla.filesystem.file' );
 jimport('joomla.filesystem.folder');

@@ -1,19 +1,19 @@
 <?php
 
+
+/**
+ * @package     SP Simple Portfolio
+ *
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
+ * @license     GNU General Public License version 2 or later.
+ */
+
+defined('JPATH_PLATFORM') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
-
-/**
-* @package     SP Simple Portfolio
-*
-* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
-* @license     GNU General Public License version 2 or later.
-*/
-
-defined('JPATH_PLATFORM') or die;
-
 class JFormFieldTaglist extends FormField {
 
 	public $type = 'Taglist';

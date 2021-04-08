@@ -1,8 +1,5 @@
 <?php
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\HTML\HTMLHelper;
 
 /**
  * @package     SP Simple Portfolio
@@ -12,6 +9,10 @@ use Joomla\CMS\HTML\HTMLHelper;
  */
 
 defined('_JEXEC') or die();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $doc = Factory::getDocument();
 HTMLHelper::_('behavior.formvalidator');

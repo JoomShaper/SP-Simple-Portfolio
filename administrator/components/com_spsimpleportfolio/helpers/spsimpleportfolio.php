@@ -1,19 +1,19 @@
 <?php
 
+
+/**
+ * @package     SP Simple Portfolio
+ *
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
+ * @license     GNU General Public License version 2 or later.
+ */
+
+defined('_JEXEC') or die;
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
-
-/**
-* @package     SP Simple Portfolio
-*
-* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
-* @license     GNU General Public License version 2 or later.
-*/
-
-defined('_JEXEC') or die;
-
 class SpsimpleportfolioHelper {
 
   public static $extension = 'com_spsimpleportfolio';

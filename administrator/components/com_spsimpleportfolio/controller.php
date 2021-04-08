@@ -1,11 +1,4 @@
 <?php
-
-use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
-use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\MVC\Controller\BaseController;
-
 /**
  * @package     SP Simple Portfolio
  *
@@ -14,6 +7,12 @@ use Joomla\CMS\MVC\Controller\BaseController;
  */
 
 defined('_JEXEC') or die();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\MVC\Controller\BaseController;
 
 class SpsimpleportfolioController extends BaseController {
 	protected $default_view = 'items';

@@ -1,6 +1,4 @@
 <?php
-
-use Joomla\CMS\Language\Text;
 /**
  * @package     SP Simple Portfolio
  * @subpackage  mod_spsimpleportfolio
@@ -10,6 +8,9 @@ use Joomla\CMS\Language\Text;
  */
 
 defined('_JEXEC') or die;
+
+use Joomla\CMS\Language\Text;
+
 jimport( 'joomla.filesystem.file' );
 $layout_type = $params->get('layout_type', 'default');
 ?>

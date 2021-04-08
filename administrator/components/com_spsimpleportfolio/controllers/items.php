@@ -1,7 +1,5 @@
 <?php
 
-use Joomla\CMS\MVC\Controller\AdminController;
-
 /**
  * @package     SP Simple Portfolio
  *
@@ -11,6 +9,7 @@ use Joomla\CMS\MVC\Controller\AdminController;
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\MVC\Controller\AdminController;
 class SpsimpleportfolioControllerItems extends AdminController {
 	public function getModel($name = 'Item', $prefix = 'SpsimpleportfolioModel', $config = array('ignore_request' => true)) {
 		$model = parent::getModel($name, $prefix, $config);

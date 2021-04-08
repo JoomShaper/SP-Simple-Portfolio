@@ -1,11 +1,5 @@
 <?php
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Router\Route;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Layout\LayoutHelper;
-use Joomla\CMS\HTML\HTMLHelper;
-
 /**
  * @package     SP Simple Portfolio
  *
@@ -14,6 +8,12 @@ use Joomla\CMS\HTML\HTMLHelper;
  */
 
 defined('_JEXEC') or die();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Router\Route;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Layout\LayoutHelper;
+use Joomla\CMS\HTML\HTMLHelper;
 
 $user		= Factory::getUser();
 $userId		= $user->get('id');

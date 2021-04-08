@@ -1,10 +1,5 @@
 <?php
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Table\Table;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\Application\ApplicationHelper;
-
 /**
  * @package     SP Simple Portfolio
  *
@@ -14,6 +9,10 @@ use Joomla\CMS\Application\ApplicationHelper;
 
 defined('_JEXEC') or die();
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Application\ApplicationHelper;
 class SpsimpleportfolioTableTag extends Table {
 
 	public function __construct(&$db) {

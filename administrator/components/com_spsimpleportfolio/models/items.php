@@ -1,19 +1,19 @@
 <?php
 
+
+/**
+ * @package     SP Simple Portfolio
+ *
+ * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
+ * @license     GNU General Public License version 2 or later.
+ */
+
+defined('_JEXEC') or die();
+
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\MVC\Model\ListModel;
-
-/**
-* @package     SP Simple Portfolio
-*
-* @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
-* @license     GNU General Public License version 2 or later.
-*/
-
-defined('_JEXEC') or die();
-
 class SpsimpleportfolioModelItems extends ListModel {
 
 	public function __construct($config = array()) {

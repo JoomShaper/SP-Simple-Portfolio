@@ -1,10 +1,5 @@
 <?php
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Log\Log;
-use Joomla\CMS\Language\Text;
-use Joomla\CMS\MVC\View\HtmlView;
-
 /**
 * @package     SP Simple Portfolio
 *
@@ -13,6 +8,11 @@ use Joomla\CMS\MVC\View\HtmlView;
 */
 
 defined('_JEXEC') or die();
+
+use Joomla\CMS\Factory;
+use Joomla\CMS\Log\Log;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\MVC\View\HtmlView;
 
 class SpsimpleportfolioViewItems extends HtmlView {
 

@@ -9,9 +9,6 @@
 
 defined('_JEXEC') or die();
 
-jimport( 'joomla.filesystem.file' );
-jimport('joomla.filesystem.folder');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
