@@ -41,7 +41,8 @@ class SpsimpleportfolioControllerItem extends FormController {
 		 * remove extra value form image name.
 		 */
 		$filteredImage = explode('?', $item->image);
-		$item->image = $filteredImage[0];
+		//$item->image = $filteredImage[0];
+		$item->image = str_replace('%20', ' ', $filteredImage[0]);
 
 		$image = JPATH_ROOT . '/' . $item->image;
 		$alias = $item->alias;

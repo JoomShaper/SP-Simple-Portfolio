@@ -90,8 +90,12 @@ class SpsimpleportfolioHelper {
           }
           $x = 0;
         }
-
-        $new = imagecreatetruecolor($targetWidth, $targetHeight);
+        try {
+          $new = imagecreatetruecolor($targetWidth, $targetHeight);
+        } catch (\Exception $e) {
+          Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+        }
+       
 
         if($ext == "gif" or $ext == "png") {
           imagecolortransparent($new, imagecolorallocatealpha($new, 0, 0, 0, 127));
