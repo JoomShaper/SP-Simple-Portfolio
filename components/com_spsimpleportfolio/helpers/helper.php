@@ -9,6 +9,7 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Multilanguage;
 class SpsimpleportfolioHelper {
 
 	public static function generateMeta($item = '') {
@@ -60,6 +61,11 @@ class SpsimpleportfolioHelper {
 		$query->where($db->quoteName('link') . ' LIKE '. $db->quote('%option=com_spsimpleportfolio&view=items%'));
 		$query->where($db->quoteName('client_id') . ' = '. $db->quote('0'));
 		$query->where($db->quoteName('published') . ' = '. $db->quote('1'));
+		if (Multilanguage::isEnabled())
+		{
+			$lang = Factory::getLanguage()->getTag();
+			$query->where('language IN ("*","' . $lang . '")');
+		}
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 
