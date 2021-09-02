@@ -2,6 +2,7 @@
 __MACOSX
 robots.txt.dist
 *.zip
+/api
 /dist.zip
 /bin
 /cache
