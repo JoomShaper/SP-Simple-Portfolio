@@ -82,7 +82,7 @@ function minify_admin_js() {
 }
 
 function makeZip() {
-	return src('./build/**/*.*').pipe(zip('com_spsimpleportfolio_v2.0.2.zip')).pipe(dest('./'));
+	return src('./build/**/*.*').pipe(zip('com_spsimpleportfolio_v2.0.3.zip')).pipe(dest('./'));
 }
 
 exports.copy = series(
