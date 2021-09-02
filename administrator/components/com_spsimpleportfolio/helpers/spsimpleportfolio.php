@@ -138,7 +138,7 @@ class SpsimpleportfolioHelper {
 
       if ($hasPage) {
 
-        $app = JApplication::getInstance('site');
+        $app = Factory::getApplication();
         $router = $app->getRouter();
 
         $lang_code = (isset($item->language) && $item->language && explode('-',$item->language)[0])? explode('-',$item->language)[0] : '';
