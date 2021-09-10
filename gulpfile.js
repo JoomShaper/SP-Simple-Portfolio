@@ -10,7 +10,7 @@ function cleanBuild() {
 }
 
 function cleanZip() {
-	return src('./com_spsimpleportfolio_v2.0.4.zip', { read: false, allowEmpty: true }).pipe(clean());
+	return src('./com_spsimpleportfolio_v2.0.5.zip', { read: false, allowEmpty: true }).pipe(clean());
 }
 
 function copySite() {
@@ -82,7 +82,7 @@ function minify_admin_js() {
 }
 
 function makeZip() {
-	return src('./build/**/*.*').pipe(zip('com_spsimpleportfolio_v2.0.4.zip')).pipe(dest('./'));
+	return src('./build/**/*.*').pipe(zip('com_spsimpleportfolio_v2.0.5.zip')).pipe(dest('./'));
 }
 
 exports.copy = series(
