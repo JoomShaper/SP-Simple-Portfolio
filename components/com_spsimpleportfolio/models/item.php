@@ -20,32 +20,30 @@ class SpsimpleportfolioModelItem extends ItemModel {
 
 	protected $_context = 'com_spsimpleportfolio.item';
 
-	protected function populateState() {
+	protected function populateState()
+	{
 		$app = Factory::getApplication('site');
 		$itemId = $app->input->getInt('id');
 		$this->setState('item.id', $itemId);
 		$this->setState('filter.language', Multilanguage::isEnabled());
 	}
 
-	public function getItem( $itemId = null ) {
+	public function getItem( $itemId = null )
+	{
 		PluginHelper::importPlugin('spsimpleportfolio');
-		if (JVERSION < 4) {
-			$dispatcher = JDispatcher::getInstance();
-		} else {
-			$dispatcher = new Joomla\Event\Dispatcher();
-		}
-
 		$params = Factory::getApplication('com_spsimpleportfolio')->getParams();
 		$limitstart = 0;
 		$user = Factory::getUser();
 
 		$itemId = (!empty($itemId))? $itemId : (int)$this->getState('item.id');
 
-		if ( $this->_item == null ) {
+		if ( $this->_item == null )
+		{
 			$this->_item = array();
 		}
 
-		if (!isset($this->_item[$itemId])) {
+		if (!isset($this->_item[$itemId]))
+		{
 			try {
 				$db = $this->getDbo();
 				$query = $db->getQuery(true)
@@ -70,11 +68,10 @@ class SpsimpleportfolioModelItem extends ItemModel {
 				$data = $db->loadObject();
 
 				// Items Model
-				jimport('joomla.application.component.model');
 				BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models');
 				$itemsModel = BaseDatabaseModel::getInstance('Items', 'SpsimpleportfolioModel');
 
-				if(isset($data->tagids) && $data->tagids) {
+				if (isset($data->tagids) && $data->tagids) {
 					$data->spsimpleportfolio_tag_id = json_decode($data->tagids, true);
 					$data->tags = $itemsModel->getItemTags($data->tagids, true);
 				}
@@ -90,12 +87,8 @@ class SpsimpleportfolioModelItem extends ItemModel {
 				}
 
 				// Event trigger
-				if (JVERSION < 4) {
-					$dispatcher->trigger('onSPPortfolioPrepareContent', array( 'com_spsimpleportfolio.item', &$data, &$params, $limitstart ));
-				} else {
-					$dispatcher->triggerEvent('onSPPortfolioPrepareContent', array( 'com_spsimpleportfolio.item', &$data, &$params, $limitstart ));
-				}
-
+				Factory::getApplication()->triggerEvent('onSPPortfolioPrepareContent', array( 'com_spsimpleportfolio.item', &$data, &$params, $limitstart ));
+				
 				$this->_item[$itemId] = $data;
 			}
 			catch (Exception $e) {

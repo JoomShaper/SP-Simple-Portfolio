@@ -12,14 +12,17 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Application\ApplicationHelper;
+
 class SpsimpleportfolioTableItem extends Table {
 
 	public function __construct(&$db) {
 		parent::__construct('#__spsimpleportfolio_items', 'id', $db);
 	}
 
-	public function store($updateNulls = false) {
+	public function store($updateNulls = false)
+	{
 		$date = Factory::getDate();
 		$user = Factory::getUser();
 
@@ -47,7 +50,7 @@ class SpsimpleportfolioTableItem extends Table {
 		// Verify that the alias is unique
 		$table = Table::getInstance('Item', 'SpsimpleportfolioTable');
 		if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0)){
-			$this->setError(JText::_('COM_SPSIMPLEPORTFOLIO_ERROR_UNIQUE_ALIAS'));
+			$this->setError(Text::_('COM_SPSIMPLEPORTFOLIO_ERROR_UNIQUE_ALIAS'));
 			return false;
 		}
 
