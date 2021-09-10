@@ -29,11 +29,6 @@ class SpsimpleportfolioModelItem extends ItemModel {
 
 	public function getItem( $itemId = null ) {
 		PluginHelper::importPlugin('spsimpleportfolio');
-		if (JVERSION < 4) {
-			$dispatcher = JDispatcher::getInstance();
-		} else {
-			$dispatcher = new Joomla\Event\Dispatcher();
-		}
 
 		$params = Factory::getApplication('com_spsimpleportfolio')->getParams();
 		$limitstart = 0;
@@ -90,11 +85,9 @@ class SpsimpleportfolioModelItem extends ItemModel {
 				}
 
 				// Event trigger
-				if (JVERSION < 4) {
-					$dispatcher->trigger('onSPPortfolioPrepareContent', array( 'com_spsimpleportfolio.item', &$data, &$params, $limitstart ));
-				} else {
-					$dispatcher->triggerEvent('onSPPortfolioPrepareContent', array( 'com_spsimpleportfolio.item', &$data, &$params, $limitstart ));
-				}
+			
+				Factory::getApplication()->triggerEvent('onSPPortfolioPrepareContent', array( 'com_spsimpleportfolio.item', &$data, &$params, $limitstart ));
+				
 
 				$this->_item[$itemId] = $data;
 			}
