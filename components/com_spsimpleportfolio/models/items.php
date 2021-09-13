@@ -248,7 +248,7 @@ class SpsimpleportfolioModelItems extends ListModel {
 			$query->select($db->quoteName(array('id', 'title', 'alias')));
 			$query->from($db->quoteName('#__spsimpleportfolio_tags'));
 			$query->where($db->quoteName('id')." IN (" . $ids . ")");
-			$query->order('id ASC');
+			$query->order('title ASC');
 			$db->setQuery($query);
 
 			$items = $db->loadObjectList();
