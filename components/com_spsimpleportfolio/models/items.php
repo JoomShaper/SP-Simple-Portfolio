@@ -247,7 +247,10 @@ class SpsimpleportfolioModelItems extends ListModel {
 			$ids = implode(',', $ids);
 			$query->select($db->quoteName(array('id', 'title', 'alias')));
 			$query->from($db->quoteName('#__spsimpleportfolio_tags'));
-			$query->where($db->quoteName('id')." IN (" . $ids . ")");
+			if (!empty($ids))
+			{
+				$query->where($db->quoteName('id')." IN (" . $ids . ")");
+			}
 			$query->order('title ASC');
 			$db->setQuery($query);
 

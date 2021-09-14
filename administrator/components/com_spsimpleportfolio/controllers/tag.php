@@ -1,6 +1,4 @@
 <?php
-
-
 /**
  * @package     SP Simple Portfolio
  *

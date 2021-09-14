@@ -68,61 +68,64 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 		}
 	}
 	?>
+	<?php if (!empty($this->items)) : ?>
+		<div class="sp-simpleportfolio-items sp-simpleportfolio-columns-<?php echo $this->params->get('columns', 3); ?>">
+			<?php foreach ($this->items as $this->item) : ?>
+				<div class="sp-simpleportfolio-item" data-groups='[<?php echo $this->item->groups; ?>]'>
+					<div class="sp-simpleportfolio-overlay-wrapper clearfix">
 
-	<div class="sp-simpleportfolio-items sp-simpleportfolio-columns-<?php echo $this->params->get('columns', 3); ?>">
-		<?php foreach ($this->items as $this->item) : ?>
-			<div class="sp-simpleportfolio-item" data-groups='[<?php echo $this->item->groups; ?>]'>
-				<div class="sp-simpleportfolio-overlay-wrapper clearfix">
+						<?php if($this->item->video) : ?>
+							<span class="sp-simpleportfolio-icon-video"></span>
+						<?php endif; ?>
 
-					<?php if($this->item->video) : ?>
-						<span class="sp-simpleportfolio-icon-video"></span>
-					<?php endif; ?>
+						<img class="sp-simpleportfolio-img" src="<?php echo $this->item->thumb; ?>" alt="<?php echo $this->item->title; ?>">
 
-					<img class="sp-simpleportfolio-img" src="<?php echo $this->item->thumb; ?>" alt="<?php echo $this->item->title; ?>">
-
-					<div class="sp-simpleportfolio-overlay">
-						<div class="sp-vertical-middle">
-							<div>
-								<div class="sp-simpleportfolio-btns">
-									<?php if( $this->item->video ) : ?>
-										<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $this->item->id; ?>"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_WATCH'); ?></a>
-									<?php else: ?>
-										<a class="btn-zoom" href="<?php echo $this->item->popup_img_url; ?>" data-featherlight="image"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
-									<?php endif; ?>
-									<a class="btn-view" href="<?php echo $this->item->url; ?>"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_VIEW'); ?></a>
-								</div>
-								
-								<?php if($this->layout_type != 'default') : ?>
-									<h3 class="sp-simpleportfolio-title">
-										<a href="<?php echo $this->item->url; ?>">
-											<?php echo $this->item->title; ?>
-										</a>
-									</h3>
-									<div class="sp-simpleportfolio-tags">
-										<?php echo implode(', ', $this->item->tags); ?>
+						<div class="sp-simpleportfolio-overlay">
+							<div class="sp-vertical-middle">
+								<div>
+									<div class="sp-simpleportfolio-btns">
+										<?php if( $this->item->video ) : ?>
+											<a class="btn-zoom" href="#" data-featherlight="#sp-simpleportfolio-video<?php echo $this->item->id; ?>"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_WATCH'); ?></a>
+										<?php else: ?>
+											<a class="btn-zoom" href="<?php echo $this->item->popup_img_url; ?>" data-featherlight="image"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_ZOOM'); ?></a>
+										<?php endif; ?>
+										<a class="btn-view" href="<?php echo $this->item->url; ?>"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_VIEW'); ?></a>
 									</div>
-								<?php endif; ?>
+									
+									<?php if($this->layout_type != 'default') : ?>
+										<h3 class="sp-simpleportfolio-title">
+											<a href="<?php echo $this->item->url; ?>">
+												<?php echo $this->item->title; ?>
+											</a>
+										</h3>
+										<div class="sp-simpleportfolio-tags">
+											<?php echo implode(', ', $this->item->tags); ?>
+										</div>
+									<?php endif; ?>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
 
-				<?php if($this->layout_type=='default') : ?>
-					<div class="sp-simpleportfolio-info">
-						<h3 class="sp-simpleportfolio-title">
-							<a href="<?php echo $this->item->url; ?>">
-								<?php echo $this->item->title; ?>
-							</a>
-						</h3>
-						<div class="sp-simpleportfolio-tags">
-							<?php echo implode(', ', $this->item->tags); ?>
+					<?php if($this->layout_type=='default') : ?>
+						<div class="sp-simpleportfolio-info">
+							<h3 class="sp-simpleportfolio-title">
+								<a href="<?php echo $this->item->url; ?>">
+									<?php echo $this->item->title; ?>
+								</a>
+							</h3>
+							<div class="sp-simpleportfolio-tags">
+								<?php echo implode(', ', $this->item->tags); ?>
+							</div>
 						</div>
-					</div>
-				<?php endif; ?>
-			</div>
-		<?php endforeach; ?>
-	</div>
-
+					<?php endif; ?>
+				</div>
+			<?php endforeach; ?>
+		</div>
+	<?php else : ?>
+		<div class="alert alert-danger"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_ERROR_ITEM_NOT_FOUND_IN_CATEGORY'); ?></div>
+	<?php endif; ?>
+	
 	<?php if ($this->pagination->pagesTotal > 1) : ?>
 		<div class="pagination">
 			<?php echo $this->pagination->getPagesLinks(); ?>
