@@ -43,6 +43,6 @@ foreach ($items as $item) {
 $model = BaseDatabaseModel::getInstance('Items', 'SpsimpleportfolioModel');
 $tagList = $model->getTagList($items);
 
-$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+$moduleclass_sfx = htmlspecialchars(is_null($params->get('moduleclass_sfx')) ? '' : $params->get('moduleclass_sfx'));
 
 require ModuleHelper::getLayoutPath('mod_spsimpleportfolio', $params->get('layout', 'default'));

@@ -26,7 +26,7 @@
 			<option value="*">COM_SPSIMPLEPORTFOLIO_LANGUAGE_ALL</option>
 		</field>
 		<field name="access" type="accesslevel" label="JFIELD_ACCESS_LABEL" />
-		<field name="created" type="calendar" label="JGLOBAL_FIELD_CREATED_LABEL" size="22" format="%Y-%m-%d %H:%M:%S" filter="user_utc" />
+		<field name="created" type="calendar" label="JGLOBAL_FIELD_CREATED_LABEL" translateformat="true" showtime="true" size="22" format="%Y-%m-%d %H:%M:%S" filter="user_utc" />
 		<field name="created_by" type="user" label="JGLOBAL_FIELD_CREATED_BY_LABEL" />
 		<field name="checked_out" type="hidden" filter="unset" />
 		<field name="checked_out_time" type="hidden" filter="unset" />
