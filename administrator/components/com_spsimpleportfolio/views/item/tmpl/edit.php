@@ -17,7 +17,10 @@ use Joomla\CMS\HTML\HTMLHelper;
 $doc = Factory::getDocument();
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
-HTMLHelper::_('formbehavior.chosen', 'select', null, array('disable_search_threshold' => 0 ));
+if (JVERSION < 4)
+{
+  HTMLHelper::_('formbehavior.chosen', 'select', null, array('disable_search_threshold' => 0 ));
+}
 $row_css_class = JVERSION < 4 ? 'row-fluid' : 'row';
 $col_css_class = JVERSION < 4 ? 'span' : 'col-lg-';
 ?>
