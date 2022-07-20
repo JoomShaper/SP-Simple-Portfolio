@@ -69,7 +69,7 @@ class SpsimpleportfolioRouter extends RouterView {
 
 		parent::__construct($app, $menu);
 
-		$this->attachRule(new MenuRules($this));
+		// $this->attachRule(new MenuRules($this)); // commented out for fixing the menu highlight issue for different category
 
 		$this->attachRule(new StandardRules($this));
 		$this->attachRule(new NomenuRules($this));
