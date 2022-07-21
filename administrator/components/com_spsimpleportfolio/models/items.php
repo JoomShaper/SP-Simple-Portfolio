@@ -1,6 +1,5 @@
 <?php
 
-
 /**
  * @package     SP Simple Portfolio
  *
@@ -32,6 +31,7 @@ class SpsimpleportfolioModelItems extends ListModel {
 				'ordering', 'a.ordering',
 				'hits', 'a.hits',
 				'language','a.language',
+				'created', 'a.created',
 				'category_id',
 			);
 		}
@@ -39,24 +39,30 @@ class SpsimpleportfolioModelItems extends ListModel {
 		parent::__construct($config);
 	}
 
-	protected function populateState($ordering = 'a.id', $direction = 'desc') {
+	protected function populateState($ordering = 'a.ordering', $direction = 'asc') {
 		$app = Factory::getApplication();
 		$context = $this->context;
 
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
 
-		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
-		$this->setState('filter.access', $access);
-
 		$published = $this->getUserStateFromRequest($this->context . '.filter.published', 'filter_published', '');
 		$this->setState('filter.published', $published);
+
+		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
+		$this->setState('filter.language', $language);
 
 		$categoryId = $this->getUserStateFromRequest($this->context . '.filter.category_id', 'filter_category_id');
 		$this->setState('filter.category_id', $categoryId);
 
-		$language = $this->getUserStateFromRequest($this->context . '.filter.language', 'filter_language', '');
-		$this->setState('filter.language', $language);
+		$formSubmited = $app->input->post->get('form_submited');
+
+		$access = $this->getUserStateFromRequest($this->context . '.filter.access', 'filter_access');
+
+		if ($formSubmited) {
+			$access = $app->input->post->get('access');
+			$this->setState('filter.access', $access);
+		}
 
 		// List state information.
 		parent::populateState($ordering, $direction);
@@ -158,10 +164,11 @@ class SpsimpleportfolioModelItems extends ListModel {
 			}
 
 			// Add the list ordering clause.
-			$orderCol = $app->getUserStateFromRequest($this->context.'filter_order', 'filter_order', 'id', 'cmd');
-			$orderDirn = $app->getUserStateFromRequest($this->context.'filter_order_Dir', 'filter_order_Dir', 'desc', 'cmd');
+			$orderCol 	= $this->getState('list.ordering', 'a.ordering');
+			$orderDirn = $this->getState('list.direction', 'desc');
 
-			$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
+			$order = $db->escape($orderCol) . ' ' . $db->escape($orderDirn);
+			$query->order($order);
 
 			return $query;
 		}

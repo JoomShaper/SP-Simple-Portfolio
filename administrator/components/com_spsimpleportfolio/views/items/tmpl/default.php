@@ -28,12 +28,11 @@ jimport('joomla.filesystem.file');
 jimport( 'joomla.application.component.helper' );
 $cParams = ComponentHelper::getParams('com_spsimpleportfolio');
 
-$user		= Factory::getUser();
-$userId		= $user->get('id');
-
-$listOrder = $this->escape($this->filter_order);
-$listDirn = $this->escape($this->filter_order_Dir);
-$saveOrder = $listOrder == 'a.ordering';
+$user 		= Factory::getUser();
+$listOrder	= $this->escape($this->state->get('list.ordering'));
+$listDirn 	= $this->escape($this->state->get('list.direction'));
+$canOrder 	= $user->authorise('core.edit.state', 'com_spsoccer');
+$saveOrder	= ($listOrder == 'a.ordering');
 
 if ($saveOrder && !empty($this->items))
 {
@@ -67,11 +66,11 @@ if ($saveOrder && !empty($this->items))
 				<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 			</div>
 		<?php else : ?>
-			<table class="table table-striped" id="itemList">
+			<table class="table<?= JVERSION < 4 ? ' table-striped' : ''?>" id="itemList">
 				<thead>
 				<tr>
 					<th width="2%" class="nowrap center hidden-phone">
-						<?php echo HTMLHelper::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder); ?>
+						<?php echo HTMLHelper::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
 					</th>
 					<th width="2%" class="hidden-phone">
 						<?php echo HTMLHelper::_('grid.checkall'); ?>
@@ -80,25 +79,25 @@ if ($saveOrder && !empty($this->items))
 						<?php echo Text::_('COM_SPSIMPLEPORTFOLIO_HEADING_IMAGE'); ?>
 					</th>
 					<th>
-						<?php echo HTMLHelper::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+						<?php echo HTMLHelper::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 					</th>
 					<th width="10%" class="nowrap hidden-phone">
-						<?php echo HTMLHelper::_('grid.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
+						<?php echo HTMLHelper::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 					</th>
 					<th width="10%" class="nowrap hidden-phone">
-						<?php echo HTMLHelper::_('grid.sort',  'JAUTHOR', 'a.created_by', $listDirn, $listOrder); ?>
+						<?php echo HTMLHelper::_('searchtools.sort',  'JAUTHOR', 'a.created_by', $listDirn, $listOrder); ?>
 					</th>
 					<th width="10%" class="nowrap hidden-phone">
-						<?php echo HTMLHelper::_('grid.sort', 'COM_SPSIMPLEPORTFOLIO_HEADING_DATE_CREATED', 'a.created', $listDirn, $listOrder); ?>
+						<?php echo HTMLHelper::_('searchtools.sort', 'COM_SPSIMPLEPORTFOLIO_HEADING_DATE_CREATED', 'a.created', $listDirn, $listOrder); ?>
 					</th>
 					<th width="5%" class="nowrap hidden-phone">
-						<?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
+						<?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'a.language', $listDirn, $listOrder); ?>
 					</th>
 					<th width="1%" class="nowrap center">
-						<?php echo HTMLHelper::_('grid.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+						<?php echo HTMLHelper::_('searchtools.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 					</th>
 					<th width="1%" class="nowrap hidden-phone">
-						<?php echo HTMLHelper::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+						<?php echo HTMLHelper::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 					</th>
 				</tr>
 				</thead>
@@ -128,7 +127,7 @@ if ($saveOrder && !empty($this->items))
 							<?php if(JVERSION < 4) :?>
 							<tr>
 							<?php else: ?>
-							<tr class="row<?php echo $i % 2; ?>" data-draggable-group="<?php echo $item->catid; ?>">
+							<tr class="row<?php echo $i % 2; ?>" data-draggable-group="1">
 							<?php endif; ?>
 								<td class="order nowrap center hidden-phone">
 									<?php
@@ -255,7 +254,5 @@ if ($saveOrder && !empty($this->items))
 
 	<input type="hidden" name="task" value="" />
 	<input type="hidden" name="boxchecked" value="0" />
-	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 	<?php echo HTMLHelper::_('form.token'); ?>
 </form>
