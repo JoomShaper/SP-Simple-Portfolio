@@ -192,7 +192,7 @@ if ($saveOrder && !empty($this->items))
 									<?php endif; ?>
 
 									<?php if(isset($item->tags) && count($item->tags)) : ?>
-										<div style="margin-top: 5px;">
+										<div class="small">
 											<?php echo Text::_('COM_SPSIMPLEPORTFOLIO_ITEMS_TAGS_LABEL'); ?>:
 											<?php foreach ($item->tags as $key => $item->tag) : ?>
 												<?php if ($canEdit) : ?>
@@ -208,9 +208,9 @@ if ($saveOrder && !empty($this->items))
 										<?php if(PluginHelper::isEnabled('spsimpleportfolio', 'sppagebuilder')) : ?>
 											<?php if($integration = SpsimpleportfolioHelper::isPageBuilderIntegrated($item)) : ?>
 												<?php if($integration->url != '') : ?>
-													<a class="btn btn-small btn-success" target="_blank" href="<?php echo $integration->url; ?>">
+													<a class="btn btn-sm btn-success" target="_blank" href="<?php echo $integration->url; ?>">
 												<?php else : ?>
-													<a class="btn btn-small btn-success action-edit-width-sppb" target="_blank" href="#" data-id="<?php echo $item->id; ?>" data-title="<?php echo $this->escape($item->title); ?>">
+													<a class="btn btn-sm btn-success action-edit-width-sppb" target="_blank" href="#" data-id="<?php echo $item->id; ?>" data-title="<?php echo $this->escape($item->title); ?>">
 												<?php endif; ?>
 													<?php echo Text::_('COM_SPSIMPLEPORTFOLIO_TITLE_EDIT_WITH_SPPAGEBUILDER'); ?>
 												</a>
