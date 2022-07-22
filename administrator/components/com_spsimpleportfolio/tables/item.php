@@ -40,13 +40,6 @@ class SpsimpleportfolioTableItem extends Table {
 			$this->modified_by = $user->get('id');
 		}
 
-		if (!(int) $this->checked_out_time) {
-			$this->checked_out_time = $date->toSql();
-		}
-		if (empty($this->checked_out)) {
-			$this->checked_out = $user->get('id');
-		}
-
 		// Verify that the alias is unique
 		$table = Table::getInstance('Item', 'SpsimpleportfolioTable');
 		if ($table->load(array('alias' => $this->alias)) && ($table->id != $this->id || $this->id == 0)){
