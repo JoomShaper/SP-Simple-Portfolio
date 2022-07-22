@@ -95,120 +95,120 @@ class SpsimpleportfolioModelItems extends ListModel {
 			$this->getState(
 				'list.select',
 				'a.*'
-				)
-			);
+			)
+		);
 
-			$query->from('#__spsimpleportfolio_items as a');
+		$query->from('#__spsimpleportfolio_items as a');
 
-			// Join over the language
-			$query->select('l.title AS language_title, l.image AS language_image')
-				->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+		// Join over the language
+		$query->select('l.title AS language_title, l.image AS language_image')
+			->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
 
-			// Join over the users for the checked out user.
-			$query->select('uc.name AS editor')
-			->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor')
+		->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
-			$query->select('ua.name AS author_name')
-			->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
+		$query->select('ua.name AS author_name')
+		->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
 
-			$query->select('ug.title AS access_title')
-			->join('LEFT','#__viewlevels AS ug ON ug.id = a.access');
+		$query->select('ug.title AS access_title')
+		->join('LEFT','#__viewlevels AS ug ON ug.id = a.access');
 
-			// Join over the categories.
-			$query->select('c.title AS category_title')
-			->join('LEFT', '#__categories AS c ON c.id = a.catid');
+		// Join over the categories.
+		$query->select('c.title AS category_title')
+		->join('LEFT', '#__categories AS c ON c.id = a.catid');
 
-			// Filter by published state
-			$published = $this->getState('filter.published');
+		// Filter by published state
+		$published = $this->getState('filter.published');
 
-			if (is_numeric($published)) {
-				$query->where('a.published = ' . (int) $published);
-			} elseif ($published === '') {
-				$query->where('(a.published IN (0, 1))');
-			}
-
-			// Filter by a single or group of categories.
-			$baselevel = 1;
-			$categoryId = $this->getState('filter.category_id');
-
-			if (is_numeric($categoryId)) {
-				$cat_tbl = Table::getInstance('Category', 'JTable');
-				$cat_tbl->load($categoryId);
-				$rgt = $cat_tbl->rgt;
-				$lft = $cat_tbl->lft;
-				$baselevel = (int) $cat_tbl->level;
-				$query->where('c.lft >= ' . (int) $lft)
-				->where('c.rgt <= ' . (int) $rgt);
-			} elseif (is_array($categoryId)) {
-				ArrayHelper::toInteger($categoryId);
-				$categoryId = implode(',', $categoryId);
-				$query->where('a.catid IN (' . $categoryId . ')');
-			}
-
-			// Filter by language
-			if ($language = $this->getState('filter.language')) {
-				$query->where('a.language = ' . $db->quote($language));
-			}
-
-			$search = $this->getState('filter.search');
-			if (!empty($search)) {
-				if (stripos($search, 'id:') === 0) {
-					$query->where('a.id = ' . (int) substr($search, 3));
-				} elseif (stripos($search, 'author:') === 0) {
-					$search = $db->quote('%' . $db->escape(substr($search, 7), true) . '%');
-					$query->where('(uc.name LIKE ' . $search . ' OR uc.username LIKE ' . $search . ')');
-				} else {
-					$search = $db->quote('%' . $db->escape($search, true) . '%');
-					$query->where('(a.title LIKE ' . $search . ')');
-				}
-			}
-
-			// Add the list ordering clause.
-			$orderCol 	= $this->getState('list.ordering', 'a.ordering');
-			$orderDirn = $this->getState('list.direction', 'desc');
-
-			$order = $db->escape($orderCol) . ' ' . $db->escape($orderDirn);
-			$query->order($order);
-
-			return $query;
+		if (is_numeric($published)) {
+			$query->where('a.published = ' . (int) $published);
+		} elseif ($published === '') {
+			$query->where('(a.published IN (0, 1))');
 		}
 
-		public function getItems() {
-			$items = parent::getItems();
-			foreach ($items as $key => & $item) {
-				$item->tags = $this->getItemTags($item->tagids);
+		// Filter by a single or group of categories.
+		$baselevel = 1;
+		$categoryId = $this->getState('filter.category_id');
+
+		if (is_numeric($categoryId)) {
+			$cat_tbl = Table::getInstance('Category', 'JTable');
+			$cat_tbl->load($categoryId);
+			$rgt = $cat_tbl->rgt;
+			$lft = $cat_tbl->lft;
+			$baselevel = (int) $cat_tbl->level;
+			$query->where('c.lft >= ' . (int) $lft)
+			->where('c.rgt <= ' . (int) $rgt);
+		} elseif (is_array($categoryId)) {
+			ArrayHelper::toInteger($categoryId);
+			$categoryId = implode(',', $categoryId);
+			$query->where('a.catid IN (' . $categoryId . ')');
+		}
+
+		// Filter by language
+		if ($language = $this->getState('filter.language')) {
+			$query->where('a.language = ' . $db->quote($language));
+		}
+
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('a.id = ' . (int) substr($search, 3));
+			} elseif (stripos($search, 'author:') === 0) {
+				$search = $db->quote('%' . $db->escape(substr($search, 7), true) . '%');
+				$query->where('(uc.name LIKE ' . $search . ' OR uc.username LIKE ' . $search . ')');
+			} else {
+				$search = $db->quote('%' . $db->escape($search, true) . '%');
+				$query->where('(a.title LIKE ' . $search . ')');
 			}
+		}
+
+		// Add the list ordering clause.
+		$orderCol 	= $this->getState('list.ordering', 'a.ordering');
+		$orderDirn = $this->getState('list.direction', 'desc');
+
+		$order = $db->escape($orderCol) . ' ' . $db->escape($orderDirn);
+		$query->order($order);
+
+		return $query;
+	}
+
+	public function getItems() {
+		$items = parent::getItems();
+		foreach ($items as $key => & $item) {
+			$item->tags = $this->getItemTags($item->tagids);
+		}
+		return $items;
+	}
+
+	public function getItemTags($ids, $array = false) {
+		$db = Factory::getDbo();
+		$query = $db->getQuery(true);
+
+		if(!is_array($ids)) {
+			$ids = (array) json_decode($ids, true);
+		}
+
+		$ids = implode(',', $ids);
+		$query->select($db->quoteName(array('id', 'title', 'alias')));
+		$query->from($db->quoteName('#__spsimpleportfolio_tags'));
+		$query->where($db->quoteName('id')." IN (" . $ids . ")");
+		$query->order('id ASC');
+		$db->setQuery($query);
+
+		$items = $db->loadObjectList();
+
+		if($array == true) {
+			$tags = array();
+			foreach ($items as $item) {
+				$tags[] = $item->title;
+			}
+			return $tags;
+		} else {
 			return $items;
 		}
 
-		public function getItemTags($ids, $array = false) {
-			$db = Factory::getDbo();
-			$query = $db->getQuery(true);
-
-			if(!is_array($ids)) {
-				$ids = (array) json_decode($ids, true);
-			}
-
-			$ids = implode(',', $ids);
-			$query->select($db->quoteName(array('id', 'title', 'alias')));
-			$query->from($db->quoteName('#__spsimpleportfolio_tags'));
-			$query->where($db->quoteName('id')." IN (" . $ids . ")");
-			$query->order('id ASC');
-			$db->setQuery($query);
-
-			$items = $db->loadObjectList();
-
-			if($array == true) {
-				$tags = array();
-				foreach ($items as $item) {
-					$tags[] = $item->title;
-				}
-				return $tags;
-			} else {
-				return $items;
-			}
-
-			return array();
-		}
-
+		return array();
 	}
+
+}
