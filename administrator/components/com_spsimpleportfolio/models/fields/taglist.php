@@ -25,7 +25,7 @@ class JFormFieldTaglist extends FormField {
 
 		$html = array();
 		$attr = '';
-		$attr .= !empty($this->class) ? ' class="' . $this->class . '"' : '';
+		$attr .= !empty($this->class) ? ' class="form-select ' . $this->class . '"' : '';
 		$attr .= !empty($this->size) ? ' size="' . $this->size . '"' : '';
 		$attr .= $this->multiple ? ' multiple' : '';
 		$attr .= $this->required ? ' required aria-required="true"' : '';
