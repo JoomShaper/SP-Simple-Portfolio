@@ -3,7 +3,7 @@
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2022 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
@@ -128,7 +128,7 @@ if ($saveOrder && !empty($this->items))
 							<?php if(JVERSION < 4) :?>
 							<tr>
 							<?php else: ?>
-							<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
+							<tr class="row<?php echo $i % 2; ?>" data-draggable-group="<?php echo $item->catid; ?>">
 							<?php endif; ?>
 								<td class="order nowrap center hidden-phone">
 									<?php

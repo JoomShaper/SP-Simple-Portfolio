@@ -3,7 +3,7 @@
  * @package     SP Simple Portfolio
  * @subpackage  mod_spsimpleportfolio
  *
- * @copyright   Copyright (C) 2010 - 2021 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2022 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
@@ -43,6 +43,6 @@ foreach ($items as $item) {
 $model = BaseDatabaseModel::getInstance('Items', 'SpsimpleportfolioModel');
 $tagList = $model->getTagList($items);
 
-$moduleclass_sfx = htmlspecialchars($params->get('moduleclass_sfx'));
+$moduleclass_sfx = htmlspecialchars(is_null($params->get('moduleclass_sfx')) ? '' : $params->get('moduleclass_sfx'));
 
 require ModuleHelper::getLayoutPath('mod_spsimpleportfolio', $params->get('layout', 'default'));
