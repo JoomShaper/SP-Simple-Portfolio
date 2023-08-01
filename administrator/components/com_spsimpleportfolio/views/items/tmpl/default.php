@@ -204,17 +204,17 @@ if ($saveOrder && !empty($this->items))
 										</div>
 									<?php endif; ?>
 
+
 									<?php if($canEdit) : ?>
 										<?php if(PluginHelper::isEnabled('spsimpleportfolio', 'sppagebuilder')) : ?>
-											<?php if($integration = SpsimpleportfolioHelper::isPageBuilderIntegrated($item)) : ?>
-												<?php if($integration->url != '') : ?>
-													<a class="btn btn-small btn-success" target="_blank" href="<?php echo $integration->url; ?>">
-												<?php else : ?>
-													<a class="btn btn-small btn-success action-edit-width-sppb" target="_blank" href="#" data-id="<?php echo $item->id; ?>" data-title="<?php echo $this->escape($item->title); ?>">
-												<?php endif; ?>
-													<?php echo Text::_('COM_SPSIMPLEPORTFOLIO_TITLE_EDIT_WITH_SPPAGEBUILDER'); ?>
-												</a>
-											<?php endif; ?>
+											<?php 
+											$integration = SpsimpleportfolioHelper::isPageBuilderIntegrated($item); 
+											$frontEndHtml = SpsimpleportfolioHelper::createPageBuilderLink($item,$integration->front_url,'front');
+											$backEndHtml = SpsimpleportfolioHelper::createPageBuilderLink($item,$integration->backend_url,'back');
+											
+											echo $frontEndHtml;
+											echo $backEndHtml;
+										?>							
 										<?php endif; ?>
 									<?php endif; ?>
 								</td>
