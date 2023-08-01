@@ -1,5 +1,5 @@
-jQuery(function($) {
-    $('.action-edit-width-sppb').on('click', function(event) {
+jQuery(function ($) {
+    $('.action-edit-width-sppb').on('click', function (event) {
         event.preventDefault();
 
         var data = {
@@ -7,6 +7,7 @@ jQuery(function($) {
             'extension': 'com_spsimpleportfolio',
             'extension_view': 'item',
             'view_id': $(this).data('id'),
+            'editor' : $(this).data('editor')
         }
 
         $.ajax({
