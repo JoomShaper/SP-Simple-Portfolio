@@ -246,9 +246,10 @@ class SpsimpleportfolioHelper
 	 */
 	public static function createPageBuilderLink($item,$url,$editor)
 	{
+		$className = ($editor === 'front') ? 'btn-success' : 'btn-info';
 		if (isset($url) && !empty($url)) 
 		{
-			$output = "<a class='btn btn-small btn-success mt-3' target='_blank' href='" . $url . "'>";
+			$output = "<a class='btn btn-small $className mt-3' target='_blank' href='" . $url . "'>";
 		}
 		else 
 		{
