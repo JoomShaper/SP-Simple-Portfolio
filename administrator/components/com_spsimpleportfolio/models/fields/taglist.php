@@ -12,31 +12,29 @@ defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Form\FormField;
+use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
-class JFormFieldTaglist extends FormField {
+
+FormHelper::loadFieldClass('list');
+
+class JFormFieldTaglist extends JFormFieldList {
 
 	public $type = 'Taglist';
+	public $layout = 'joomla.form.field.list-fancy-select';
 
-	protected function getInput() {
+	protected function getOptions() {
 
 		$doc = Factory::getDocument();
 		$doc->addScript(Uri::base(true) . '/components/com_spsimpleportfolio/assets/js/tags.js');
 
-		$html = array();
-		$attr = '';
-		$attr .= !empty($this->class) ? ' class="form-select ' . $this->class . '"' : '';
-		$attr .= !empty($this->size) ? ' size="' . $this->size . '"' : '';
-		$attr .= $this->multiple ? ' multiple' : '';
-		$attr .= $this->required ? ' required aria-required="true"' : '';
-		$attr .= $this->autofocus ? ' autofocus' : '';
-		$attr .= $this->onchange ? ' onchange="' . $this->onchange . '"' : '';
+		$tags = (array) $this->getTags();
+		$options = [];
 
-		$options = $this->getTags();
+		foreach ($tags as $tag) {
+			$options[] = HTMLHelper::_('select.option', $tag->value, $tag->text);
+		}
 
-		$html[] = HTMLHelper::_('select.genericlist', $options, $this->name, trim($attr), 'value', 'text', $this->value, $this->id);
-
-		return implode($html);
+		return array_merge(parent::getOptions(), $options);
 	}
 
 	private function getTags() {
