@@ -66,7 +66,13 @@ class com_spsimpleportfolioInstallerScript
             try
             {
                 $db = Factory::getDbo();
-                $queryStr = "ALTER TABLE `#__spsimpleportfolio_items` ADD `client` varchar(100) NOT NULL AFTER `description`";
+                
+                if ($db->getServerType() === 'postgresql') {
+                    $queryStr = 'ALTER TABLE "#__spsimpleportfolio_items" ADD COLUMN client VARCHAR(100) NOT NULL';
+                } else {
+                    $queryStr = "ALTER TABLE `#__spsimpleportfolio_items` ADD `client` varchar(100) NOT NULL AFTER `description`";
+                }
+
                 $db->setQuery($queryStr);
                 $db->execute();
             }

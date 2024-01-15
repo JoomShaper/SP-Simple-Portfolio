@@ -19,8 +19,8 @@ CREATE TABLE IF NOT EXISTS `#__spsimpleportfolio_items` (
   `created` datetime NOT NULL,
   `modified_by` bigint NOT NULL DEFAULT '0',
   `modified` datetime NOT NULL,
-  `checked_out` bigint NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL,
+  `checked_out` bigint NULL,
+  `checked_out_time` datetime NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 

@@ -36,6 +36,9 @@
 
 			<file driver="mysqli" charset="utf8">sql/install/mysql/install.sql</file>
 			<file driver="mysqli">sql/install/mysql/install.sql</file>
+
+			<file driver="postgresql" charset="utf8">sql/install/postgresql/install.sql</file>
+			<file driver="postgresql">sql/install/postgresql/install.sql</file>
 		</sql>
 	</install>
 
@@ -43,6 +46,7 @@
 		<schemas>
 			<schemapath type="mysql">sql/updates/mysql</schemapath>
 			<schemapath type="mysqli">sql/updates/mysql</schemapath>
+			<schemapath type="postgresql">sql/updates/postgresql</schemapath>
 		</schemas>
 	</update>
 
