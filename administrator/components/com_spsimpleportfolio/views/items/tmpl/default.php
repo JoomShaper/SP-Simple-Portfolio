@@ -120,7 +120,7 @@ if ($saveOrder && !empty($this->items))
 							$item->max_ordering = 0;
 							$ordering   = ($listOrder == 'a.ordering');
 							$canEdit    = $user->authorise('core.edit', 'com_spsimpleportfolio.item.' . $item->id) || ($user->authorise('core.edit.own',   'com_spsimpleportfolio.item.' . $item->id) && $item->created_by == $userId);
-							$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
+							$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || is_null($item->checked_out);
 							$canChange  = $user->authorise('core.edit.state', 'com_spsimpleportfolio.item.' . $item->id) && $canCheckin;
 							$link = Route::_('index.php?option=com_spsimpleportfolio&task=item.edit&id=' . $item->id);
 						?>
