@@ -34,7 +34,7 @@
 .sp-simpleportfolio .sp-simpleportfolio-filter > ul > li {
   float: left;
   display: block;
-  margin: 0 5px;
+  margin: 0 5px 5px 0;
 }
 .sp-simpleportfolio .sp-simpleportfolio-filter > ul > li > a {
   display: block;
@@ -288,6 +288,10 @@
   display: none;
 }
 
+.sp-simpleportfolio .pagination {
+  margin-top: 20px;
+}
+
 @media only screen and (max-width : 992px) {
   .sp-simpleportfolio .sp-simpleportfolio-items .sp-simpleportfolio-item {
     width: 50%;
@@ -311,4 +315,9 @@
   .sp-simpleportfolio .sp-simpleportfolio-items .sp-simpleportfolio-item {
     width: 100%;
   }
+}
+
+/* Fixing popup z-index */
+.featherlight {
+  z-index: 9999;
 }

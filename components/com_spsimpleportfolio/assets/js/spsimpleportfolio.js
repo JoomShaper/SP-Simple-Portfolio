@@ -8,6 +8,16 @@
 jQuery(window).on('load', function() {
 	var $container 	= jQuery('.sp-simpleportfolio-items');
 	var $sizer = $container.find('.shuffle__sizer');
+	var $infoMaxHeight = 0;
+
+	jQuery('.sp-simpleportfolio-items .sp-simpleportfolio-item').each(function(){
+		var $currentHeight = jQuery(this).find('.sp-simpleportfolio-info').height();
+		if ($currentHeight > $infoMaxHeight) {
+			$infoMaxHeight = $currentHeight;
+		}
+	});
+
+	jQuery('.sp-simpleportfolio-info').height($infoMaxHeight);
 
 	$container.shuffle({
 		itemSelector: '.sp-simpleportfolio-item',

@@ -55,7 +55,7 @@ class SpsimpleportfolioModelItem extends AdminModel {
 
 		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
-		$ids = json_decode(is_null($ids) ? '' : $ids);
+		$ids = json_decode(is_null($ids) ? '[]' : $ids);
 
 		if(is_array($ids) && count($ids)) {
 			$query

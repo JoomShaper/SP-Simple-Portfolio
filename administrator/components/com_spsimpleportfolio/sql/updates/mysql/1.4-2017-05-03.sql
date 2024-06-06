@@ -4,8 +4,8 @@ ALTER TABLE `#__spsimpleportfolio_items` CHANGE `spsimpleportfolio_tag_id` `tagi
 ALTER TABLE `#__spsimpleportfolio_items` CHANGE `enabled` `published` tinyint NOT NULL DEFAULT '1';
 ALTER TABLE `#__spsimpleportfolio_items` CHANGE `created_on` `created` datetime NOT NULL;
 ALTER TABLE `#__spsimpleportfolio_items` CHANGE `modified_on` `modified` datetime NOT NULL;
-ALTER TABLE `#__spsimpleportfolio_items` CHANGE `locked_by` `checked_out` bigint NOT NULL DEFAULT '0';
-ALTER TABLE `#__spsimpleportfolio_items` CHANGE `locked_on` `checked_out_time` datetime NOT NULL;
+ALTER TABLE `#__spsimpleportfolio_items` CHANGE `locked_by` `checked_out` bigint NULL;
+ALTER TABLE `#__spsimpleportfolio_items` CHANGE `locked_on` `checked_out_time` datetime NULL;
 
 ALTER TABLE `#__spsimpleportfolio_tags` CHANGE `spsimpleportfolio_tag_id` `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
 ALTER TABLE `#__spsimpleportfolio_tags` DROP `language`;

@@ -17,11 +17,19 @@ use Joomla\CMS\Application\ApplicationHelper;
 
 class SpsimpleportfolioTableItem extends Table {
 
+	/**
+     * Indicates that columns fully support the NULL value in the database
+     *
+     * @var    boolean
+     */
+    protected $_supportNullValue = true;
+	
+
 	public function __construct(&$db) {
 		parent::__construct('#__spsimpleportfolio_items', 'id', $db);
 	}
 
-	public function store($updateNulls = false)
+	public function store($updateNulls = true)
 	{
 		$date = Factory::getDate();
 		$user = Factory::getUser();
@@ -38,13 +46,6 @@ class SpsimpleportfolioTableItem extends Table {
 		}
 		if (empty($this->modified_by)) {
 			$this->modified_by = $user->get('id');
-		}
-
-		if (!(int) $this->checked_out_time) {
-			$this->checked_out_time = $date->toSql();
-		}
-		if (empty($this->checked_out)) {
-			$this->checked_out = $user->get('id');
 		}
 
 		// Verify that the alias is unique
@@ -72,6 +73,14 @@ class SpsimpleportfolioTableItem extends Table {
 		if (trim(str_replace('-', '', $this->alias)) == '') {
 			$this->alias = Factory::getDate()->format('Y-m-d-H-i-s');
 		}
+		
+		if (!empty($this->checked_out)) {
+            $this->checked_out = null;
+        }
+
+        if (!empty($this->checked_out_time)) {
+            $this->checked_out_time = null;
+        }
 
 		return true;
 

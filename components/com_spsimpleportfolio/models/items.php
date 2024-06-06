@@ -199,7 +199,9 @@ class SpsimpleportfolioModelItems extends ListModel {
 				$item->popup_img_url = Uri::base() . $item->image;
 			}
 
-			$item->url = Route::_('index.php?option=com_spsimpleportfolio&view=item&id='. $item->id . ':' . $item->alias . SpsimpleportfolioHelper::getItemid($item->catid));
+			$url_string = Route::_('index.php?option=com_spsimpleportfolio&view=item&id='. $item->id . ':' . $item->alias . SpsimpleportfolioHelper::getItemid($item->catid));
+
+			$item->url = Route::_($url_string);
 
 			$i++;
 			if($i==11) {
