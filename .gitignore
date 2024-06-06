@@ -27,7 +27,11 @@ index.php
 robots.txt
 web.config.txt
 
-/plugins
+!/plugins
+/plugins/*
+/plugins/finder/*
+!/plugins/finder/
+!/plugins/finder/spsimpleportfolio
 
 !/modules
 /modules/*
@@ -58,3 +62,5 @@ web.config.txt
 /administrator/language/en-GB/*
 !/administrator/language/en-GB/en-GB.com_spsimpleportfolio.ini
 !/administrator/language/en-GB/en-GB.com_spsimpleportfolio.sys.ini
+!/administrator/language/en-GB/plg_finder_spsimpleportfolio.ini
+!/administrator/language/en-GB/plg_finder_spsimpleportfolio.sys.ini

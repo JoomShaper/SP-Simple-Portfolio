@@ -14,8 +14,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView;
 
-JLoader::register('JHtmlString', JPATH_LIBRARIES.'/joomla/html/html/string.php');
-
 class SpsimpleportfolioViewItem extends HtmlView {
 
 	protected $item;

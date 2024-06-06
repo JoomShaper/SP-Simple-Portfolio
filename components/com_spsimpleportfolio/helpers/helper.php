@@ -89,4 +89,16 @@ class SpsimpleportfolioHelper {
 
 		return '&Itemid=' . $itemId;
 	}
+
+	public static function getItemLink($id, $language)
+	{
+		// Create the link
+        $link = 'index.php?com_spsimpleportfolio&view=item&id=' . $id;
+
+        if ($language && $language !== '*' && Multilanguage::isEnabled()) {
+            $link .= '&lang=' . $language;
+        }
+
+        return $link;
+	}
 }
