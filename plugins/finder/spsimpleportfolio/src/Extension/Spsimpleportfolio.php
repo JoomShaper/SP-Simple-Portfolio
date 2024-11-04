@@ -10,12 +10,13 @@
 
 namespace JoomShaper\Plugin\Finder\Spsimpleportfolio\Extension;
 
-use JLoader;
 use Joomla\CMS\Table\Table;
 use Joomla\Registry\Registry;
 use Joomla\Database\DatabaseQuery;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\Router\Route;
 use Joomla\Component\Finder\Administrator\Indexer\Helper;
 use Joomla\Component\Finder\Administrator\Indexer\Result;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
@@ -24,12 +25,10 @@ use Joomla\Component\Finder\Administrator\Indexer\Adapter;
 \defined('_JEXEC') or die;
 // phpcs:enable PSR1.Files.SideEffects
 
-JLoader::register('SpsimpleportfolioHelper', JPATH_SITE . '/components/com_spsimpleportfolio/helpers/helper.php');
-
 /**
  * Smart Search adapter for com_spsimpleportfolio.
  *
- * @since  1.0.3
+ * @since  1.0.0
  */
 class Spsimpleportfolio extends Adapter
 {
@@ -76,6 +75,14 @@ class Spsimpleportfolio extends Adapter
     protected $table = '#__spsimpleportfolio_items';
 
     /**
+     * The field the published state is stored in.
+     *
+     * @var    string
+     * @since  1.0.0
+     */
+    protected $state_field = 'published';
+
+    /**
      * Load the language file on instantiation.
      *
      * @var    boolean
@@ -109,11 +116,11 @@ class Spsimpleportfolio extends Adapter
         $item->url = $this->getUrl($item->id, $this->extension, $this->layout);
 
         // Build the necessary route and path information.
-        $item->route = SpsimpleportfolioHelper::getItemLink($item->id, $item->language);
+        $item->route = $this->getItemLink($item->id, $item->language);
 
 
         // Add the type taxonomy data.
-        $item->addTaxonomy('Type', 'Product');
+        $item->addTaxonomy('Type', 'Portfolio Item');
 
         // Add the language taxonomy data.
         $item->addTaxonomy('Language', $item->language);
@@ -178,7 +185,7 @@ class Spsimpleportfolio extends Adapter
         $query = $db->getQuery(true);
 
         $query->select($db->quoteName(['id', 'title', 'alias', 'description', 'access']));
-        $query->select($db->quoteName('published'));
+        $query->select($db->quoteName('published', 'state'));
 
         // Handle the alias CASE WHEN portion of the query.
         $case_when_item_alias = ' CASE WHEN ';
@@ -194,4 +201,16 @@ class Spsimpleportfolio extends Adapter
         
         return $query;
     }
+
+    public function getItemLink($id, $language)
+	{
+		// Create the link
+        $link = 'index.php?com_spsimpleportfolio&view=item&id=' . $id;
+
+        if ($language && $language !== '*' && Multilanguage::isEnabled()) {
+            $link .= '&lang=' . $language;
+        }
+
+        return Route::_($link);
+	}
 }
