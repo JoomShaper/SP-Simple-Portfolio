@@ -17,6 +17,7 @@ use Joomla\Database\DatabaseAwareTrait;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Finder\Administrator\Indexer\Helper;
 use Joomla\Component\Finder\Administrator\Indexer\Result;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
@@ -205,12 +206,12 @@ class Spsimpleportfolio extends Adapter
     public function getItemLink($id, $language)
 	{
 		// Create the link
-        $link = 'index.php?com_spsimpleportfolio&view=item&id=' . $id;
+        $link = Uri::root() . 'index.php?option=com_spsimpleportfolio&view=item&id=' . $id;
 
         if ($language && $language !== '*' && Multilanguage::isEnabled()) {
             $link .= '&lang=' . $language;
         }
 
-        return Route::_($link);
+        return $link;
 	}
 }
