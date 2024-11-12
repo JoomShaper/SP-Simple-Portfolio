@@ -14,8 +14,8 @@
 		<folder plugin="spsimpleportfolio">services</folder>
 		<folder>src</folder>
 	</files>
-	<languages>
-		<language tag="en-GB">plg_finder_spsimpleportfolio.ini</language>
-		<language tag="en-GB">plg_finder_spsimpleportfolio.sys.ini</language>
+	<languages folder="language/admin">
+		<language tag="en-GB">en-GB/plg_finder_spsimpleportfolio.ini</language>
+		<language tag="en-GB">en-GB/plg_finder_spsimpleportfolio.sys.ini</language>
 	</languages>
 </extension>

@@ -116,7 +116,7 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 								</a>
 							</h3>
 							<div class="sp-simpleportfolio-tags">
-								<?php echo implode(', ', $item->tags); ?>
+								<?php echo implode(', ', $this->item->tags); ?>
 							</div>
 						</div>
 					<?php endif; ?>
