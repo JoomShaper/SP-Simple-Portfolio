@@ -33,6 +33,10 @@ class ModSpsimpleportfolioHelper {
 		$query->select('a.*, a.id AS spsimpleportfolio_item_id , a.tagids AS spsimpleportfolio_tag_id, a.created AS created_on')
 		->from($db->quoteName('#__spsimpleportfolio_items', 'a'))
 		->where($db->quoteName('a.published') . ' = 1');
+
+		// Join over the categories.
+		$query->select('c.title AS category_title, c.alias AS category_alias')
+			->join('LEFT', '#__categories AS c ON c.id = a.catid');
 		
 		// Filter by a single or group of categories
 		if ($params->get('category_id') != '') {
