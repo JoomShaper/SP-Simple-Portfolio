@@ -58,6 +58,9 @@ $layout_type = $params->get('layout_type', 'default');
 	<div class="sp-simpleportfolio-items sp-simpleportfolio-columns-<?php echo $params->get('columns', 3); ?>">
 		<?php foreach ($items as $item) : ?>
 			<div class="sp-simpleportfolio-item" data-groups='[<?php echo $item->groups; ?>]'>
+				<?php if($layout_type == 'category_title_tag_list') : ?>
+				<div class="sp-simpleportfolio-item-category-title"><?php echo $this->item->category_title; ?></div>
+				<?php endif; ?>
 				<div class="sp-simpleportfolio-overlay-wrapper clearfix">
 					<?php if($item->video) : ?>
 						<span class="sp-simpleportfolio-icon-video"></span>
@@ -92,7 +95,7 @@ $layout_type = $params->get('layout_type', 'default');
 					</div>
 				</div>
 
-				<?php if($layout_type=='default') : ?>
+				<?php if($layout_type == 'default') : ?>
 					<div class="sp-simpleportfolio-info">
 						<h3 class="sp-simpleportfolio-title">
 							<a href="<?php echo $item->url; ?>">
@@ -101,6 +104,23 @@ $layout_type = $params->get('layout_type', 'default');
 						</h3>
 						<div class="sp-simpleportfolio-tags">
 							<?php echo implode(', ', $item->tags); ?>
+						</div>
+					</div>
+				<?php endif; ?>
+
+				<?php if($layout_type == 'category_title_tag_list') : ?>
+					<div class="sp-simpleportfolio-info">
+						<h3 class="sp-simpleportfolio-title">
+							<a href="<?php echo $item->url; ?>">
+								<?php echo $item->title; ?>
+							</a>
+						</h3>
+						<div class=“sp-simpleportfolio-tags”>
+							<ul class=“sp-simpleportfolio-tags-list”>
+								<?php foreach($this->item->tags as $tag) :?>
+									<li class=“sp-simpleportfolio-tags-list-item”><?php echo $tag;?></li>
+								<?php endforeach; ?>
+							</ul>
 						</div>
 					</div>
 				<?php endif; ?>

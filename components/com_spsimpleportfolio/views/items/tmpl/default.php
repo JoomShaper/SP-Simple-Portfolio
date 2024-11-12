@@ -115,6 +115,19 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 									<?php echo $this->item->title; ?>
 								</a>
 							</h3>
+							<div class="sp-simpleportfolio-tags">
+								<?php echo implode(', ', $item->tags); ?>
+							</div>
+						</div>
+					<?php endif; ?>
+
+					<?php if($this->layout_type=='category_title_tag_list') : ?>
+						<div class="sp-simpleportfolio-info">
+							<h3 class="sp-simpleportfolio-title">
+								<a href="<?php echo $this->item->url; ?>">
+									<?php echo $this->item->title; ?>
+								</a>
+							</h3>
 							<div class=“sp-simpleportfolio-tags”>
                                 <ul class=“sp-simpleportfolio-tags-list”>
                                     <?php foreach($this->item->tags as $tag) :?>

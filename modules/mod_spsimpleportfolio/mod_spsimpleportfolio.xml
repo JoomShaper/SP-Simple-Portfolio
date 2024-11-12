@@ -37,6 +37,7 @@
 					<option value="default">MOD_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_DEFAULT</option>
 					<option value="gallery_space">MOD_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_GALLERY_SPACE</option>
 					<option value="gallery_nospace">MOD_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_GALLERY_NOSPACE</option>
+					<option value="category_title_tag_list">MOD_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_CATEGORY_TITLE_TAG_LIST</option>
 				</field>
 				<field name="columns" type="list" default="3" label="MOD_SPSIMPLEPORTFOLIO_FIELD_COLUMNS" description="MOD_SPSIMPLEPORTFOLIO_FIELD_COLUMNS_DESC">
 					<option value="2">MOD_SPSIMPLEPORTFOLIO_FIELD_LAYOUT_COLUMNS_2</option>
