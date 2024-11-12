@@ -72,7 +72,9 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 		<div class="sp-simpleportfolio-items sp-simpleportfolio-columns-<?php echo $this->params->get('columns', 3); ?>">
 			<?php foreach ($this->items as $this->item) : ?>
 				<div class="sp-simpleportfolio-item" data-groups='[<?php echo $this->item->groups; ?>]'>
+					<?php if($this->layout_type=='category_title_tag_list') : ?>
 					<div class="sp-simpleportfolio-item-category-title"><?php echo $this->item->category_title; ?></div>
+					<?php endif; ?>
 					<div class="sp-simpleportfolio-overlay-wrapper clearfix">
 
 						<?php if($this->item->video) : ?>
