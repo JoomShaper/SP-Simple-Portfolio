@@ -321,3 +321,16 @@
 .featherlight {
   z-index: 9999;
 }
+
+.sp-simpleportfolio-tags-list {
+  margin: 0px;
+  padding: 0px;
+}
+.sp-simpleportfolio-tags-list   li {
+      margin: 0px;
+      list-style: none;
+      display: inline-block;
+  }
+.sp-simpleportfolio-tags-list li:not(:last-child)::after {
+content: “,”;
+}
