@@ -39,8 +39,6 @@ function copy_lang_admin() {
 	return src([
 		'./administrator/language/en-GB/en-GB.com_spsimpleportfolio.ini',
 		'./administrator/language/en-GB/en-GB.com_spsimpleportfolio.sys.ini',
-		'./administrator/language/en-GB/plg_finder_spsimpleportfolio.ini',
-		'./administrator/language/en-GB/plg_finder_spsimpleportfolio.sys.ini',
 	]).pipe(dest('build/language/admin/en-GB'));
 }
 
@@ -50,6 +48,13 @@ function copy_modules() {
 
 function copy_plugins() {
 	return src('./plugins/finder/spsimpleportfolio/**/*.*').pipe(dest('build/plugins/finder/spsimpleportfolio'));
+}
+
+function copy_plugins_lang() {
+	return src(['./administrator/language/en-GB/plg_finder_spsimpleportfolio.ini',
+		'./administrator/language/en-GB/plg_finder_spsimpleportfolio.sys.ini',]).pipe(
+		dest('build/plugins/finder/spsimpleportfolio/language')
+	);
 }
 
 function copy_modules_lang() {
@@ -101,6 +106,7 @@ exports.copy = series(
 	copy_modules,
 	copy_modules_lang,
 	copy_plugins,
+	copy_plugins_lang,
 	copy_installer
 );
 exports.minify = series(minify_admin_css, minify_site_css, minify_site_js, minify_admin_js);
