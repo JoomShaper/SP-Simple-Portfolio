@@ -2,7 +2,7 @@
 /**
  * @package     SP Simple Portfolio
  *
- * @copyright   Copyright (C) 2010 - 2022 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2024 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
@@ -13,8 +13,6 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\MVC\View\HtmlView;
-
-JLoader::register('JHtmlString', JPATH_LIBRARIES.'/joomla/html/html/string.php');
 
 class SpsimpleportfolioViewItem extends HtmlView {
 

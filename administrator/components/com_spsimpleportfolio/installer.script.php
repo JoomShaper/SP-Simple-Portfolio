@@ -4,7 +4,7 @@
  * @package     SP Simple Portfolio
  * @subpackage  mod_spsimpleportfolio
  *
- * @copyright   Copyright (C) 2010 - 2022 JoomShaper. All rights reserved.
+ * @copyright   Copyright (C) 2010 - 2024 JoomShaper. All rights reserved.
  * @license     GNU General Public License version 2 or later.
  */
 
@@ -95,6 +95,32 @@ class com_spsimpleportfolioInstallerScript
             
             $installer = new Installer;
             $result = $installer->install($path);
+        }
+
+        $extensions = [
+            ['type' => 'plugin', 'name' => 'spsimpleportfolio', 'group' => 'finder'],
+        ];
+
+        foreach ($extensions as $key => $extension) {
+            $ext       = $parent->getParent()->getPath('source') . '/' . $extension['type'] . 's/' . $extension['group'] . '/' . $extension['name'];
+            $installer = new Installer();
+            $installer->install($ext);
+
+            if ($extension['type'] === 'plugin') {
+                $db    = Factory::getDbo();
+                $query = $db->getQuery(true);
+
+                $fields     = [$db->quoteName('enabled') . ' = 1'];
+                $conditions = [
+                    $db->quoteName('type') . ' = ' . $db->quote($extension['type']),
+                    $db->quoteName('element') . ' = ' . $db->quote($extension['name']),
+                    $db->quoteName('folder') . ' = ' . $db->quote($extension['group']),
+                ];
+
+                $query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
+                $db->setQuery($query);
+                $db->execute();
+            }
         }
     }
 }

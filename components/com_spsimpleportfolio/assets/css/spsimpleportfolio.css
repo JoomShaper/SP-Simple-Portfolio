@@ -1,7 +1,7 @@
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2022 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2024 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
@@ -320,4 +320,17 @@
 /* Fixing popup z-index */
 .featherlight {
   z-index: 9999;
+}
+
+.sp-simpleportfolio-tags-list {
+  margin: 0px;
+  padding: 0px;
+}
+.sp-simpleportfolio-tags-list   li {
+      margin: 0px;
+      list-style: none;
+      display: inline-block;
+  }
+.sp-simpleportfolio-tags-list li:not(:last-child)::after {
+content: “,”;
 }

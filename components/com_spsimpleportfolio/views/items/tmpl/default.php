@@ -2,7 +2,7 @@
 /**
 * @package     SP Simple Portfolio
 *
-* @copyright   Copyright (C) 2010 - 2022 JoomShaper. All rights reserved.
+* @copyright   Copyright (C) 2010 - 2024 JoomShaper. All rights reserved.
 * @license     GNU General Public License version 2 or later.
 */
 
@@ -72,6 +72,9 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 		<div class="sp-simpleportfolio-items sp-simpleportfolio-columns-<?php echo $this->params->get('columns', 3); ?>">
 			<?php foreach ($this->items as $this->item) : ?>
 				<div class="sp-simpleportfolio-item" data-groups='[<?php echo $this->item->groups; ?>]'>
+					<?php if($this->layout_type=='category-title-tag-list') : ?>
+						<div class="sp-simpleportfolio-item-category-title"><?php echo $this->item->category_title; ?></div>
+					<?php endif; ?>
 					<div class="sp-simpleportfolio-overlay-wrapper clearfix">
 
 						<?php if($this->item->video) : ?>
@@ -92,7 +95,7 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 										<a class="btn-view" href="<?php echo $this->item->url; ?>"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_VIEW'); ?></a>
 									</div>
 									
-									<?php if($this->layout_type != 'default') : ?>
+									<?php if($this->layout_type != 'default' && $this->layout_type != 'category-title-tag-list') : ?>
 										<h3 class="sp-simpleportfolio-title">
 											<a href="<?php echo $this->item->url; ?>">
 												<?php echo $this->item->title; ?>
@@ -107,7 +110,7 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 						</div>
 					</div>
 
-					<?php if($this->layout_type=='default') : ?>
+					<?php if($this->layout_type == 'default') : ?>
 						<div class="sp-simpleportfolio-info">
 							<h3 class="sp-simpleportfolio-title">
 								<a href="<?php echo $this->item->url; ?>">
@@ -117,6 +120,23 @@ if( $this->params->get('show_page_heading') && $this->params->get( 'page_heading
 							<div class="sp-simpleportfolio-tags">
 								<?php echo implode(', ', $this->item->tags); ?>
 							</div>
+						</div>
+					<?php endif; ?>
+
+					<?php if($this->layout_type == 'category-title-tag-list') : ?>
+						<div class="sp-simpleportfolio-info">
+							<h3 class="sp-simpleportfolio-title">
+								<a href="<?php echo $this->item->url; ?>">
+									<?php echo $this->item->title; ?>
+								</a>
+							</h3>
+							<div class="sp-simpleportfolio-tags">
+                                <ul class="sp-simpleportfolio-tags-list">
+                                    <?php foreach($this->item->tags as $tag) :?>
+                                        <li class="sp-simpleportfolio-tags-list-item"><?php echo $tag;?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
 						</div>
 					<?php endif; ?>
 				</div>

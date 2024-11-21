@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="plugin" group="finder" method="upgrade">
+	<name>plg_finder_spsimpleportfolio</name>
+	<author>JoomShaper</author>
+	<creationDate>2024-06</creationDate>
+	<copyright>(C) 2023 - 2024 JoomShaper.</copyright>
+	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
+	<authorEmail>support@joomshaper.com</authorEmail>
+	<authorUrl>www.joomshaper.com</authorUrl>
+	<version>1.0.0</version>
+	<description>PLG_FINDER_SPSIMPLEPORTFOLIO_XML_DESCRIPTION</description>
+	<namespace path="src">JoomShaper\Plugin\Finder\Spsimpleportfolio</namespace>
+	<files>
+		<folder plugin="spsimpleportfolio">services</folder>
+		<folder>src</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">language/plg_finder_spsimpleportfolio.ini</language>
+		<language tag="en-GB">language/plg_finder_spsimpleportfolio.sys.ini</language>
+	</languages>
+</extension>

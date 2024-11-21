@@ -10,7 +10,7 @@ function cleanBuild() {
 }
 
 function cleanZip() {
-	return src('./com_spsimpleportfolio_v2.0.8.zip', { read: false, allowEmpty: true }).pipe(clean());
+	return src('./com_spsimpleportfolio_v2.1.0.zip', { read: false, allowEmpty: true }).pipe(clean());
 }
 
 function copySite() {
@@ -44,6 +44,17 @@ function copy_lang_admin() {
 
 function copy_modules() {
 	return src('./modules/mod_spsimpleportfolio/**/*.*').pipe(dest('build/modules/mod_spsimpleportfolio'));
+}
+
+function copy_plugins() {
+	return src('./plugins/finder/spsimpleportfolio/**/*.*').pipe(dest('build/plugins/finder/spsimpleportfolio'));
+}
+
+function copy_plugins_lang() {
+	return src(['./administrator/language/en-GB/plg_finder_spsimpleportfolio.ini',
+		'./administrator/language/en-GB/plg_finder_spsimpleportfolio.sys.ini',]).pipe(
+		dest('build/plugins/finder/spsimpleportfolio/language')
+	);
 }
 
 function copy_modules_lang() {
@@ -82,7 +93,7 @@ function minify_admin_js() {
 }
 
 function makeZip() {
-	return src('./build/**/*.*').pipe(zip('com_spsimpleportfolio_v2.0.8.zip')).pipe(dest('./'));
+	return src('./build/**/*.*').pipe(zip('com_spsimpleportfolio_v2.1.0.zip')).pipe(dest('./'));
 }
 
 exports.copy = series(
@@ -94,6 +105,8 @@ exports.copy = series(
 	copy_lang_admin,
 	copy_modules,
 	copy_modules_lang,
+	copy_plugins,
+	copy_plugins_lang,
 	copy_installer
 );
 exports.minify = series(minify_admin_css, minify_site_css, minify_site_js, minify_admin_js);
