@@ -51,19 +51,94 @@ class SpsimpleportfolioHelper
 
         list($originalWidth, $originalHeight) = getimagesize($src);
 
+        // Use Imagick for AVIF if available
+        if ($ext === 'avif' && class_exists('Imagick')) {
+            try {
+                $imagick = new Imagick($src);
+
+                $output = [];
+
+                if ($base_name) {
+                    $output['original'] = $folder . '/' . $base_name . '.' . $ext;
+                }
+
+                foreach ($sizes as $key => $size) {
+                    $targetWidth = $size[0];
+                    $targetHeight = $size[1];
+
+                    // Calculate cropping coords based on crop position
+                    $ratio_thumb = $targetWidth / $targetHeight;
+                    $ratio_original = $originalWidth / $originalHeight;
+
+                    if ($ratio_original >= $ratio_thumb) {
+                        $height = $originalHeight;
+                        $width = ceil($height * $ratio_thumb);
+                        switch ($img_crop_position) {
+                            case 'topleft':
+                                $x = 0;
+                                break;
+                            case 'topright':
+                                $x = $originalWidth - $width;
+                                break;
+                            default:
+                                $x = intval(($originalWidth - $width) / 2);
+                        }
+                        $y = 0;
+                    } else {
+                        $width = $originalWidth;
+                        $height = ceil($width / $ratio_thumb);
+                        $x = 0;
+                        $y = ($img_crop_position === 'topleft') ? 0 : intval(($originalHeight - $height) / 2);
+                    }
+
+                    $thumb = clone $imagick;
+                    $thumb->cropImage($width, $height, $x, $y);
+                    $thumb->resizeImage($targetWidth, $targetHeight, Imagick::FILTER_LANCZOS, 1, true);
+                    $thumb->setImageFormat('avif');
+
+                    if ($base_name) {
+                        $dest = dirname($src) . '/' . $base_name . '_' . $key . '.' . $ext;
+                        $output[$key] = $folder . '/' . $base_name . '_' . $key . '.' . $ext;
+                    } else {
+                        $dest = $folder . '/' . $key . '.' . $ext;
+                    }
+
+                    $thumb->writeImage($dest);
+                    $thumb->clear();
+                    $thumb->destroy();
+                }
+
+                $imagick->clear();
+                $imagick->destroy();
+
+                return $output;
+            } catch (Exception $e) {
+                Factory::getApplication()->enqueueMessage('Imagick error: ' . $e->getMessage(), 'error');
+                return false;
+            }
+        }
+
+        // GD fallback for other image types
         switch ($ext) {
-            case 'bmp':$img = imagecreatefromwbmp($src);
+            case 'bmp':
+                $img = imagecreatefromwbmp($src);
                 break;
-            case 'gif':$img = imagecreatefromgif($src);
+            case 'gif':
+                $img = imagecreatefromgif($src);
                 break;
-            case 'jpg':$img = imagecreatefromjpeg($src);
+            case 'jpg':
+            case 'jpeg':
+                $img = imagecreatefromjpeg($src);
                 break;
-            case 'jpeg':$img = imagecreatefromjpeg($src);
+            case 'png':
+                $img = imagecreatefrompng($src);
                 break;
-            case 'png':$img = imagecreatefrompng($src);
+            case 'webp':
+                $img = imagecreatefromwebp($src);
                 break;
-            case 'webp':$img = imagecreatefromwebp($src);
-            break;
+            default:
+                Factory::getApplication()->enqueueMessage('Unsupported image type or no AVIF support in GD', 'error');
+                return false;
         }
 
         if (count($sizes)) {
@@ -122,18 +197,22 @@ class SpsimpleportfolioHelper
                 }
 
                 switch ($ext) {
-                    case 'bmp':imagewbmp($new, $dest);
+                    case 'bmp':
+                        imagewbmp($new, $dest);
                         break;
-                    case 'gif':imagegif($new, $dest);
+                    case 'gif':
+                        imagegif($new, $dest);
                         break;
-                    case 'jpg':imagejpeg($new, $dest);
+                    case 'jpg':
+                    case 'jpeg':
+                        imagejpeg($new, $dest);
                         break;
-                    case 'jpeg':imagejpeg($new, $dest);
+                    case 'png':
+                        imagepng($new, $dest);
                         break;
-                    case 'png':imagepng($new, $dest);
+                    case 'webp':
+                        imagewebp($new, $dest);
                         break;
-                    case 'webp':imagewebp($new, $dest);
-                    break;
                 }
             }
 
