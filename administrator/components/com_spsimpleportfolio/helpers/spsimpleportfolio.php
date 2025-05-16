@@ -13,6 +13,8 @@ use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
+use Joomla\CMS\Filesystem\Folder;
+use Joomla\CMS\Filesystem\File;
 
 class SpsimpleportfolioHelper
 {
@@ -51,71 +53,8 @@ class SpsimpleportfolioHelper
 
         list($originalWidth, $originalHeight) = getimagesize($src);
 
-        // Use Imagick for AVIF if available
-        if ($ext === 'avif' && class_exists('Imagick')) {
-            try {
-                $imagick = new Imagick($src);
-
-                $output = [];
-
-                if ($base_name) {
-                    $output['original'] = $folder . '/' . $base_name . '.' . $ext;
-                }
-
-                foreach ($sizes as $key => $size) {
-                    $targetWidth = $size[0];
-                    $targetHeight = $size[1];
-
-                    // Calculate cropping coords based on crop position
-                    $ratio_thumb = $targetWidth / $targetHeight;
-                    $ratio_original = $originalWidth / $originalHeight;
-
-                    if ($ratio_original >= $ratio_thumb) {
-                        $height = $originalHeight;
-                        $width = ceil($height * $ratio_thumb);
-                        switch ($img_crop_position) {
-                            case 'topleft':
-                                $x = 0;
-                                break;
-                            case 'topright':
-                                $x = $originalWidth - $width;
-                                break;
-                            default:
-                                $x = intval(($originalWidth - $width) / 2);
-                        }
-                        $y = 0;
-                    } else {
-                        $width = $originalWidth;
-                        $height = ceil($width / $ratio_thumb);
-                        $x = 0;
-                        $y = ($img_crop_position === 'topleft') ? 0 : intval(($originalHeight - $height) / 2);
-                    }
-
-                    $thumb = clone $imagick;
-                    $thumb->cropImage($width, $height, $x, $y);
-                    $thumb->resizeImage($targetWidth, $targetHeight, Imagick::FILTER_LANCZOS, 1, true);
-                    $thumb->setImageFormat('avif');
-
-                    if ($base_name) {
-                        $dest = dirname($src) . '/' . $base_name . '_' . $key . '.' . $ext;
-                        $output[$key] = $folder . '/' . $base_name . '_' . $key . '.' . $ext;
-                    } else {
-                        $dest = $folder . '/' . $key . '.' . $ext;
-                    }
-
-                    $thumb->writeImage($dest);
-                    $thumb->clear();
-                    $thumb->destroy();
-                }
-
-                $imagick->clear();
-                $imagick->destroy();
-
-                return $output;
-            } catch (Exception $e) {
-                Factory::getApplication()->enqueueMessage('Imagick error: ' . $e->getMessage(), 'error');
-                return false;
-            }
+        if ($ext === 'avif') {
+            return self::handleAvifImage($src, $folder, $base_name, $ext, $sizes, $img_crop_position);
         }
 
         // GD fallback for other image types
@@ -221,6 +160,116 @@ class SpsimpleportfolioHelper
 
         return false;
     }
+
+    public static function handleAvifImage($src, $folder, $base_name, $ext, $sizes, $img_crop_position = 'center')
+    {
+        $output = [];
+
+        // Determine Joomla major version
+        $joomlaMajorVersion = 4;
+        if (defined('JVERSION')) {
+            $parts = explode('.', JVERSION);
+            $joomlaMajorVersion = (int) $parts[0];
+        }
+
+        if ($joomlaMajorVersion >= 5 && class_exists('Imagick')) {
+            try {
+                $imagick = new Imagick($src);
+                $dimensions = $imagick->getImageGeometry();
+                $originalWidth = $dimensions['width'] ?? 0;
+                $originalHeight = $dimensions['height'] ?? 0;
+
+                if ($base_name) {
+                    $output['original'] = $folder . '/' . $base_name . '.' . $ext;
+                }
+
+                foreach ($sizes as $key => $size) {
+                    $targetWidth = $size[0];
+                    $targetHeight = $size[1];
+
+                    $ratio_thumb = $targetWidth / $targetHeight;
+                    $ratio_original = $originalWidth / $originalHeight;
+
+                    if ($ratio_original >= $ratio_thumb) {
+                        $height = $originalHeight;
+                        $width = ceil($height * $ratio_thumb);
+                        switch ($img_crop_position) {
+                            case 'topleft':
+                                $x = 0;
+                                break;
+                            case 'topright':
+                                $x = $originalWidth - $width;
+                                break;
+                            default:
+                                $x = intval(($originalWidth - $width) / 2);
+                                break;
+                        }
+                        $y = 0;
+                    } else {
+                        $width = $originalWidth;
+                        $height = ceil($width / $ratio_thumb);
+                        $x = 0;
+                        $y = ($img_crop_position === 'topleft') ? 0 : intval(($originalHeight - $height) / 2);
+                    }
+
+                    $thumb = clone $imagick;
+                    $thumb->cropImage($width, $height, $x, $y);
+                    $thumb->resizeImage($targetWidth, $targetHeight, Imagick::FILTER_LANCZOS, 1, true);
+                    $thumb->setImageFormat('avif');
+
+                    $dest = $folder . '/' . ($base_name ? $base_name . '_' . $key : $key) . '.' . $ext;
+                    $output[$key] = $dest;
+                    $thumb->writeImage($dest);
+
+                    $thumb->clear();
+                    $thumb->destroy();
+                }
+
+                $imagick->clear();
+                $imagick->destroy();
+                return $output;
+            } catch (Exception $e) {
+                Factory::getApplication()->enqueueMessage('Imagick error: ' . $e->getMessage(), 'error');
+                return false;
+            }
+        } else {
+            // Fallback logic
+            $dimensions = @getimagesize($src);
+            $originalWidth = $dimensions ? $dimensions[0] : 0;
+            $originalHeight = $dimensions ? $dimensions[1] : 0;
+
+            if (!Folder::exists($folder)) {
+                Folder::create($folder, 0755);
+            }
+
+            if ($base_name) {
+                $originalDest = $folder . '/' . $base_name . '.' . $ext;
+                if (File::copy($src, $originalDest)) {
+                    $output['original'] = $originalDest . '?width=' . $originalWidth . '&height=' . $originalHeight;
+                } else {
+                    Factory::getApplication()->enqueueMessage('Failed to copy original AVIF file.', 'error');
+                    return false;
+                }
+            }
+
+            foreach ($sizes as $key => $size) {
+                $thumbDest = $folder . '/' . $base_name . $key . '.' . $ext;
+
+                if (!Folder::exists(dirname($thumbDest))) {
+                    Folder::create(dirname($thumbDest), 0755);
+                }
+
+                if (File::copy($src, $thumbDest)) {
+                    $output[$key] = $thumbDest . '?width=' . $size[0] . '&height=' . $size[1];
+                } else {
+                    Factory::getApplication()->enqueueMessage("Failed to copy AVIF thumbnail for size {$key}.", 'error');
+                }
+            }
+
+            return $output;
+        }
+    }
+
 
     public static function isPageBuilderIntegrated($item)
     {
