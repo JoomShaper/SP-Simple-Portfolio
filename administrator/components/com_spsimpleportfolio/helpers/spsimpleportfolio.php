@@ -15,6 +15,7 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\Version;
 
 class SpsimpleportfolioHelper
 {
@@ -183,12 +184,9 @@ class SpsimpleportfolioHelper
     {
         $output = [];
 
-        // Determine Joomla major version
-        $joomlaMajorVersion = 4;
-        if (defined('JVERSION')) {
-            $parts = explode('.', JVERSION);
-            $joomlaMajorVersion = (int) $parts[0];
-        }
+        // Joomla's Version class
+        $version = new Version();
+        $joomlaMajorVersion = (int) $version->getShortVersion();
 
         if ($joomlaMajorVersion >= 5 && class_exists('Imagick')) {
             try {
