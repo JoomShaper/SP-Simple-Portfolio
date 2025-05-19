@@ -186,9 +186,9 @@ class SpsimpleportfolioHelper
 
         // Joomla's Version class
         $version = new Version();
-        $joomlaMajorVersion = (int) $version->getShortVersion();
+        $joomlaMajorVersion = $version->getShortVersion();
 
-        if ($joomlaMajorVersion >= 5 && class_exists('Imagick')) {
+        if (version_compare($joomlaMajorVersion, '5.0.0', '>=') && class_exists('Imagick')) {
             try {
                 $imagick = new Imagick($src);
                 $dimensions = $imagick->getImageGeometry();
