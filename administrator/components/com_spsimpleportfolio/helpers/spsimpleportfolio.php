@@ -46,6 +46,24 @@ class SpsimpleportfolioHelper
     // Create thumbs
     public static function createThumbs($src, $sizes = array(), $folder = '', $base_name = '', $ext = '')
     {
+        /**
+         * Creates resized thumbnail images for a given source image in various sizes.
+         *
+         * Supports multiple image formats using the GD library. If the image format is AVIF,
+         * it delegates processing to the handleAvifImage() method which supports both GD and Imagick.
+         *
+         * @param string $src        Full path to the source image file.
+         * @param array  $sizes      Array of target sizes. Each element should be an array [width, height].
+         * @param string $folder     Destination folder for storing generated thumbnails.
+         * @param string $base_name  Base name for the generated thumbnail files (without extension).
+         * @param string $ext        Extension/format of the image (e.g., 'jpg', 'png', 'avif', etc.)
+         *
+         * @return array|false       Returns an associative array of thumbnail paths on success.
+         *                           Keys are the same as in the $sizes array. On failure, returns false.
+         *
+         * @throws Exception         If an image cannot be created or resized due to an unsupported type or a GD/Imagick error.
+         */
+
 
         // Get params
         $params = ComponentHelper::getParams('com_spsimpleportfolio');
