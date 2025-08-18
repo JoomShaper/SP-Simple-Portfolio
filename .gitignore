@@ -17,6 +17,7 @@ robots.txt.dist
 /build
 /logs
 /media
+/files
 
 LICENSE.txt
 README.txt
