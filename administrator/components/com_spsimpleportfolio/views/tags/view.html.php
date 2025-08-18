@@ -47,10 +47,8 @@ class SpsimpleportfolioViewTags extends HtmlView {
 			return false;
 		}
 
-		// Set the submenu
-		SpsimpleportfolioHelper::addSubmenu('tags');
 		$this->addToolBar();
-		$this->sidebar = JHtmlSidebar::render();
+
 
 		return parent::display($tpl);
 

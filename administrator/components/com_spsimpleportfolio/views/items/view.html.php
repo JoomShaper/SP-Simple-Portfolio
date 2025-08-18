@@ -22,20 +22,13 @@ class SpsimpleportfolioViewItems extends HtmlView {
 	protected $state;
 	public $filterForm;
 	public $activeFilters;
-	protected $sidebar;
 
 	function display($tpl = null) {
-
-		// Get application
-		$app = Factory::getApplication();
-		$context = "com_spsimpleportfolio.items";
 
 		// Get data from the model
 		$this->items = $this->get('Items');
 		$this->pagination = $this->get('Pagination');
 		$this->state = $this->get('State');
-		$this->filter_order = $app->getUserStateFromRequest($context.'filter_order', 'filter_order', 'id', 'cmd');
-		$this->filter_order_Dir = $app->getUserStateFromRequest($context.'filter_order_Dir', 'filter_order_Dir', 'desc', 'cmd');
 		$this->filterForm = $this->get('FilterForm');
 		$this->activeFilters = $this->get('ActiveFilters');
 
@@ -47,10 +40,7 @@ class SpsimpleportfolioViewItems extends HtmlView {
 			return false;
 		}
 
-		// Set the submenu
-		SpsimpleportfolioHelper::addSubmenu('items');
 		$this->addToolBar();
-		$this->sidebar = JHtmlSidebar::render();
 
 		return parent::display($tpl);
 

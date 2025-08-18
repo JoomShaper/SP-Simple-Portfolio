@@ -11,35 +11,12 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
-use Joomla\CMS\Language\Text;
 use Joomla\CMS\Plugin\PluginHelper;
 
 class SpsimpleportfolioHelper
 {
 
     public static $extension = 'com_spsimpleportfolio';
-
-    public static function addSubmenu($submenu)
-    {
-
-        JHtmlSidebar::addEntry(
-            Text::_('COM_SPSIMPLEPORTFOLIO_TITLE_ITEMS'),
-            'index.php?option=com_spsimpleportfolio&view=items',
-            $submenu == 'items'
-        );
-
-        JHtmlSidebar::addEntry(
-            Text::_('COM_SPSIMPLEPORTFOLIO_CATEGORIES'),
-            'index.php?option=com_categories&view=categories&extension=com_spsimpleportfolio',
-            $submenu == 'categories'
-        );
-
-        JHtmlSidebar::addEntry(
-            Text::_('COM_SPSIMPLEPORTFOLIO_TITLE_TAGS'),
-            'index.php?option=com_spsimpleportfolio&view=tags',
-            $submenu == 'tags'
-        );
-    }
 
     // Create thumbs
     public static function createThumbs($src, $sizes = array(), $folder = '', $base_name = '', $ext = '')
