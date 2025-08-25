@@ -9,8 +9,6 @@
 
 defined('_JEXEC') or die;
 
-use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Helper\ModuleHelper;
 use Joomla\CMS\Component\ComponentHelper;
@@ -21,13 +19,6 @@ require_once __DIR__ . '/helper.php';
 HTMLHelper::_('jquery.framework');
 BaseDatabaseModel::addIncludePath(JPATH_SITE . '/components/com_spsimpleportfolio/models');
 require_once JPATH_BASE . '/components/com_spsimpleportfolio/helpers/helper.php';
-
-$doc = Factory::getDocument();
-$doc->addStylesheet( Uri::root(true) . '/components/com_spsimpleportfolio/assets/css/featherlight.min.css' );
-$doc->addStylesheet( Uri::root(true) . '/components/com_spsimpleportfolio/assets/css/spsimpleportfolio.css' );
-$doc->addScript( Uri::root(true) . '/components/com_spsimpleportfolio/assets/js/jquery.shuffle.modernizr.min.js' );
-$doc->addScript( Uri::root(true) . '/components/com_spsimpleportfolio/assets/js/featherlight.min.js' );
-$doc->addScript( Uri::root(true) . '/components/com_spsimpleportfolio/assets/js/spsimpleportfolio.js' );
 
 $cParams      = ComponentHelper::getParams('com_spsimpleportfolio');
 
