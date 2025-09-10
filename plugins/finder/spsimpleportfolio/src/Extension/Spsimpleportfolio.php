@@ -185,7 +185,7 @@ class Spsimpleportfolio extends Adapter
 
         $query = $query instanceof QueryInterface ? $query : $db->getQuery(true);
 
-        $query->select('a.id', 'a.title', 'a.alias', 'a.description', 'a.access');
+        $query->select('a.title', 'a.alias', 'a.description', 'a.access');
         $query->select('a.published', 'a.state');
 
         // Handle the alias CASE WHEN portion of the query.
