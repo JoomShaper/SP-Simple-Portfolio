@@ -20,6 +20,7 @@ use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Finder\Administrator\Indexer\Helper;
 use Joomla\Component\Finder\Administrator\Indexer\Result;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
+use Joomla\Database\QueryInterface;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -182,22 +183,22 @@ class Spsimpleportfolio extends Adapter
     {
         $db = $this->getDatabase();
 
-        $query = $db->getQuery(true);
+        $query = $query instanceof QueryInterface ? $query : $db->getQuery(true);
 
-        $query->select($db->quoteName(['id', 'title', 'alias', 'description', 'access']));
-        $query->select($db->quoteName('published', 'state'));
+        $query->select('a.id', 'a.title', 'a.alias', 'a.description', 'a.access');
+        $query->select('a.published', 'a.state');
 
         // Handle the alias CASE WHEN portion of the query.
         $case_when_item_alias = ' CASE WHEN ';
-        $case_when_item_alias .= $query->charLength($db->quoteName('alias'), '!=', '0');
+        $case_when_item_alias .= $query->charLength('a.alias', '!=', '0');
         $case_when_item_alias .= ' THEN ';
-        $a_id = $query->castAsChar($db->quoteName('id'));
-        $case_when_item_alias .= $query->concatenate([$a_id, 'alias'], ':');
+        $a_id = $query->castAsChar('a.id');
+        $case_when_item_alias .= $query->concatenate([$a_id, 'a.alias'], ':');
         $case_when_item_alias .= ' ELSE ';
         $case_when_item_alias .= $a_id . ' END AS slug';
 
         $query->select($case_when_item_alias)
-            ->from($db->quoteName('#__spsimpleportfolio_items'));
+            ->from($db->quoteName('#__spsimpleportfolio_items', 'a'));
         
         return $query;
     }
