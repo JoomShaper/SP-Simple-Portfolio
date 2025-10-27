@@ -8,7 +8,7 @@
 		<field name="thumbnail" type="media" label="COM_SPSIMPLEPORTFOLIO_ITEMS_THUMBNAIL_LABEL" description="COM_SPSIMPLEPORTFOLIO_ITEMS_THUMBNAIL_LABEL_DESC" />
 		<field name="video" type="url" label="COM_SPSIMPLEPORTFOLIO_ITEMS_VIDEO_LABEL" description="COM_SPSIMPLEPORTFOLIO_ITEMS_VIDEO_DESC" />
 		<field name="url" type="text" label="COM_SPSIMPLEPORTFOLIO_ITEMS_URL_LABEL" description="COM_SPSIMPLEPORTFOLIO_ITEMS_URL_DESC" />
-		<field name="description" label="COM_SPSIMPLEPORTFOLIO_ITEMS_DESCRIPTION_LABEL" type="editor" required="true" filter="JComponentHelper::filterText" buttons="true" />
+		<field name="description" label="COM_SPSIMPLEPORTFOLIO_ITEMS_DESCRIPTION_LABEL" type="editor" required="true" filter="ComponentHelper::filterText" buttons="true" />
 	</fieldset>
 
 	<fieldset name="sidebar">
