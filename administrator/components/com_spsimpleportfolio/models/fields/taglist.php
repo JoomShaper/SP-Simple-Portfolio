@@ -11,13 +11,14 @@
 defined('JPATH_PLATFORM') or die;
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 
 FormHelper::loadFieldClass('list');
 
-class JFormFieldTaglist extends JFormFieldList {
+class JFormFieldTaglist extends ListField {
 
 	public $type = 'Taglist';
 	public $layout = 'joomla.form.field.list-fancy-select';
