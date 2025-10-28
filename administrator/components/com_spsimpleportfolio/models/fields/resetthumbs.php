@@ -13,7 +13,8 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
-class JFormFieldResetthumbs extends FormField {
+class JFormFieldResetthumbs extends FormField
+{
 
 	protected $type = 'Resetthumbs';
 
