@@ -13,19 +13,17 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Plugin\PluginHelper;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\Filesystem\File;
 
 HTMLHelper::_('jquery.token');
 
 $doc = Factory::getDocument();
 $doc->addScript(Uri::root(true) . '/administrator/components/com_spsimpleportfolio/assets/js/script.js');
-jimport('joomla.filesystem.file');
-jimport( 'joomla.application.component.helper' );
 $cParams = ComponentHelper::getParams('com_spsimpleportfolio');
 
 $user 		= Factory::getUser();
@@ -157,7 +155,7 @@ if ($saveOrder && !empty($this->items))
 									$ext = File::getExt($item->image);
 									$base_name = File::stripExt(basename($item->image));
 									$thumb = $base_name . '_' .strtolower($cParams->get('square', '600x600')) . '.' . $ext;
-									if(File::exists($folder . '/' . $thumb)) {
+									if(file_exists($folder . '/' . $thumb)) {
 										?>
 										<img src="<?php echo Uri::root() . 'images/spsimpleportfolio/' . $item->alias . '/' . $thumb; ?>" alt="" style="width: 64px; height: 64px; border: 1px solid #e5e5e5; background-color: #f5f5f5;">
 										<?php
