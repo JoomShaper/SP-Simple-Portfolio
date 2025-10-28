@@ -34,15 +34,15 @@ class SpsimpleportfolioModelItem extends AdminModel
 		return $form;
 	}
 
-	// protected function loadFormData() {
-	// 	$data = Factory::getApplication()->getUserState( 'com_spsimpleportfolio.edit.item.data', array() );
+	protected function loadFormData() {
+		$data = Factory::getApplication()->getUserState( 'com_spsimpleportfolio.edit.item.data', array() );
 
-	// 	if (empty($data)) {
-	// 		$data = $this->getItem();
-	// 	}
+		if (empty($data)) {
+			$data = $this->getItem();
+		}
 
-	// 	return $data;
-	// }
+		return $data;
+	}
 
 	public function getItem($pk = null) {
 		if ($item = parent::getItem($pk)) {
