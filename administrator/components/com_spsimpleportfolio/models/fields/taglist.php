@@ -8,17 +8,18 @@
  * @license     GNU General Public License version 2 or later.
  */
 
-defined('JPATH_PLATFORM') or die;
+defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\Field\ListField;
+use Joomla\Database\DatabaseInterface;
 
 class JFormFieldTaglist extends ListField
 {
-
 	public $type = 'Taglist';
+
 	public $layout = 'joomla.form.field.list-fancy-select';
 
 	protected function getOptions() {
@@ -38,7 +39,7 @@ class JFormFieldTaglist extends ListField
 
 	private function getTags() {
 
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true)
 			->select('DISTINCT a.id AS value, a.title AS text')
 			->from('#__spsimpleportfolio_tags AS a');
