@@ -9,10 +9,11 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Controller\FormController;
-use Joomla\Filesystem\Folder;
 
 class SpsimpleportfolioControllerItem extends FormController {
 
