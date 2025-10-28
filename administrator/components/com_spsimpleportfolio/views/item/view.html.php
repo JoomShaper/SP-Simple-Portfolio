@@ -30,13 +30,13 @@ class SpsimpleportfolioViewItem extends HtmlView
 
 		$this->canDo = ContentHelper::getActions('com_spsimpleportfolio', 'item', $this->item->id);
 
-		// Check for errors.
-		// if (count($errors = $this->get('Errors'))) {
-		// 	throw new Exception(implode('<br />', $errors), 500);
-		// 	return false;
-		// }
+		//Check for errors.
+		if (count($errors = $this->get('Errors'))) {
+			throw new Exception(implode('<br />', $errors), 500);
+			return false;
+		}
 
-		// $this->addToolBar();
+		$this->addToolBar();
 		parent::display($tpl);
 	}
 
