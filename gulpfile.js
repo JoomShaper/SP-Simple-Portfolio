@@ -10,7 +10,7 @@ function cleanBuild() {
 }
 
 function cleanZip() {
-	return src('./com_spsimpleportfolio_v2.1.0.zip', { read: false, allowEmpty: true }).pipe(clean());
+	return src('./com_spsimpleportfolio_v2.2.0.zip', { read: false, allowEmpty: true }).pipe(clean());
 }
 
 function copySite() {
