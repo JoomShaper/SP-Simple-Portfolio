@@ -11,11 +11,12 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
-use Joomla\CMS\Filesystem\File;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Database\DatabaseInterface;
 
 class SpsimpleportfolioModelItems extends ListModel {
 
@@ -214,7 +215,7 @@ class SpsimpleportfolioModelItems extends ListModel {
 
 	public function getTagList($items) {
 		try {
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 			$query = $db->getQuery(true);
 
 			$tags = array();
@@ -239,7 +240,7 @@ class SpsimpleportfolioModelItems extends ListModel {
 	public function getItemTags($ids, $array = false) {
 
 		try {
-			$db = Factory::getDbo();
+			$db = Factory::getContainer()->get(DatabaseInterface::class);
 			$query = $db->getQuery(true);
 
 			if(!is_array($ids)) {
