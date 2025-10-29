@@ -254,7 +254,7 @@ class SpsimpleportfolioHelper
             $originalWidth = $dimensions ? $dimensions[0] : 0;
             $originalHeight = $dimensions ? $dimensions[1] : 0;
 
-            if (!Folder::exists($folder)) {
+            if (!is_dir($folder)) {
                 Folder::create($folder, 0755);
             }
 
@@ -271,7 +271,7 @@ class SpsimpleportfolioHelper
             foreach ($sizes as $key => $size) {
                 $thumbDest = $folder . '/' . $base_name . $key . '.' . $ext;
 
-                if (!Folder::exists(dirname($thumbDest))) {
+                if (!is_dir(dirname($thumbDest))) {
                     Folder::create(dirname($thumbDest), 0755);
                 }
 
