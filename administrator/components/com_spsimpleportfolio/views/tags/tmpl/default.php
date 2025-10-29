@@ -81,10 +81,10 @@ $listDirn = $this->escape($this->filter_order_Dir);
 									<?php else : ?>
 										<?php echo $this->escape($item->title); ?>
 									<?php endif; ?>
-
-									<span class="small break-word">
+									
+									<div class="small break-word">
 										<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
-									</span>
+									</div>
 								</td>
 
 								<td align="center">
