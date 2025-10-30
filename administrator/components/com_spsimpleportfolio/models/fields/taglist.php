@@ -22,8 +22,6 @@ class JFormFieldTaglist extends ListField
 
 	public $layout = 'joomla.form.field.list-fancy-select';
 
-	protected function getOptions() {
-
 	protected $allowAdd = false;
 	protected $customPrefix = '#new#';
 
