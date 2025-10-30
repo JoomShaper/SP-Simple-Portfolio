@@ -110,42 +110,72 @@ class SpsimpleportfolioModelItem extends AdminModel {
 		return false;
 	}
 
+
 	public function storeTags($tags = array()) {
+		$db = Factory::getDbo();
 		$itemTags = array();
-		foreach ($tags as $tag) {
-			if(strpos($tag, '#new#') !== false) {
-				$title = str_replace('#new#', '', $tag);
+
+		// Flatten any nested arrays
+		$flat = $this->flattenTagScalars($tags);
+
+		foreach ($flat as $tag) {
+			if ($tag === null) {
+				continue;
+			}
+
+			if (is_string($tag)) {
+				$tag = trim($tag);
+			}
+
+			// Keep numeric IDs 
+			if ($tag !== '' && is_numeric($tag)) {
+				$itemTags[] = (int) $tag;
+				continue;
+			}
+
+			// Create-or-use for '#new#Title'
+			if (is_string($tag) && strpos($tag, '#new#') === 0) {
+				$title = trim(substr($tag, 5));
+				if ($title === '') {
+					continue;
+				}
+
 				$alias = OutputFilter::stringURLSafe($title);
 
-				// Insert New
-				if(!$this->checkTag($alias)) {
-					$object = new stdClass();
-					$object->title = $title;
-					$object->alias = $alias;
-					$db = Factory::getDbo();
-					$db->insertObject('#__spsimpleportfolio_tags', $object);
-					$itemTags[] = $db->insertid();
-				}
-			} else {
-				$itemTags[] = $tag;
+				// Insert new tag
+				$object = new \stdClass();
+				$object->title = $title;
+				$object->alias = $alias;
+
+				$db->insertObject('#__spsimpleportfolio_tags', $object);
+				$itemTags[] = (int) $db->insertid();
 			}
 		}
 
-		if(count($itemTags)) {
-			return json_encode($itemTags);
-		}
+		$itemTags = array_map('strval', $itemTags);
 
-		return '[]';
+		return count($itemTags) ? json_encode($itemTags) : '[]';
 	}
 
-	private function checkTag($alias) {
-		$db = Factory::getDbo();
-		$query = $db->getQuery(true);
-		$query->select('COUNT(alias)');
-		$query->from($db->quoteName('#__spsimpleportfolio_tags'));
-		$query->where($db->quoteName('alias') . ' = '. $db->quote($alias));
-		$db->setQuery($query);
-		return $db->loadResult();
+	/**
+	 * Recursively flattens nested arrays to a list of scalar values.
+	 */
+
+	private function flattenTagScalars($input): array
+	{
+		$out = [];
+
+		if (is_array($input)) {
+			array_walk_recursive($input, function ($value) use (&$out) {
+				if (is_scalar($value)) {
+					$out[] = $value;
+				}
+			});
+		} elseif (is_scalar($input)) {
+			$out[] = $input;
+		}
+
+		return $out;
 	}
 
 }
