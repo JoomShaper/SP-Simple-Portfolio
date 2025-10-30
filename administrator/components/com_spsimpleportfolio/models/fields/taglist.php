@@ -8,20 +8,21 @@
  * @license     GNU General Public License version 2 or later.
  */
 
-defined('_JEXEC') or die;
+defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
-use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Form\Field\ListField;
-
-FormHelper::loadFieldClass('list');
+use Joomla\Database\DatabaseInterface;
 
 class JFormFieldTaglist extends ListField
 {
 	public $type = 'Taglist';
-	protected $layout = 'joomla.form.field.list-fancy-select';
+
+	public $layout = 'joomla.form.field.list-fancy-select';
+
+	protected function getOptions() {
 
 	protected $allowAdd = false;
 	protected $customPrefix = '#new#';
@@ -43,7 +44,7 @@ class JFormFieldTaglist extends ListField
 		$doc = Factory::getDocument();
 		$doc->addScript(Uri::base(true) . '/components/com_spsimpleportfolio/assets/js/tags.js');
 
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true)
 			->select('DISTINCT a.id AS value, a.title AS text')
 			->from('#__spsimpleportfolio_tags AS a')

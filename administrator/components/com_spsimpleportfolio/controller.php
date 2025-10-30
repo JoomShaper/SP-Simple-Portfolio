@@ -9,10 +9,10 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Controller\BaseController;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 
 class SpsimpleportfolioController extends BaseController {
 	protected $default_view = 'items';
@@ -27,11 +27,6 @@ class SpsimpleportfolioController extends BaseController {
 	}
 
 	public function resetThumbs() {
-
-		jimport('joomla.filesystem.file');
-		jimport('joomla.filesystem.folder');
-		jimport('joomla.application.component.helper');
-
 		$items = $this->getPortfolioItems();
 
 		foreach ($items as $item) {
@@ -59,10 +54,11 @@ class SpsimpleportfolioController extends BaseController {
 			$towerArray = explode('x', $tower);
 			$sizes[$base_name . '_' .$tower] = array($towerArray[0], $towerArray[1]);
 
-			if(File::exists($image)) {
-				if(!Folder::exists($folder)) {
+			if(file_exists($image)) {
+				if(!is_dir($folder)) {
 					Folder::create($folder, 0755);
 				}
+				
 				SpsimpleportfolioHelper::createThumbs($image, $sizes, $folder, '', $ext);
 			}
 		}

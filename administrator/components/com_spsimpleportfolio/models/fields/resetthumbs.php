@@ -7,13 +7,14 @@
  * @license     GNU General Public License version 2 or later.
  */
 
-defined('JPATH_PLATFORM') or die;
+defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Form\FormField;
 use Joomla\CMS\HTML\HTMLHelper;
-class JFormFieldResetthumbs extends FormField {
+class JFormFieldResetthumbs extends FormField
+{
 
 	protected $type = 'Resetthumbs';
 

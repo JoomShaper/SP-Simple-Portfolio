@@ -10,6 +10,8 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Multilanguage;
+use Joomla\Database\DatabaseInterface;
+
 class SpsimpleportfolioHelper {
 
 	public static function generateMeta($item = '') {
@@ -18,7 +20,7 @@ class SpsimpleportfolioHelper {
 
 	public static function getTags($ids) {
 		
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		if(!is_array($ids)) {
 			$ids = (array) json_decode($ids, true);
@@ -35,7 +37,7 @@ class SpsimpleportfolioHelper {
 
 
 	public static function getTagList($items) {
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		
 		$tags = array();
@@ -54,7 +56,7 @@ class SpsimpleportfolioHelper {
 
 	public static function getItemId($catid = 0)
 	{
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('id', 'params')));
 		$query->from($db->quoteName('#__menu'));

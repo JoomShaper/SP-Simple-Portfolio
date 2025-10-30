@@ -12,6 +12,7 @@ defined('_JEXEC') or die('Restricted Access!');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer;
+use Joomla\Database\DatabaseInterface;
 
 class com_spsimpleportfolioInstallerScript
 {
@@ -41,6 +42,7 @@ class com_spsimpleportfolioInstallerScript
             if (!empty($extension_id))
             {
                 $installer = new Installer;
+                $installer->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
                 $result = $installer->uninstall('module', $extension_id);
                 $status->modules[] = array('name' => $name, 'client' => $client, 'result' => $result);
             }
@@ -94,6 +96,7 @@ class com_spsimpleportfolioInstallerScript
             $ordering = (isset($module->attributes()->ordering) && $module->attributes()->ordering) ? (string)$module->attributes()->ordering : 0;
             
             $installer = new Installer;
+            $installer->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
             $result = $installer->install($path);
         }
 
@@ -104,6 +107,7 @@ class com_spsimpleportfolioInstallerScript
         foreach ($extensions as $key => $extension) {
             $ext       = $parent->getParent()->getPath('source') . '/' . $extension['type'] . 's/' . $extension['group'] . '/' . $extension['name'];
             $installer = new Installer();
+            $installer->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
             $installer->install($ext);
 
             if ($extension['type'] === 'plugin') {

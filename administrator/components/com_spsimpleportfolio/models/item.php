@@ -15,8 +15,10 @@ use Joomla\String\StringHelper;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\Database\DatabaseInterface;
 
-class SpsimpleportfolioModelItem extends AdminModel {
+class SpsimpleportfolioModelItem extends AdminModel
+{
 
 	public function getTable($type = 'Item', $prefix = 'SpsimpleportfolioTable', $config = array()) {
 		return Table::getInstance($type, $prefix, $config);
@@ -53,7 +55,7 @@ class SpsimpleportfolioModelItem extends AdminModel {
 	// Get Tags
 	public function getTags($ids = '[]') {
 
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		$ids = json_decode(is_null($ids) ? '[]' : $ids);
 

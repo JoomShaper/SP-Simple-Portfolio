@@ -9,11 +9,12 @@
 defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Controller\FormController;
+
 class SpsimpleportfolioControllerItem extends FormController {
 
 	public function __construct($config = array()) {
@@ -66,8 +67,8 @@ class SpsimpleportfolioControllerItem extends FormController {
 		$towerArray = explode('x', $tower);
 		$sizes[$base_name . '_' .$tower] = array($towerArray[0], $towerArray[1]);
 
-		if(File::exists($image)) {
-			if(!Folder::exists($folder)) {
+		if(file_exists($image)) {
+			if(!is_dir($folder)) {
 				Folder::create($folder, 0755);
 			}
 			SpsimpleportfolioHelper::createThumbs($image, $sizes, $folder, '', $ext);

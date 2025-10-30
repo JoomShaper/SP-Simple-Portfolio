@@ -16,11 +16,11 @@ use Joomla\Database\DatabaseQuery;
 use Joomla\Database\DatabaseAwareTrait;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Language\Multilanguage;
-use Joomla\CMS\Router\Route;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Component\Finder\Administrator\Indexer\Helper;
 use Joomla\Component\Finder\Administrator\Indexer\Result;
 use Joomla\Component\Finder\Administrator\Indexer\Adapter;
+use Joomla\Database\QueryInterface;
 
 // phpcs:disable PSR1.Files.SideEffects
 \defined('_JEXEC') or die;
@@ -183,23 +183,36 @@ class Spsimpleportfolio extends Adapter
     {
         $db = $this->getDatabase();
 
-        $query = $db->getQuery(true);
-
-        $query->select($db->quoteName(['id', 'title', 'alias', 'description', 'access']));
-        $query->select($db->quoteName('published', 'state'));
+        // Check if we can use the supplied SQL query.
+        $query = $query instanceof QueryInterface ? $query : $db->getQuery(true)
+            ->select('a.id, a.catid, a.title AS title, a.alias, a.url AS link')
+            ->select('a.published AS state, a.ordering, a.created AS start_date, a.access')
+            ->select('a.language')
+            ->select('a.created_by, a.modified, a.modified_by')
+            ->select('c.title AS category, c.published AS cat_state, c.access AS cat_access');
 
         // Handle the alias CASE WHEN portion of the query.
         $case_when_item_alias = ' CASE WHEN ';
-        $case_when_item_alias .= $query->charLength($db->quoteName('alias'), '!=', '0');
+        $case_when_item_alias .= $query->charLength('a.alias', '!=', '0');
         $case_when_item_alias .= ' THEN ';
-        $a_id = $query->castAsChar($db->quoteName('id'));
-        $case_when_item_alias .= $query->concatenate([$a_id, 'alias'], ':');
+        $a_id = $query->castAs('CHAR', 'a.id');
+        $case_when_item_alias .= $query->concatenate([$a_id, 'a.alias'], ':');
         $case_when_item_alias .= ' ELSE ';
-        $case_when_item_alias .= $a_id . ' END AS slug';
+        $case_when_item_alias .= $a_id . ' END as slug';
+        $query->select($case_when_item_alias);
 
-        $query->select($case_when_item_alias)
-            ->from($db->quoteName('#__spsimpleportfolio_items'));
-        
+        $case_when_category_alias = ' CASE WHEN ';
+        $case_when_category_alias .= $query->charLength('c.alias', '!=', '0');
+        $case_when_category_alias .= ' THEN ';
+        $c_id = $query->castAs('CHAR', 'c.id');
+        $case_when_category_alias .= $query->concatenate([$c_id, 'c.alias'], ':');
+        $case_when_category_alias .= ' ELSE ';
+        $case_when_category_alias .= $c_id . ' END as catslug';
+        $query->select($case_when_category_alias)
+
+            ->from('#__spsimpleportfolio_items AS a')
+            ->join('LEFT', '#__categories AS c ON c.id = a.catid');
+
         return $query;
     }
 
