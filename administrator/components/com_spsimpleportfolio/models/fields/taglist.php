@@ -22,33 +22,54 @@ class JFormFieldTaglist extends ListField
 
 	public $layout = 'joomla.form.field.list-fancy-select';
 
-	protected function getOptions() {
+	protected $allowAdd = false;
+	protected $customPrefix = '#new#';
 
+	public function setup(\SimpleXMLElement $element, $value = null, $group = null)
+	{
+		$ok = parent::setup($element, $value, $group);
+
+		if ($ok) {
+			$this->allowAdd     = isset($this->element['allowAdd']) ? (bool) $this->element['allowAdd'] : false;
+			$this->customPrefix = (string) ($this->element['customPrefix'] ?? '#new#');
+		}
+
+		return $ok;
+	}
+
+	protected function getOptions()
+	{
 		$doc = Factory::getDocument();
 		$doc->addScript(Uri::base(true) . '/components/com_spsimpleportfolio/assets/js/tags.js');
 
-		$tags = (array) $this->getTags();
-		$options = [];
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->getQuery(true)
+			->select('DISTINCT a.id AS value, a.title AS text')
+			->from('#__spsimpleportfolio_tags AS a')
+			->order('a.id ASC');
 
-		foreach ($tags as $tag) {
-			$options[] = HTMLHelper::_('select.option', $tag->value, $tag->text);
+		$db->setQuery($query);
+		$rows = (array) $db->loadObjectList();
+
+		$options = [];
+		foreach ($rows as $row) {
+			$options[] = HTMLHelper::_('select.option', $row->value, $row->text);
 		}
 
 		return array_merge(parent::getOptions(), $options);
 	}
 
-	private function getTags() {
+	protected function getInput()
+	{
+		$data                 = $this->getLayoutData();
+		$data['options']      = $this->getOptions();
+		$data['allowCustom']  = $this->allowAdd;
+		$data['customPrefix'] = $this->customPrefix;
 
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
-		$query = $db->getQuery(true)
-			->select('DISTINCT a.id AS value, a.title AS text')
-			->from('#__spsimpleportfolio_tags AS a');
+		$renderer = $this->getRenderer($this->layout);
+		$renderer->setComponent('com_spsimpleportfolio');
+		$renderer->setClient(1);
 
-		$query->order('a.id ASC');
-		$db->setQuery($query);
-		$options = $db->loadObjectList();
-
-		return $options;
+		return $renderer->render($data);
 	}
-
 }
