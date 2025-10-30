@@ -179,9 +179,9 @@ if ($saveOrder && !empty($this->items))
 										<?php echo $this->escape($item->title); ?>
 									<?php endif; ?>
 
-									<span class="small break-word">
+									<div class="small break-word">
 										<?php echo Text::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
-									</span>
+									</div>
 									<?php if($item->catid) : ?>
 									<div class="small">
 										<?php echo Text::_('JCATEGORY') . ': ' . $this->escape($item->category_title); ?>
