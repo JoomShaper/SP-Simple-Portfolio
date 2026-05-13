@@ -10,9 +10,61 @@ defined('_JEXEC') or die();
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Multilanguage;
+use Joomla\CMS\Version;
 use Joomla\Database\DatabaseInterface;
 
 class SpsimpleportfolioHelper {
+
+	/**
+	 * Load class aliases for Joomla 6 compatibility
+	 * 
+	 * @return void
+	 */
+	public static function loadAliases()
+	{
+		$joomlaVersion = defined('JVERSION') ? JVERSION : (new Version())->getShortVersion();
+
+		if (version_compare($joomlaVersion, '6.0', '>=')) {
+			$classAliases = [
+				'\Joomla\Filesystem\Path' => 'Joomla\CMS\Filesystem\Path',
+				'\Joomla\Filesystem\Folder' => 'Joomla\CMS\Filesystem\Folder',
+				'\Joomla\Filesystem\File' => 'Joomla\CMS\Filesystem\File',
+			];
+
+			foreach ($classAliases as $alias => $original) {
+				if (!class_exists($original)) {
+					class_alias($alias, $original);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Get the extension of a file name
+	 * 
+	 * @param string $file The file name
+	 * 
+	 * @return string The extension
+	 */
+	public static function getExt($file)
+	{
+		// String manipulation should be faster than pathinfo() on newer PHP versions.
+		$dot = strrpos($file, '.');
+
+		if ($dot === false) {
+			return '';
+		}
+
+		$ext = substr($file, $dot + 1);
+
+		// Extension cannot contain slashes.
+		if (strpos($ext, '/') !== false || (DIRECTORY_SEPARATOR === '\\' && strpos($ext, '\\') !== false)) {
+			return '';
+		}
+
+		return $ext;
+	}
+
 
 	public static function generateMeta($item = '') {
 		return true;

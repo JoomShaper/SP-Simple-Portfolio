@@ -19,6 +19,11 @@ if (!Factory::getUser()->authorise('core.manage', 'com_spsimpleportfolio')) {
 
 // Require helper file
 JLoader::register('SpsimpleportfolioHelper', JPATH_COMPONENT . '/helpers/spsimpleportfolio.php');
+
+// Load aliases for Joomla 6 compatibility
+SpsimpleportfolioHelper::loadAliases();
+
 $controller = BaseController::getInstance('Spsimpleportfolio');
+
 $controller->execute(Factory::getApplication()->input->get('task'));
 $controller->redirect();

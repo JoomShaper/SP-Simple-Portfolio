@@ -47,7 +47,7 @@ class SpsimpleportfolioControllerItem extends FormController {
 		$alias = $item->alias;
 		$folder = JPATH_ROOT . '/images/spsimpleportfolio/' . $alias;
 		$base_name = File::stripExt(basename($item->image));
-		$ext = File::getExt($image);
+		$ext = SpsimpleportfolioHelper::getExt($image);
 
 		$params = ComponentHelper::getParams('com_spsimpleportfolio');
 		$sizes = array();

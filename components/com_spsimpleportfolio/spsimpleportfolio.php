@@ -15,6 +15,10 @@ $controller = BaseController::getInstance('Spsimpleportfolio');
 
 JLoader::register('SpsimpleportfolioHelper', __DIR__ . '/helpers/helper.php');
 
+// Load aliases for Joomla 6 compatibility
+SpsimpleportfolioHelper::loadAliases();
+
+
 $input = Factory::getApplication()->input;
 $controller->execute($input->getCmd('task'));
 $controller->redirect();

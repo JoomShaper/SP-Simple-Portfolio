@@ -152,7 +152,7 @@ if ($saveOrder && !empty($this->items))
 								<td class="center">
 									<?php
 									$folder = JPATH_ROOT . '/images/spsimpleportfolio/' . $item->alias;
-									$ext = File::getExt($item->image);
+									$ext = SpsimpleportfolioHelper::getExt($item->image);
 									$base_name = File::stripExt(basename($item->image));
 									$thumb = $base_name . '_' .strtolower($cParams->get('square', '600x600')) . '.' . $ext;
 									if(file_exists($folder . '/' . $thumb)) {

@@ -180,22 +180,22 @@ class SpsimpleportfolioModelItems extends ListModel {
 
 			$thumb_type = $params->get('thumbnail_type', 'masonry');
 			if($thumb_type == 'masonry') {
-				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_' . $sizes[$i] . '.' . File::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_' . $sizes[$i] . '.' . SpsimpleportfolioHelper::getExt($item->image);
 			} else if($thumb_type == 'rectangular') {
-				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $rectangle .'.' . File::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $rectangle .'.' . SpsimpleportfolioHelper::getExt($item->image);
 			} else if($thumb_type == 'tower') {
-				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $tower .'.' . File::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $tower .'.' . SpsimpleportfolioHelper::getExt($item->image);
 			} else {
-				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $square .'.' . File::getExt($item->image);
+				$item->thumb = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $square .'.' . SpsimpleportfolioHelper::getExt($item->image);
 			}
 
 			$popup_image = $params->get('popup_image', 'default');
 			if($popup_image == 'quare') {
-				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $square .'.' . File::getExt($item->image);
+				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $square .'.' . SpsimpleportfolioHelper::getExt($item->image);
 			} else if($popup_image == 'rectangle') {
-				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $rectangle .'.' . File::getExt($item->image);
+				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $rectangle .'.' . SpsimpleportfolioHelper::getExt($item->image);
 			} else if($popup_image == 'tower') {
-				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $tower .'.' . File::getExt($item->image);
+				$item->popup_img_url = Uri::base(true) . '/images/spsimpleportfolio/' . $item->alias . '/' . File::stripExt(basename($item->image)) . '_'. $tower .'.' . SpsimpleportfolioHelper::getExt($item->image);
 			} else {
 				$item->popup_img_url = Uri::base() . $item->image;
 			}
