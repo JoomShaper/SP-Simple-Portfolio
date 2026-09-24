@@ -11,9 +11,10 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Multilanguage;
 use Joomla\CMS\Version;
-use Joomla\Database\DatabaseInterface;
 
 class SpsimpleportfolioHelper {
+
+	private static $allowedImageTypes = array('jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'avif');
 
 	/**
 	 * Validate that a file extension is an allowed image type.
@@ -29,24 +30,48 @@ class SpsimpleportfolioHelper {
 	}
 
 	/**
-	 * Load class aliases for Joomla 6 compatibility
+	 * Load class aliases for Joomla 6 and Joomla 3 compatibility
 	 * 
 	 * @return void
 	 */
 	public static function loadAliases()
 	{
-		$joomlaVersion = defined('JVERSION') ? JVERSION : (new Version())->getShortVersion();
+		$joomlaVersion = defined('JVERSION') ? JVERSION : (class_exists('Joomla\CMS\Version') ? (new Version())->getShortVersion() : '3.10');
 
 		if (version_compare($joomlaVersion, '6.0', '>=')) {
 			$classAliases = [
-				'\Joomla\Filesystem\Path' => 'Joomla\CMS\Filesystem\Path',
-				'\Joomla\Filesystem\Folder' => 'Joomla\CMS\Filesystem\Folder',
-				'\Joomla\Filesystem\File' => 'Joomla\CMS\Filesystem\File',
+				'Joomla\Filesystem\Path' => 'Joomla\CMS\Filesystem\Path',
+				'Joomla\Filesystem\Folder' => 'Joomla\CMS\Filesystem\Folder',
+				'Joomla\Filesystem\File' => 'Joomla\CMS\Filesystem\File',
 			];
 
 			foreach ($classAliases as $alias => $original) {
-				if (!class_exists($original)) {
+				if (!class_exists($original) && class_exists($alias)) {
 					class_alias($alias, $original);
+				}
+			}
+		}
+
+		if (version_compare($joomlaVersion, '4.0', '<')) {
+			if (!class_exists('JFile')) {
+				\JLoader::import('joomla.filesystem.file');
+			}
+			if (!class_exists('JFolder')) {
+				\JLoader::import('joomla.filesystem.folder');
+			}
+			if (!class_exists('JPath')) {
+				\JLoader::import('joomla.filesystem.path');
+			}
+
+			$j3Aliases = [
+				'Joomla\Filesystem\File'   => class_exists('Joomla\CMS\Filesystem\File') ? 'Joomla\CMS\Filesystem\File' : 'JFile',
+				'Joomla\Filesystem\Folder' => class_exists('Joomla\CMS\Filesystem\Folder') ? 'Joomla\CMS\Filesystem\Folder' : 'JFolder',
+				'Joomla\Filesystem\Path'   => class_exists('Joomla\CMS\Filesystem\Path') ? 'Joomla\CMS\Filesystem\Path' : 'JPath',
+			];
+
+			foreach ($j3Aliases as $target => $source) {
+				if (!class_exists($target) && class_exists($source)) {
+					class_alias($source, $target);
 				}
 			}
 		}
@@ -85,7 +110,7 @@ class SpsimpleportfolioHelper {
 
 	public static function getTags($ids) {
 		
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		if(!is_array($ids)) {
 			$ids = (array) json_decode($ids, true);
@@ -103,7 +128,7 @@ class SpsimpleportfolioHelper {
 
 
 	public static function getTagList($items) {
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		
 		$tags = array();
@@ -122,7 +147,7 @@ class SpsimpleportfolioHelper {
 
 	public static function getItemId($catid = 0)
 	{
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('id', 'params')));
 		$query->from($db->quoteName('#__menu'));
@@ -170,3 +195,6 @@ class SpsimpleportfolioHelper {
         return $link;
 	}
 }
+
+// Auto-register aliases
+SpsimpleportfolioHelper::loadAliases();

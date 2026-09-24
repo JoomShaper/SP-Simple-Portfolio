@@ -16,7 +16,6 @@ use Joomla\CMS\Router\Route;
 use Joomla\Registry\Registry;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\MVC\Model\ListModel;
-use Joomla\Database\DatabaseInterface;
 
 class SpsimpleportfolioModelItems extends ListModel {
 
@@ -215,7 +214,7 @@ class SpsimpleportfolioModelItems extends ListModel {
 
 	public function getTagList($items) {
 		try {
-			$db = Factory::getContainer()->get(DatabaseInterface::class);
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 			$tags = array();
@@ -241,7 +240,7 @@ class SpsimpleportfolioModelItems extends ListModel {
 	public function getItemTags($ids, $array = false) {
 
 		try {
-			$db = Factory::getContainer()->get(DatabaseInterface::class);
+			$db = Factory::getDbo();
 			$query = $db->getQuery(true);
 
 		if(!is_array($ids)) {

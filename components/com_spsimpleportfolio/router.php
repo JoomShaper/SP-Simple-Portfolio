@@ -18,7 +18,6 @@ use Joomla\CMS\Component\Router\Rules\MenuRules;
 use Joomla\CMS\Component\Router\Rules\NomenuRules;
 use Joomla\CMS\Component\Router\Rules\StandardRules;
 use Joomla\CMS\Component\Router\RouterViewConfiguration;
-use Joomla\Database\DatabaseInterface;
 
 /**
  * Router class for com_spsimpleportfolio
@@ -57,7 +56,7 @@ class SpsimpleportfolioRouter extends RouterView {
 		$params = ComponentHelper::getParams('com_spsimpleportfolio', true);
 		$this->noIDs = (bool) $params->get('sef_ids');
 
-		$this->db = Factory::getContainer()->get(DatabaseInterface::class);
+		$this->db = Factory::getDbo();
 		$this->queryBuilder = $this->db->getQuery(true);
 
 		/**

@@ -12,10 +12,19 @@ defined('_JEXEC') or die('Restricted Access!');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer;
-use Joomla\Database\DatabaseInterface;
 
 class com_spsimpleportfolioInstallerScript
 {
+    protected function getInstaller()
+    {
+        $installer = new Installer;
+        if (method_exists($installer, 'setDatabase')) {
+            $installer->setDatabase(Factory::getDbo());
+        } elseif (method_exists($installer, 'setDbo')) {
+            $installer->setDbo(Factory::getDbo());
+        }
+        return $installer;
+    }
     
     public function uninstall($parent)
     {
@@ -41,8 +50,7 @@ class com_spsimpleportfolioInstallerScript
 
             if (!empty($extension_id))
             {
-                $installer = new Installer;
-                $installer->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
+                $installer = $this->getInstaller();
                 $result = $installer->uninstall('module', $extension_id);
                 $status->modules[] = array('name' => $name, 'client' => $client, 'result' => $result);
             }
@@ -95,35 +103,38 @@ class com_spsimpleportfolioInstallerScript
             $position = (isset($module->attributes()->position) && $module->attributes()->position) ? (string)$module->attributes()->position : '';
             $ordering = (isset($module->attributes()->ordering) && $module->attributes()->ordering) ? (string)$module->attributes()->ordering : 0;
             
-            $installer = new Installer;
-            $installer->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
+            $installer = $this->getInstaller();
             $result = $installer->install($path);
         }
 
-        $extensions = [
-            ['type' => 'plugin', 'name' => 'spsimpleportfolio', 'group' => 'finder'],
-        ];
+        $joomlaVersion = defined('JVERSION') ? JVERSION : '4.0';
 
-        foreach ($extensions as $key => $extension) {
-            $ext       = $parent->getParent()->getPath('source') . '/' . $extension['type'] . 's/' . $extension['group'] . '/' . $extension['name'];
-            $installer = new Installer();
-            $installer->setDatabase(Factory::getContainer()->get(DatabaseInterface::class));
-            $installer->install($ext);
+        // Finder plugin uses Joomla 4+ service provider architecture
+        if (version_compare($joomlaVersion, '4.0', '>=')) {
+            $extensions = [
+                ['type' => 'plugin', 'name' => 'spsimpleportfolio', 'group' => 'finder'],
+            ];
 
-            if ($extension['type'] === 'plugin') {
-                $db    = Factory::getDbo();
-                $query = $db->getQuery(true);
+            foreach ($extensions as $key => $extension) {
+                $ext       = $parent->getParent()->getPath('source') . '/' . $extension['type'] . 's/' . $extension['group'] . '/' . $extension['name'];
+                $installer = $this->getInstaller();
+                $installer->install($ext);
 
-                $fields     = [$db->quoteName('enabled') . ' = 1'];
-                $conditions = [
-                    $db->quoteName('type') . ' = ' . $db->quote($extension['type']),
-                    $db->quoteName('element') . ' = ' . $db->quote($extension['name']),
-                    $db->quoteName('folder') . ' = ' . $db->quote($extension['group']),
-                ];
+                if ($extension['type'] === 'plugin') {
+                    $db    = Factory::getDbo();
+                    $query = $db->getQuery(true);
 
-                $query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
-                $db->setQuery($query);
-                $db->execute();
+                    $fields     = [$db->quoteName('enabled') . ' = 1'];
+                    $conditions = [
+                        $db->quoteName('type') . ' = ' . $db->quote($extension['type']),
+                        $db->quoteName('element') . ' = ' . $db->quote($extension['name']),
+                        $db->quoteName('folder') . ' = ' . $db->quote($extension['group']),
+                    ];
+
+                    $query->update($db->quoteName('#__extensions'))->set($fields)->where($conditions);
+                    $db->setQuery($query);
+                    $db->execute();
+                }
             }
         }
     }

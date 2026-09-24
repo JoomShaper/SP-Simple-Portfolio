@@ -13,8 +13,14 @@ defined('_JEXEC') or die();
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\CMS\Form\FormHelper;
 use Joomla\CMS\Form\Field\ListField;
-use Joomla\Database\DatabaseInterface;
+
+FormHelper::loadFieldClass('list');
+
+if (!class_exists('Joomla\CMS\Form\Field\ListField') && class_exists('JFormFieldList')) {
+	class_alias('JFormFieldList', 'Joomla\CMS\Form\Field\ListField');
+}
 
 class JFormFieldTaglist extends ListField
 {
@@ -42,7 +48,7 @@ class JFormFieldTaglist extends ListField
 		$doc = Factory::getDocument();
 		$doc->addScript(Uri::base(true) . '/components/com_spsimpleportfolio/assets/js/tags.js');
 
-		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true)
 			->select('DISTINCT a.id AS value, a.title AS text')
 			->from('#__spsimpleportfolio_tags AS a')

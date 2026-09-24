@@ -35,15 +35,30 @@ $html[] = HTMLHelper::_('select.genericlist', $options, $nameAttr, trim($attr), 
 Text::script('JGLOBAL_SELECT_NO_RESULTS_MATCH');
 Text::script('JGLOBAL_SELECT_PRESS_TO_SELECT');
 
-$wam = Factory::getDocument()->getWebAssetManager();
-$wam->usePreset('choicesjs')
-    ->useScript('webcomponent.field-fancy-select');
+$doc = Factory::getDocument();
+$hasWebAssetManager = method_exists($doc, 'getWebAssetManager');
+
+if ($hasWebAssetManager) {
+    $wam = $doc->getWebAssetManager();
+    $wam->usePreset('choicesjs')
+        ->useScript('webcomponent.field-fancy-select');
+} else {
+    try {
+        HTMLHelper::_('formbehavior.chosen', 'select');
+    } catch (\Exception $e) {
+        // Fallback gracefully
+    }
+}
 
 $wrapAttrs = [];
 if (!empty($class))        $wrapAttrs[] = 'class="' . htmlspecialchars($class, ENT_COMPAT, 'UTF-8') . '"';
 if (!empty($allowCustom))  $wrapAttrs[] = 'allow-custom';
 if (!empty($customPrefix)) $wrapAttrs[] = 'new-item-prefix="' . htmlspecialchars($customPrefix, ENT_COMPAT, 'UTF-8') . '"';
-?>
+
+if ($hasWebAssetManager) : ?>
 <joomla-field-fancy-select <?php echo implode(' ', $wrapAttrs); ?>>
     <?php echo implode("\n", $html); ?>
 </joomla-field-fancy-select>
+<?php else : ?>
+    <?php echo implode("\n", $html); ?>
+<?php endif; ?>
