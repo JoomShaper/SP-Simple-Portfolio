@@ -77,18 +77,19 @@ class SpsimpleportfolioViewItems extends HtmlView
             $title = Text::sprintf('JPAGETITLE', $title, $app->get('sitename'));
         }
 
+        $title = htmlspecialchars($title, ENT_QUOTES, 'UTF-8');
         $this->document->setTitle($title);
 
         if ($this->params->get('menu-meta_description')) {
-            $this->document->setDescription($this->params->get('menu-meta_description'));
+            $this->document->setDescription(htmlspecialchars($this->params->get('menu-meta_description'), ENT_QUOTES, 'UTF-8'));
         }
 
         if ($this->params->get('menu-meta_keywords')) {
-            $this->document->setMetadata('keywords', $this->params->get('menu-meta_keywords'));
+            $this->document->setMetadata('keywords', htmlspecialchars($this->params->get('menu-meta_keywords'), ENT_QUOTES, 'UTF-8'));
         }
 
         if ($this->params->get('robots')) {
-            $this->document->setMetadata('robots', $this->params->get('robots'));
+            $this->document->setMetadata('robots', htmlspecialchars($this->params->get('robots'), ENT_QUOTES, 'UTF-8'));
         }
     }
 }

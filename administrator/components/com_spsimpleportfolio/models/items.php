@@ -189,6 +189,7 @@ class SpsimpleportfolioModelItems extends ListModel {
 			$ids = (array) json_decode($ids, true);
 		}
 
+		$ids = array_map('intval', $ids);
 		$ids = implode(',', $ids);
 		$query->select($db->quoteName(array('id', 'title', 'alias')));
 		$query->from($db->quoteName('#__spsimpleportfolio_tags'));

@@ -25,5 +25,6 @@ class SpsimpleportfolioControllerTag extends FormController {
 		if( !empty( $id ) ) {
 			return Factory::getUser()->authorise( "core.edit", "com_spsimpleportfolio.tag." . $id );
 		}
+		return false;
 	}
 }

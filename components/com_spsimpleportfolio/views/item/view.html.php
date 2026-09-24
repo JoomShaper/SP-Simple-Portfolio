@@ -67,16 +67,16 @@ class SpsimpleportfolioViewItem extends HtmlView
             return;
         }
 
-        $this->document->setTitle($title);
-        $this->document->addCustomTag('<meta content="' . $title . '" property="og:title" />');
+        $this->document->setTitle(htmlspecialchars($title, ENT_QUOTES, 'UTF-8'));
+        $this->document->addCustomTag('<meta content="' . htmlspecialchars($title, ENT_QUOTES, 'UTF-8') . '" property="og:title" />');
         $this->document->addCustomTag('<meta content="website" property="og:type"/>');
-        $this->document->addCustomTag('<meta content="' . Uri::current() . '" property="og:url" />');
-        $this->document->addCustomTag('<meta content="' . Uri::root() . $item->image . '" property="og:image" />');
+        $this->document->addCustomTag('<meta content="' . htmlspecialchars(Uri::current(), ENT_QUOTES, 'UTF-8') . '" property="og:url" />');
+        $this->document->addCustomTag('<meta content="' . htmlspecialchars(Uri::root() . $item->image, ENT_QUOTES, 'UTF-8') . '" property="og:image" />');
 
         if (isset($item->description) && $item->description) {
             $meta_desc = HTMLHelper::_('string.truncate', $item->description, 155, false, false);
-            $this->document->setDescription($meta_desc);
-            $this->document->addCustomTag('<meta content="' . $meta_desc . '" property="og:description" />');
+            $this->document->setDescription(htmlspecialchars($meta_desc, ENT_QUOTES, 'UTF-8'));
+            $this->document->addCustomTag('<meta content="' . htmlspecialchars($meta_desc, ENT_QUOTES, 'UTF-8') . '" property="og:description" />');
         }
 
     }

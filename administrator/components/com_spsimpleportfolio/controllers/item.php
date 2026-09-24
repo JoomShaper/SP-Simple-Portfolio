@@ -30,6 +30,7 @@ class SpsimpleportfolioControllerItem extends FormController {
 		if( !empty( $id ) ) {
 			return Factory::getUser()->authorise( "core.edit", "com_spsimpleportfolio.item." . $id );
 		}
+		return false;
 	}
 
 	protected function postSaveHook(BaseDatabaseModel $model, $validData = array()) {
@@ -48,6 +49,11 @@ class SpsimpleportfolioControllerItem extends FormController {
 		$folder = JPATH_ROOT . '/images/spsimpleportfolio/' . $alias;
 		$base_name = File::stripExt(basename($item->image));
 		$ext = SpsimpleportfolioHelper::getExt($image);
+
+		if (!SpsimpleportfolioHelper::validateImageType($ext)) {
+			Factory::getApplication()->enqueueMessage('Unsupported image type: ' . $ext, 'error');
+			return true;
+		}
 
 		$params = ComponentHelper::getParams('com_spsimpleportfolio');
 		$sizes = array();

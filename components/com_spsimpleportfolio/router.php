@@ -11,6 +11,7 @@
 defined ('_JEXEC') or die('Restricted Access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Component\Router\RouterView;
 use Joomla\CMS\Component\Router\Rules\MenuRules;
@@ -100,7 +101,7 @@ class SpsimpleportfolioRouter extends RouterView {
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
+			Factory::getApplication()->enqueueMessage(Text::_('COM_SPSIMPLEPORTFOLIO_ERROR_ALIAS_NOT_FOUND'), 'error');
 
 			return '';
 		}
@@ -129,7 +130,7 @@ class SpsimpleportfolioRouter extends RouterView {
 		}
 		catch (Exception $e)
 		{
-			echo $e->getMessage();
+			Factory::getApplication()->enqueueMessage(Text::_('COM_SPSIMPLEPORTFOLIO_ERROR_ID_NOT_FOUND'), 'error');
 
 			return 0;
 		}

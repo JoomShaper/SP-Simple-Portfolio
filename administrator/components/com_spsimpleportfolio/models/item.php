@@ -60,6 +60,7 @@ class SpsimpleportfolioModelItem extends AdminModel
 		$ids = json_decode(is_null($ids) ? '[]' : $ids);
 
 		if(is_array($ids) && count($ids)) {
+			$ids = array_map('intval', $ids);
 			$query
 			->select('a.*')
 			->from($db->quoteName('#__spsimpleportfolio_tags', 'a'))

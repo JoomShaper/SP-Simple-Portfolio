@@ -28,7 +28,7 @@ class JFormFieldResetthumbs extends FormField
 			});
 		});');
 
-		$url = 'index.php?option=com_spsimpleportfolio&task=resetThumbs';
+		$url = 'index.php?option=com_spsimpleportfolio&task=resetThumbs&' . Factory::getApplication()->getSession()->getFormToken() . '=1';
 
 		return '<a id="btn-reset-thumbs" class="btn btn-primary" data-generating="'. Text::_('COM_SPPORTFOLIO_RESET_THUMBNAIL_TEXT_LOADING') .'" href="'. $url .'">'. Text::_('COM_SPPORTFOLIO_RESET_THUMBNAIL_TEXT') .'</a>';
 	}

@@ -46,6 +46,7 @@ class SpsimpleportfolioViewTag extends HtmlView {
 		$isNew = ($this->item->id == 0);
 		ToolbarHelper::title(Text::_('COM_SPSIMPLEPORTFOLIO_MANAGER') .  ($isNew ? Text::_('COM_SPSIMPLEPORTFOLIO_TAG_NEW') : Text::_('COM_SPSIMPLEPORTFOLIO_TAG_EDIT')), 'pictures');
 
+		$user = Factory::getUser();
 		if ($this->canDo->get('core.edit') || ($this->canDo->get('core.edit.own') && $this->item->created_by == $user->id)) {
 			ToolbarHelper::apply('tag.apply', 'JTOOLBAR_APPLY');
 			ToolbarHelper::save('tag.save', 'JTOOLBAR_SAVE');

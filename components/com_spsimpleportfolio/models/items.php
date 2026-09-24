@@ -230,7 +230,8 @@ class SpsimpleportfolioModelItems extends ListModel {
 			$json = json_encode(array_unique($tags));
 			$result = $this->getItemTags($json);
 		} catch (\Exception $e) {
-			echo $e->getMessage();
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return array();
 		}
 		
 
@@ -243,17 +244,18 @@ class SpsimpleportfolioModelItems extends ListModel {
 			$db = Factory::getContainer()->get(DatabaseInterface::class);
 			$query = $db->getQuery(true);
 
-			if(!is_array($ids)) {
-				$ids = (array) json_decode($ids, true);
-			}
+		if(!is_array($ids)) {
+			$ids = (array) json_decode($ids, true);
+		}
 
-			$ids = implode(',', $ids);
-			$query->select($db->quoteName(array('id', 'title', 'alias')));
-			$query->from($db->quoteName('#__spsimpleportfolio_tags'));
-			if (!empty($ids))
-			{
-				$query->where($db->quoteName('id')." IN (" . $ids . ")");
-			}
+		$ids = array_map('intval', $ids);
+		$ids = implode(',', $ids);
+		$query->select($db->quoteName(array('id', 'title', 'alias')));
+		$query->from($db->quoteName('#__spsimpleportfolio_tags'));
+		if (!empty($ids))
+		{
+			$query->where($db->quoteName('id')." IN (" . $ids . ")");
+		}
 			$query->order('title ASC');
 			$db->setQuery($query);
 
@@ -269,7 +271,8 @@ class SpsimpleportfolioModelItems extends ListModel {
 				return $items;
 			}
 		} catch (\Exception $e) {
-			echo $e->getMessage();
+			Factory::getApplication()->enqueueMessage($e->getMessage(), 'error');
+			return array();
 		}
 		
 

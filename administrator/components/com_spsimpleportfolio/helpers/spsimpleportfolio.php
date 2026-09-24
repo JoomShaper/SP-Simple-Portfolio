@@ -20,6 +20,21 @@ class SpsimpleportfolioHelper
 {
 
     public static $extension = 'com_spsimpleportfolio';
+
+    private static $allowedImageTypes = array('jpg', 'jpeg', 'png', 'gif', 'webp', 'bmp', 'avif');
+
+    /**
+     * Validate that a file extension is an allowed image type.
+     *
+     * @param string $ext The file extension (case-insensitive)
+     *
+     * @return bool True if the extension is allowed.
+     */
+    public static function validateImageType($ext)
+    {
+        $ext = strtolower($ext);
+        return in_array($ext, self::$allowedImageTypes);
+    }
     
     /**
      * Load class aliases for Joomla 6 compatibility
@@ -68,7 +83,7 @@ class SpsimpleportfolioHelper
             return '';
         }
 
-        return $ext;
+        return strtolower($ext);
     }
 
 
@@ -93,6 +108,12 @@ class SpsimpleportfolioHelper
          * @throws Exception         If an image cannot be created or resized due to an unsupported type or a GD/Imagick error.
          */
 
+
+        // Validate image type before processing.
+        if (!self::validateImageType($ext)) {
+            Factory::getApplication()->enqueueMessage('Unsupported image type: ' . $ext, 'error');
+            return false;
+        }
 
         // Get params
         $params = ComponentHelper::getParams('com_spsimpleportfolio');

@@ -48,20 +48,20 @@ $client_avatar_condition= (isset($this->item->client_avatar) && $this->item->cli
 	<div class="sp-simpleportfolio-image">
 		<?php if($this->item->video) : ?>
 			<div class="sp-simpleportfolio-embed">
-				<iframe src="<?php echo $video_src; ?>" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
+				<iframe src="<?php echo htmlspecialchars($video_src, ENT_QUOTES, 'UTF-8'); ?>" frameborder="0" webkitAllowFullScreen mozallowfullscreen allowFullScreen></iframe>
 			</div>
 		<?php else: ?>
 			<?php if($this->item->image): ?>
-				<img class="sp-simpleportfolio-img" src="<?php echo $this->item->image; ?>" alt="<?php echo $this->item->title; ?>">
+				<img class="sp-simpleportfolio-img" src="<?php echo htmlspecialchars($this->item->image, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($this->item->title, ENT_QUOTES, 'UTF-8'); ?>">
 			<?php else: ?>
-				<img class="sp-simpleportfolio-img" src="<?php echo $this->item->thumbnail; ?>" alt="<?php echo $this->item->title; ?>">
+				<img class="sp-simpleportfolio-img" src="<?php echo htmlspecialchars($this->item->thumbnail, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($this->item->title, ENT_QUOTES, 'UTF-8'); ?>">
 			<?php endif; ?>
 		<?php endif; ?>
 	</div>
 
 	<div class="sp-simpleportfolio-details clearfix">
 		<div class="sp-simpleportfolio-description">
-			<h2><?php echo $this->item->title; ?></h2>
+			<h2><?php echo htmlspecialchars($this->item->title, ENT_QUOTES, 'UTF-8'); ?></h2>
 			<?php echo HTMLHelper::_('content.prepare', $this->item->description); ?>
 		</div>
 
@@ -72,12 +72,12 @@ $client_avatar_condition= (isset($this->item->client_avatar) && $this->item->cli
 					<?php if( $client_avatar_condition ) : ?>
 						<?php $client_avatar_alt = ($client_title_condition) ? $this->item->client : $this->item->title; ?>
 						<div class="sp-simpleportfolio-client-avatar">
-							<img src="<?php echo Uri::root() . $this->item->client_avatar?>" alt="<?php echo $client_avatar_alt; ?>">
+							<img src="<?php echo htmlspecialchars(Uri::root() . $this->item->client_avatar, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($client_avatar_alt, ENT_QUOTES, 'UTF-8'); ?>">
 						</div>
 					<?php endif; ?>
 					<?php if( $client_title_condition ) : ?>
 						<div class="sp-simpleportfolio-client-title">
-							<?php echo $this->item->client; ?>
+							<?php echo htmlspecialchars($this->item->client, ENT_QUOTES, 'UTF-8'); ?>
 						</div>
 					<?php endif; ?>
 				</div>
@@ -95,7 +95,7 @@ $client_avatar_condition= (isset($this->item->client_avatar) && $this->item->cli
 
 			<?php if ($this->item->url) : ?>
 				<div class="sp-simpleportfolio-link">
-					<a class="btn btn-primary" target="_blank" href="<?php echo $this->item->url; ?>"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_VIEW_PROJECT'); ?></a>
+					<a class="btn btn-primary" target="_blank" href="<?php echo htmlspecialchars($this->item->url, ENT_QUOTES, 'UTF-8'); ?>"><?php echo Text::_('COM_SPSIMPLEPORTFOLIO_VIEW_PROJECT'); ?></a>
 				</div>
 			<?php endif; ?>
 		</div>

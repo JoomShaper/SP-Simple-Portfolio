@@ -27,6 +27,13 @@ class SpsimpleportfolioController extends BaseController {
 	}
 
 	public function resetThumbs() {
+		// Check CSRF token
+		if (!Factory::getApplication()->getSession()->checkToken()) {
+			Factory::getApplication()->enqueueMessage('Invalid Token', 'error');
+			$this->setRedirect('index.php?option=com_spsimpleportfolio');
+			return false;
+		}
+
 		$items = $this->getPortfolioItems();
 
 		foreach ($items as $item) {

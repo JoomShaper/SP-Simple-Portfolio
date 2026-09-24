@@ -64,6 +64,10 @@ class SpsimpleportfolioModelTags extends ListModel {
 			$orderCol = $app->getUserStateFromRequest($this->context.'filter_order', 'filter_order', 'id', 'cmd');
 			$orderDirn = $app->getUserStateFromRequest($this->context.'filter_order_Dir', 'filter_order_Dir', 'desc', 'cmd');
 
+			$allowedOrderCols = array('id', 'title', 'alias');
+			$orderCol = in_array($orderCol, $allowedOrderCols) ? $orderCol : 'id';
+			$orderDirn = (strtolower($orderDirn) === 'asc') ? 'ASC' : 'DESC';
+
 			$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
 
 			return $query;

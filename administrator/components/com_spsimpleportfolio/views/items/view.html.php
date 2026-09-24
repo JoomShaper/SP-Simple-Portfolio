@@ -41,7 +41,7 @@ class SpsimpleportfolioViewItems extends HtmlView {
 
 		$this->addToolBar();
 
-		return parent::display($tpl);
+		parent::display($tpl);
 
 	}
 

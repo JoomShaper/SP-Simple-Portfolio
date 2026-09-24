@@ -16,6 +16,19 @@ use Joomla\Database\DatabaseInterface;
 class SpsimpleportfolioHelper {
 
 	/**
+	 * Validate that a file extension is an allowed image type.
+	 *
+	 * @param string $ext The file extension (case-insensitive)
+	 *
+	 * @return bool True if the extension is allowed.
+	 */
+	public static function validateImageType($ext)
+	{
+		$ext = strtolower($ext);
+		return in_array($ext, self::$allowedImageTypes);
+	}
+
+	/**
 	 * Load class aliases for Joomla 6 compatibility
 	 * 
 	 * @return void
@@ -62,7 +75,7 @@ class SpsimpleportfolioHelper {
 			return '';
 		}
 
-		return $ext;
+		return strtolower($ext);
 	}
 
 
@@ -77,6 +90,7 @@ class SpsimpleportfolioHelper {
 		if(!is_array($ids)) {
 			$ids = (array) json_decode($ids, true);
 		}
+		$ids = array_map('intval', $ids);
 		$ids = implode(',', $ids);
 		$query->select($db->quoteName(array('id', 'title', 'alias')));
 		$query->from($db->quoteName('#__spsimpleportfolio_tags'));
